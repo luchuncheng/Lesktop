@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+    <link href="../Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+    <link href="../Themes/Default/RichEditor.css" rel="stylesheet" type="text/css" />
+	<script src="../Core/Common.js" type="text/javascript"></script>
+    <script src="../UI/CommonCtrl.js" type="text/javascript"></script>
+    <script src="../UI/Control.js" type="text/javascript"></script>
+    <script src="../UI/RichEditor.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        function Editor(parent, config)
+        {
+            var this_ = this;
+            Core.UI.Control.call(this_, parent, config);
+	
+	        var fillpanel_ = new Core.UI.Control(
+		        this_,
+		        {
+			        ID: "fillpanel",
+			        DockStyle: Core.UI.DockStyle.Fill,
+			        Controls: [
+				        {
+					        ID: "msgeditor",
+					        Css: "msgeditor",
+					        DockStyle: Core.UI.DockStyle.Fill
+				        }
+			        ]
+		        }
+	        );
+	        editor_ = new Core.UI.RichEditor(fillpanel_.GetContainer("msgeditor"), {});	
+        }
+
+        window.onload = function ()
+        {
+            Core.UI.PagePanel.Create('');
+            var page_ctrl = new Core.UI.Control(
+				Core.UI.PagePanel,
+				{
+				    Controls: [
+				        {
+				            ID: "tabctrl",
+				            Css: "ct_tab",
+				            Margin: [1, 4, 1, 1],
+				            DockStyle: Core.UI.DockStyle.Fill,
+						    Controls: [
+								{
+								    ID: "chatpanel",
+								    Css: "chatpanel",
+								    Margin: [4, 6, 6, 6],
+								    Type: Editor,
+					                Height: 100,
+								    DockStyle: Core.UI.DockStyle.Bottom
+								}
+							]
+				        }
+			        ],
+				    DockStyle: Core.UI.DockStyle.Fill
+				}
+            );
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

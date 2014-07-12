@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		.frame_container
+		{
+			overflow: hidden;
+			border: 1px solid  #D0D0D0;
+			background-color: White;
+		}
+	</style>
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Sub.js" type="text/javascript"></script>
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+	<script src="UI/TreeView.js" type="text/javascript"></script>
+	<script src="UI/Control.js" type="text/javascript"></script>
+	<script src="UI/AccountTree.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript">
+
+		var tabctrl_ = null;
+		var frames_ = {};
+		var comment_tab_interface_ = null;
+
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			tabctrl_ = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl_",
+					Css: "tabctrl_ ct_tab",
+					Margin: 1,
+					Tabs: [
+						{
+							ID: "TAB0", Text: "嵌入客服代码",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+
+			for (var i = 0; i <= 0; i++)
+			{
+				var tid = "TAB" + i.toString();
+				var tab_panel = tabctrl_.GetPanel(tid);
+				var frame_container = tab_panel.FindControl("frame_container");
+				var frame = Core.UI.CreateFrame(frame_container.GetContainer());
+				frames_[tid] = frame;
+			}
+
+			tabctrl_.OnSelectedTab.Attach(
+				function (cur, pre)
+				{
+					if (cur == "TAB0")
+					{
+						CurrentWindow.Waiting("正在载入未读留言...");
+						frames_[cur].src = "Management/EmbedCode.aspx?" + (new Date()).getTime();
+					}
+				}
+			);
+
+			tabctrl_.Select("TAB0");
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>

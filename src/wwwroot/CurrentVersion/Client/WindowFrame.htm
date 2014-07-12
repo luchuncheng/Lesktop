@@ -1,0 +1,581 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>正在加载...</title>
+	
+	<link href="../Themes/Default/WebDesktop/Desktop.css" rel="stylesheet" type="text/css" />
+	
+    <style type="text/css">
+        html, body
+        {
+            border: 0px;
+            overflow: hidden;
+        }
+        body
+        {
+			padding: 0px;
+			margin: 0px;
+        }
+    </style>
+
+	<script src="../Core/Common.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+
+		window.UserAgent = navigator.userAgent;
+
+		var BorderCursorCss = [
+			"nw-resize", "n-resize", "ne-resize",
+			"w-resize", "default", "e-resize",
+			"sw-resize", "s-resize", "se-resize"
+		];
+
+		function WindowBkImage(config)
+		{
+			var m_Config = Core.Utility.Clone(config);
+
+			var m_Dom = document.createElement("DIV");
+
+			m_Dom.innerHTML =
+			"<table cellspacing='0' cellpadding='0' style='padding:0px; margin:0px;'>" +
+				"<tbody>" +
+					"<tr><td></td><td></td><td></td></tr>" +
+					"<tr><td></td><td></td><td></td></tr>" +
+					"<tr><td></td><td></td><td></td></tr>" +
+				"</tbody>" +
+			"</table>";
+
+			m_Dom.className = m_Config.Css;
+
+			m_Dom.style.left = "0px";
+			m_Dom.style.top = "0px";
+
+			function resize(width, height)
+			{
+				if (width < 50) width = 50;
+				if (height < 50) height = 50;
+				var xs = [m_Config.Horiz[0], width - (m_Config.Horiz[0] + m_Config.Horiz[2]), m_Config.Horiz[2]];
+				var ys = [m_Config.Vertical[0], height - (m_Config.Vertical[0] + m_Config.Vertical[2]), m_Config.Vertical[2]];
+
+				for (var x = 0; x < 3; x++)
+				{
+					for (var y = 0; y < 3; y++)
+					{
+						var cell = m_Dom.firstChild.rows[y].cells[x];
+						cell.style.width = xs[x] + 'px';
+						cell.style.height = ys[y] + 'px';
+					}
+				}
+			}
+
+			this.Resize = resize;
+
+			this.GetDom = function() { return m_Dom; };
+
+			for (var x = 0; x < 3; x++)
+			{
+				for (var y = 0; y < 3; y++)
+				{
+					var cell = m_Dom.firstChild.rows[y].cells[x];
+					cell.className = m_Config.Css + "_block_" + (y * 3 + x);
+					cell.style.padding = '0px';
+					cell.style.margin = '0px';
+				}
+			}
+
+			resize(m_Config.Horiz[0] + m_Config.Horiz[1] + m_Config.Horiz[2], m_Config.Vertical[0] + m_Config.Vertical[1] + m_Config.Vertical[2]);
+		}
+
+		function IsNull(v, alt)
+		{
+			return v != undefined && v != null ? v : alt;
+		}
+
+		function Delegate()
+		{
+			var all = [];
+
+			var This = this;
+
+			This.GetCount = function()
+			{
+				return all.length;
+			}
+
+			This.Call = function()
+			{
+				var ret = null;
+				for (var index in all)
+				{
+					ret = all[index].apply(This, arguments);
+				}
+				return ret;
+			}
+
+			This.Attach = function(func)
+			{
+				all.push(func);
+			}
+
+			This.Detach = function(func)
+			{
+				var index = 0;
+				for (index in all)
+				{
+					if (all[index] == func) break;
+				}
+				if (index < all.length)
+				{
+					delete all[index];
+					all.splice(index, 1);
+				}
+			}
+
+			This.DetachAll = function()
+			{
+				all = [];
+			}
+		}
+
+		function Window(config)
+		{
+			var This = this;
+
+			if (config == undefined) config = {};
+
+			var _config = {};
+			_config.Left = 0;
+			_config.Top = 0;
+			_config.Width = IsNull(config.Width, 400);
+			_config.Height = IsNull(config.Height, 300);
+			_config.MinWidth = IsNull(config.MinWidth, Math.min(_config.Width, 400));
+			_config.MinHeight = IsNull(config.MinHeight, Math.min(_config.Height, 300));
+			_config.HasMinButton = IsNull(config.HasMinButton, true);
+			_config.HasMaxButton = IsNull(config.HasMaxButton, true);
+			_config.Resizable = IsNull(config.Resizable, true);
+			_config.ShowInTaskbar = IsNull(config.ShowInTaskbar, _config.HasMinButton);
+			_config.Css = IsNull(config.Css, "window");
+			_config.BorderWidth = IsNull(config.BorderWidth, 6);
+			_config.Tag = IsNull(config.Tag, null);
+
+			if (config.Title == undefined)
+			{
+				_config.Title = {
+					Height: 18,
+					InnerHTML: ""
+				};
+			}
+			else
+			{
+				_config.Title = {};
+				_config.Title.Height = IsNull(config.Title.Height, 18);
+				_config.Title.InnerHTML = IsNull(config.Title.InnerHTML, "");
+			}
+
+			_config.OnClose = IsNull(config.OnClose, null);
+
+			This.GetLeft = function() { return _config.Left; }
+			This.GetTop = function() { return _config.Top; }
+			This.GetWidth = function() { return _config.Width; }
+			This.GetHeight = function() { return _config.Height; }
+			This.GetClientWidth = function() { return _config.Width - _config.BorderWidth * 2; };
+			This.GetClientHeight = function() { return _config.Height - _config.BorderWidth * 2 - _config.Title.Height; };
+			This.GetMinClientWidth = function() { return _config.MinWidth - _config.BorderWidth * 2; };
+			This.GetMinClientHeight = function() { return _config.MinHeight - _config.BorderWidth * 2 - _config.Title.Height; };
+
+			This.GetDom = function()
+			{
+				return _dom;
+			}
+
+			This.Resize = function(width, height)
+			{
+				if (width < 50) width = 50;
+				if (height < 50) height = 50;
+
+				bk.Resize(width, height);
+
+				_config.Width = width;
+				_config.Height = height;
+
+				var ws = [_config.BorderWidth, _config.Width - _config.BorderWidth * 2, _config.BorderWidth];
+				var hs = [_config.BorderWidth, _config.Height - _config.BorderWidth * 2, _config.BorderWidth];
+
+				if (_config.Title.Height > 0)
+				{
+					m_TitleDiv.style.width = ws[1] + "px";
+					m_TitleDiv.style.height = _config.Title.Height + "px";
+				}
+
+				m_WaitingDiv.style.width = ws[1] + "px";
+				m_WaitingDiv.style.height = "24px";
+				m_WaitingDiv.style.left = ws[0] + "px";
+				m_WaitingDiv.style.top = (hs[0] + _config.Title.Height) + "px";
+
+				m_Background.style.width = width + "px";
+				m_Background.style.height = height + "px";
+
+				m_Browser.width = ws[1];
+				m_Browser.height = hs[1] - _config.Title.Height;
+
+				m_Client.style.width = ws[1] + "px";
+				m_Client.style.height = (hs[1] - _config.Title.Height) + "px";
+
+				if (_config.BorderWidth > 0)
+				{
+					for (var x = 0; x < 3; x++)
+					{
+						for (var y = 0; y < 3; y++)
+						{
+							var i = y * 3 + x;
+							m_BroderDiv.firstChild.rows[y].cells[x].style.width = ws[x] + "px";
+							m_BroderDiv.firstChild.rows[y].cells[x].style.height = hs[y] + "px";
+						}
+					}
+				}
+
+				m_DisableDiv.style.width = width + "px";
+				m_DisableDiv.style.height = height + "px";
+			}
+
+			This.GetAnchorStyle = function()
+			{
+				return _config.AnchorStyle;
+			}
+
+			This.Move = function(left, top)
+			{
+				_config.Left = left;
+				_config.Top = top;
+			}
+
+			This.GetHtmlWindow = function()
+			{
+				return m_Browser.contentWindow;
+			}
+
+			var isLoad = false;
+
+			This.IsLoad = function()
+			{
+				return isLoad;
+			}
+
+			This.Load = function(src, onload_callback)
+			{
+				This.Waiting("正在加载...");
+				Core.Utility.AttachEvent(
+				m_Browser, "load",
+					function()
+					{
+						This.Completed();
+
+						if(window.external.Cookie != "")
+						{
+							document.cookie = window.external.Cookie;
+						}
+						
+						isLoad = true;
+						try
+						{
+							_htmlWindow = m_Browser.contentWindow;
+							Core.Utility.AttachEvent(
+								_htmlWindow.document, "mousedown",
+								function()
+								{
+									try
+									{
+										if (_htmlWindow.document.activeElement == null)
+										{
+											_htmlWindow.document.body.focus();
+										}
+										else
+										{
+											_htmlWindow.document.activeElement.focus();
+										}
+									}
+									catch (ex)
+									{
+									}
+								}
+							);
+							window.external.WindowFrameCtrl.js_onload(m_Browser.contentWindow);
+						}
+						catch (ex)
+						{
+							return;
+						}
+					}
+				);
+
+				m_Browser.src = src;
+			}
+
+			This.Navigate = function(src)
+			{
+				This.Waiting("\u6B63\u5728\u8F7D\u5165\u7A97\u53E3...");
+					Core.Utility.AttachEvent(
+					m_Browser, "load",
+					function()
+					{
+						This.Completed();
+						isLoad = true;
+					}
+				);
+
+				m_Browser.src = src;
+			}
+
+			var _waitingCount = 0;
+
+			This.Waiting = function(text)
+			{
+				_waitingCount++;
+
+				m_WaitingDiv.innerHTML = String.format("<div>{0}</div>", (text != "" ? text : "\u6B63\u5728\u52A0\u8F7D..."));
+
+				if (_waitingCount > 0)
+				{
+					m_WaitingDiv.style.display = "block";
+				}
+			}
+
+			This.Completed = function()
+			{
+				_waitingCount--;
+
+				if (_waitingCount <= 0)
+				{
+					_waitingCount = 0;
+					m_WaitingDiv.style.display = "none";
+				}
+			}
+
+			This.CompleteAll = function()
+			{
+				_waitingCount = 0;
+				m_WaitingDiv.style.display = "none";
+			}
+			
+			This.Reset = function()
+			{
+				m_MaxButton.style.display = "block";
+				m_RestoreButton.style.display = "none";
+			}
+	
+			This.GetTitle = function()
+			{
+				return m_TitleText.innerHTML;
+			}
+			
+			This.SetTitle = function(title)
+			{
+				m_TitleText.innerHTML = title;
+			}
+			
+			This.MapCoord = function(x, y)
+			{
+				var coord = Core.Utility.GetClientCoord(m_Browser);
+				return {X:coord.X + x, Y: coord.Y + y};
+			}
+
+			var _dom = document.createElement("DIV");
+
+			_dom.tabIndex = -1;
+			_dom.style.outline = 'none';
+			_dom.style.padding = "0px";
+			_dom.style.margin = "0px";
+			_dom.style.borderWidth = "0px";
+			_dom.style.position = "absolute";
+			_dom.className = _config.Css;
+
+			_dom.innerHTML =
+			"<div style='left: 0px; top: 0px;'>" +
+			"</div>" +
+			"<div class='border' style='left: 0px; top: 0px; position:absolute; z-Index:2;'>" +
+				"<table cellspacing='0' cellpadding='0' style='padding:0px; margin:0px;'>" +
+					"<tbody>" +
+						"<tr><td></td><td></td><td></td></tr>" +
+						"<tr>" +
+							"<td></td>" +
+							"<td>" +
+								"<div class='title'>" +
+									"<div class='icon' style='float:left;'></div>" +
+									"<div class='text' style='float:left;'></div>" +
+									"<div class='closeButton' style='float:right;'></div>" +
+									"<div class='maxButton' style='float:right;'></div>" +
+									"<div class='restoreButton' style='float:right;'></div>" +
+									"<div class='minButton' style='float:right;'></div>" +
+								"</div>" +
+								"<iframe frameBorder='0' allowTransparency='true' style='background-color:transparent;'></iframe>" +
+								"<div class='client' style='diaplay:none;'></div>" +
+							"</td>" +
+							"<td></td>" +
+						"</tr>" +
+						"<tr><td></td><td></td><td></td></tr>" +
+					"</tbody>" +
+				"</table>" +
+			"</div>" +
+			"<div style='left: 0px; top: 0px; display:none; z-Index:4;' class='disabled'></div>" +
+			"<div style='left: 0px; top: 0px; display:none; z-Index:5;' class='waiting'></div>";
+
+			var bk = new WindowBkImage(
+				{
+					Css: (_config.BorderWidth == 0 && _config.Title.Height == 0) ? "background_noborder" : "background",
+					Horiz: [6, 100, 6],
+					Vertical: [24, 100, 6]
+				}
+			);
+			_dom.replaceChild(bk.GetDom(), _dom.firstChild);
+
+			_dom.onselectstart = function(evt)
+			{
+				var e = new Core.Event(evt, window);
+
+				if (e.GetTarget().tagName != undefined && e.GetTarget().tagName.toUpperCase() != 'DIV')
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			var m_Background = _dom.childNodes[0];
+			var m_BroderDiv = _dom.childNodes[1];
+
+			for (var x = 0; x < 3; x++)
+			{
+				for (var y = 0; y < 3; y++)
+				{
+					var i = y * 3 + x;
+					if (i != 4)
+					{
+						m_BroderDiv.firstChild.rows[y].cells[x].style.display = _config.BorderWidth > 0 ? "block" : "none";
+					}
+				}
+			}
+
+			var m_DisableDiv = _dom.childNodes[2];
+			var m_WaitingDiv = _dom.childNodes[3];
+
+			var m_TitleDiv = m_BroderDiv.firstChild.rows[1].cells[1].firstChild;
+			m_TitleDiv.style.display = _config.Title.Height > 0 ? "block" : "none";
+
+			var m_Browser = m_BroderDiv.firstChild.rows[1].cells[1].childNodes[1];
+
+			var m_Client = m_BroderDiv.firstChild.rows[1].cells[1].childNodes[2];
+			m_Client.style.display = "none"
+
+			var m_TitleText = m_TitleDiv.childNodes[1];
+			var m_CloseButton = m_TitleDiv.childNodes[2];
+			var m_MaxButton = m_TitleDiv.childNodes[3];
+			var m_RestoreButton = m_TitleDiv.childNodes[4];
+			var m_MinButton = m_TitleDiv.childNodes[5];
+			
+			m_MaxButton.style.display = _config.HasMaxButton ? "block" : "none";
+			m_RestoreButton.style.display = "none";
+
+			m_TitleText.innerHTML = _config.Title.InnerHTML;
+
+			m_MinButton.style.display = _config.HasMinButton ? "block" : "none";
+			
+			m_TitleDiv.onmousedown = function()
+			{
+				var e = new Core.Event(arguments[0]);
+
+				if (e.GetTarget() == m_TitleDiv ||
+					e.GetTarget() == m_TitleDiv.childNodes[0] ||
+					e.GetTarget() == m_TitleDiv.childNodes[1])
+				{
+					window.external.WindowFrameCtrl.js_onmousedown(4);
+				}
+			}
+
+			if (_config.BorderWidth > 0)
+			{
+				for (var x = 0; x < 3; x++)
+				{
+					for (var y = 0; y < 3; y++)
+					{
+						var i = y * 3 + x;
+						if (_config.Resizable)
+						{
+							m_BroderDiv.firstChild.rows[y].cells[x].style.cursor = BorderCursorCss[i];
+							if (i != 4)
+							{
+								(function(block, index, cursor, win, c)
+								{
+									block.onmousedown = function()
+									{
+										window.external.WindowFrameCtrl.js_onmousedown(index);
+									}
+								})(m_BroderDiv.firstChild.rows[y].cells[x], i, BorderCursorCss[i], This, _config);
+							}
+						}
+					}
+				}
+			}
+
+			m_CloseButton.onclick = function()
+			{
+				window.external.WindowFrameCtrl.js_close();
+			}
+
+			m_MinButton.onclick = function()
+			{
+				window.external.WindowFrameCtrl.js_minimum();
+			}
+
+			m_MaxButton.onclick = function()
+			{
+				window.external.WindowFrameCtrl.js_maximum();
+				m_MaxButton.style.display = "none";
+				m_RestoreButton.style.display = "block";
+			}
+
+			m_RestoreButton.onclick = function()
+			{
+				window.external.WindowFrameCtrl.js_restore();
+				m_MaxButton.style.display = "block";
+				m_RestoreButton.style.display = "none";
+			}
+
+			This.Resize(_config.Width, _config.Height);
+			This.Move(_config.Left, _config.Top);
+
+			document.body.appendChild(_dom);
+		}
+
+		var window_ = null;
+
+		function Create(
+			width, height,
+			borderWidth, titleHeight,
+			isResizable, hasMin, hasMax,
+			text)
+		{
+			window_ = new Window(
+				{
+					Left: 0, Top: 0, Width: width, Height: height,
+					Title: { InnerHTML: text, TitleHeight: titleHeight },
+					BorderWidht: borderWidth,
+					HasMinButton: hasMin, HasMaxButton: hasMax,
+					Resizable: isResizable
+				}
+			);
+			return window_;
+		}
+
+		function OnWindowResize(w, h)
+		{
+			if (window_ != null) window_.Resize(w, h);
+		}
+		
+	</script>
+
+</head>
+<body>
+</body>
+</html>

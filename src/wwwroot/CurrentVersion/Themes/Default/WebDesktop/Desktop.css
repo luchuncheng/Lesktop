@@ -1,0 +1,508 @@
+﻿body
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+.desktop
+{
+	position: fixed;
+	overflow: visible;
+	z-index:100000000;
+}
+
+.desktop div
+{
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+}
+
+.taskbar
+{
+	position:absolute;
+	overflow:hidden;
+	z-index:1000;
+	border-top:solid 1px #D0D0D0;
+	border-left:solid 1px #D0D0D0;
+	border-right:solid 1px #D0D0D0;
+    background-color:#EFF0F2;
+}
+
+.taskbar .icon
+{
+	background:url(Images/common.png) no-repeat 0px -70px;
+	width:70px;
+	height:24px;
+	margin:2px;
+	padding:0px;
+	float:left;
+}
+
+.taskbar .btn_friends
+{
+	width:60px;
+	height:18px;
+	margin:2px;
+	padding:6px 0px 0px 24px;
+	border-width:0px;
+	cursor:pointer;
+    float:left;
+    font-family:宋体;
+    font-size:12px;
+	background:url(Images/common.png) no-repeat 0px -114px;
+	color:#204070;
+}
+.taskbar .btn_friends:hover
+{
+	width:60px;
+	height:18px;
+	margin:1px;
+	padding:6px 0px 0px 24px;
+	border-width:0px;
+    border: 1px solid #316AC5;
+    background-color: #C6D6EF;
+}
+.taskbar .link_container
+{
+	height:12px;
+	margin:2px;
+	padding:6px 4px 0px 6px;
+	font-family:SimSun;
+	font-size:12px;
+	float:right;
+	color:#204070;
+}
+
+.taskbar .link_container a
+{
+	font-family:SimSun;
+	font-size:12px;
+	text-decoration:none;
+	color:#204070;
+	padding:0px 2px 0px 2px;
+}
+
+.taskbar .link_container a:hover
+{
+	font-family:SimSun;
+	font-size:12px;
+	text-decoration:underline;
+	color:Blue;
+}
+
+.taskbar .link_container a.link_download,
+.taskbar .link_container a.link_logout
+{
+	font-family:SimSun;
+	font-size:12px;
+	text-decoration:none;
+	color:#AA0000;
+	padding:0px 2px 0px 2px;
+	cursor: pointer;
+}
+
+.taskbar .link_container a.link_download:hover,
+.taskbar .link_container a.link_logout:hover
+{
+	font-family:SimSun;
+	font-size:12px;
+	text-decoration:underline;
+	color:Blue;
+}
+
+.taskbar .link_container
+{
+}
+
+.taskbar .task_container
+{
+	margin:2px;
+	padding:0px;
+	height:24px;
+	float:left;
+	overflow:hidden;
+}
+
+.taskbar .task
+{
+	background:url("images/common.png") no-repeat 0px -150px;
+	height:18px;
+	padding:6px 0px 0px 0px;
+	width:150px;
+	margin-left:6px;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+    font-family:宋体;
+    font-size:12px;
+	color:#204070;
+}
+
+.taskbar .task_hover
+{
+	background:url("images/common.png") no-repeat 0px -210px;
+	height:18px;
+	padding:6px 0px 0px 0px;
+	width:150px;
+	margin-left:6px;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+    font-family:宋体;
+    font-size:12px;
+	color:#204070;
+}
+
+.taskbar .task_press
+{
+	background:url("images/common.png") no-repeat 0px -270px;
+	height:18px;
+	padding:6px 0px 0px 0px;
+	width:150px;
+	margin-left:6px;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+    font-family:宋体;
+    font-size:12px;
+	color:#204070;
+}
+
+.taskbar .task_highlight
+{
+	background:url("images/common.png") no-repeat 0px -180px;
+	height:18px;
+	padding:6px 0px 0px 0px;
+	width:150px;
+	margin-left:6px;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+    font-family:宋体;
+    font-size:12px;
+	color:#204070;
+}
+
+.taskbar .udbtn
+{
+	height:24px;
+	width:24px;
+	margin:2px;
+	font-size:1px;
+	cursor:pointer;
+	float:left;
+}
+
+.taskbar .udbtn .up_btn
+{
+	background:url("images/common.png") no-repeat -0px -330px;
+	height:12px;
+	width:24px;
+	cursor:pointer;
+}
+
+.taskbar .udbtn .up_btn_hover
+{
+	background:url("images/common.png") no-repeat -24px -330px;
+	height:12px;
+	width:24px;
+	cursor:pointer;
+}
+
+.taskbar .udbtn .up_btn_press
+{
+	background:url("images/common.png") no-repeat -48px -330px;
+	height:12px;
+	width:24px;
+	cursor:pointer;
+}
+
+.taskbar .udbtn .down_btn
+{
+	background:url("images/common.png") no-repeat -0px -342px;
+	height:12px;
+	width:24px;
+	cursor:pointer;
+}
+
+.taskbar .udbtn .down_btn_hover
+{
+	background:url("images/common.png") no-repeat -24px -342px;
+	height:12px;
+	width:24px;
+	cursor:pointer;
+}
+
+.taskbar .udbtn .down_btn_press
+{
+	background:url("images/common.png") no-repeat -48px -342px;
+	height:12px;
+	width:24px;
+	cursor:pointer;
+}
+
+.taskbar .udbtn .down_btn:hover
+{
+	filter: alpha(opacity=80);
+	-moz-opacity: 0.8;
+	opacity: 0.8;
+}
+
+.desktop .move_div
+{
+	position: absolute;
+	overflow: hidden;
+	z-index:100000;
+	background-color:Black;
+	
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+}
+
+.window
+{
+	position: absolute;
+	font-size: 12px;
+	font-family: 宋体;
+}
+
+.window div
+{
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+}
+
+.window .background
+{
+}
+
+.window .background .background_block_0
+{
+	background: url(Images/common.png) no-repeat -163px -31px;
+}
+
+.window .background .background_block_1
+{
+	background: url(Images/horiz.png) repeat-x 0px -20px;
+}
+
+.window .background .background_block_2
+{
+	background: url(Images/common.png) no-repeat -172px -31px;
+}
+
+.window .background .background_block_3
+{
+	background: url(Images/vertical.png) repeat-y -10px 0px;
+}
+
+.window .background .background_block_4
+{
+	background-color: #EFF0F2;
+}
+
+.window .background .background_block_5
+{
+	background: url(Images/vertical.png) repeat-y 0px 0px;
+}
+
+.window .background .background_block_6
+{
+	background: url(Images/common.png) no-repeat -179px -49px;
+}
+
+.window .background .background_block_7
+{
+	background: url(Images/horiz.png) repeat-x 0px -10px;
+}
+
+.window .background .background_block_8
+{
+	background: url(Images/common.png) no-repeat -188px -49px;
+}
+
+.window .disabled
+{
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	position: absolute;
+	
+	filter: alpha(opacity=20);
+	-moz-opacity: 0.2;
+	opacity: 0.2;
+	background-color:White;
+}
+
+.window .waiting
+{
+	position: absolute;
+	background-color:#FFFFDD;
+	text-align:left;
+}
+
+.window .waiting div
+{
+	margin-left:4px;
+	margin-top:6px;
+	font-size:12px;
+	font-family:宋体;
+	color:Blue;
+}
+
+.window .border
+{
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.window .title
+{
+	cursor: move;
+	line-height: 1em;
+	vertical-align: middle;
+	background-image: none;
+	background-color: Transparent;
+}
+
+.window .title .icon
+{
+    margin-top: 0px;
+    background: url(Images/common.png) no-repeat -60px -41px;
+    width: 15px;
+    height: 13px;
+    display:none;
+}
+
+.window .title .text
+{
+	margin-top: 1px;
+	margin-right: 1px;
+	font-weight: bold;
+	color: #15428B;
+	line-height: 1em;
+}
+
+.window .title .closeButton
+{
+	background: url(Images/common.png) no-repeat 0px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .minButton
+{
+	background: url(Images/common.png) no-repeat -30px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .maxButton
+{
+	background: url(Images/common.png) no-repeat -15px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .restoreButton
+{
+	background: url(Images/common.png) no-repeat -45px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .closeButton:hover
+{
+	background: url(Images/common.png) no-repeat -100px -40px;
+}
+
+.window .title .minButton:hover
+{
+	background: url(Images/common.png) no-repeat -130px -40px;
+}
+
+.window .title .maxButton:hover
+{
+	background: url(Images/common.png) no-repeat -115px -40px;
+}
+
+.window .title .restoreButton:hover
+{
+	background: url(Images/common.png) no-repeat -145px -40px;
+}
+
+.desktop  .menu
+{
+    border: 1px solid #8A867A;
+    background-color: White;
+    padding: 4px;
+}
+
+.desktop  .menuItem
+{
+    text-align: left;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 12px;
+    font-family: 宋体;
+    cursor: pointer;
+    background-color: White;
+    white-space: nowrap;
+    color:Black;
+}
+
+.desktop  .menuItem_hover
+{
+    text-align: left;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 12px;
+    font-family: 宋体;
+    cursor: pointer;
+    background-color: White;
+    white-space: nowrap;
+    color: White;
+    background-color: #316AC5;
+}
+
+.desktop  .menuSplit
+{
+    font-size: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    width: 124px;
+    height: 9px;
+    background: url(Images/tree.png) repeat-x 0px -50px;
+}
+
+.desktop  .menuSplit_hover
+{
+    font-size: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    width: 124px;
+    height: 9px;
+    background: url(Images/tree.png) repeat-x 0px -50px;
+}

@@ -1,0 +1,133 @@
+﻿*
+{
+    scrollbar-arrow-color: #AAAAAA;
+    scrollbar-face-color: #f3f3f5;
+    scrollbar-darkshadow-color: #ffffff;
+    scrollbar-base-color: #f3f3f5;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-shadow-color: #d4d4d4;
+    scrollbar-track-color: #f3f3f5;
+    scrollbar-3dlight-color: #d4d4d4;
+}
+
+body
+{
+    margin: 0px;
+    padding: 6px;
+    font-size: 12px;
+    font-family: 宋体;
+    height: 14px;
+}
+
+.comment
+{
+    font-size: 12px;
+    font-family: 宋体;
+    text-align: left;
+    border: 1px solid #C4D6EC;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: #F8FCFF;
+    width: 96%;
+    padding: 0px;
+}
+
+.comment .messageTitle
+{
+    color: #660000;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    cursor: default;
+    border-bottom: dotted 1px #E5EEF8;
+    height:12px;
+    background-color: #F8FCFF;
+}
+
+.comment .messageContent
+{
+    color: Black;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    padding-bottom: 6px;
+    line-height:1.5em;
+}
+
+.comment .messageTitle .sender
+{
+    margin-right: 8px;
+    float:left;
+}
+
+.comment .messageTitle .time
+{
+    margin-right: 8px;
+    float:right;
+}
+
+.comment .comment_custom
+{
+    border-top: dotted 1px #E5EEF8;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 6px;
+}
+
+.comment .comment_custom .comment_ope
+{
+    padding-top: 4px;
+    text-align: right;
+    color: #666666;
+}
+
+
+.comment .comment_custom .comment_ope a
+{
+    margin-left: 8px;
+    cursor: pointer;
+    color: #666666;
+    text-decoration:none;
+}
+
+.comment .comment_custom .comment_ope a:hover
+{
+    margin-left: 8px;
+    cursor: pointer;
+    color: Blue;
+    text-decoration :underline;
+}
+
+.comment .comment_custom .comment_editor
+{
+    border: 1px solid #E9E9E9;
+    background-color: #F5F5F5;
+    padding:16px;
+    margin-top:6px;
+}
+
+
+.comment .comment_custom .comment_editor textarea
+{
+    width:100%;
+    height:50px;
+    border: 1px solid #BBBBBB;
+    overflow:auto;
+}
+
+.comment .comment_custom .comment_editor .reply_message
+{
+    color:Red;
+    padding-bottom:6px;
+}
+
+.nodata
+{
+    border: 1px solid #ECD6C4;
+    background-color: #FFFCF8;
+    padding:8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color:#660000;
+}

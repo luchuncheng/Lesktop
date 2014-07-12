@@ -1,0 +1,472 @@
+﻿*
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+body
+{
+    background-color: Transparent;
+    padding: 0px;
+    margin: 0px;
+}
+
+.none .window
+{
+    display: none;  
+}
+
+.default *
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+.default .window
+{
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    position: absolute;
+    z-index: 0;
+    font-family: SimSun;
+    _width: expression(this.parentElement.offsetWidth + 'px');
+    _height: expression(this.parentElement.offsetHeight + 'px');
+}
+
+.default .window .background
+{
+    font-size: 2px;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 0;
+    _width: expression(this.parentElement.offsetWidth + 'px');
+    _height: expression(this.parentElement.offsetHeight + 'px');
+}
+
+.default .window .background .background_block_0
+{
+    background: url(Images/common.png) no-repeat -163px -31px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 6px;
+    height: 24px;
+}
+
+.default .window .background .background_block_1
+{
+    background: url(Images/horiz.png) repeat-x 0px -20px;
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 0px;
+    height: 24px;
+    _width: expression((this.parentElement.offsetWidth - 12) + 'px');
+}
+
+.default .window .background .background_block_2
+{
+    background: url(Images/common.png) no-repeat -172px -31px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 6px;
+    height: 24px;
+}
+
+.default .window .background .background_block_3
+{
+    background: url(Images/vertical.png) repeat-y -10px 0px;
+    position: absolute;
+    left: 0px;
+    width: 6px;
+    top: 24px;
+    bottom: 6px;
+    _height: expression((this.parentElement.offsetHeight - 30) + 'px');
+}
+
+.default .window .background .background_block_4
+{
+    background-color: #EFF0F2;
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 24px;
+    bottom: 6px;
+    _width: expression((this.parentElement.offsetWidth - 12) + 'px');
+    _height: expression((this.parentElement.offsetHeight - 30) + 'px');
+}
+
+.default .window .background .background_block_5
+{
+    background: url(Images/vertical.png) repeat-y 0px 0px;
+    position: absolute;
+    right: 0px;
+    width: 6px;
+    top: 24px;
+    bottom: 6px;
+    _height: expression((this.parentElement.offsetHeight - 30) + 'px');
+}
+
+.default .window .background .background_block_6
+{
+    background: url(Images/common.png) no-repeat -179px -49px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 6px;
+    height: 6px;
+}
+
+.default .window .background .background_block_7
+{
+    background: url(Images/horiz.png) repeat-x 0px -10px;
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 0px;
+    height: 6px;
+    _width: expression((this.parentElement.offsetWidth - 12) + 'px');
+}
+
+.default .window .background .background_block_8
+{
+    background: url(Images/common.png) no-repeat -188px -49px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 6px;
+    height: 6px;
+}
+
+.default .window .border
+{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 1;
+    display: none;
+}
+
+.default .window .border .resize_0
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 6px;
+    height: 6px;
+    cursor: nw-resize;
+}
+
+.default .window .border .resize_1
+{
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 0px;
+    height: 6px;
+    cursor: n-resize;
+}
+
+.default .window .border .resize_2
+{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 6px;
+    height: 6px;
+    cursor: ne-resize;
+}
+
+.default .window .border .resize_3
+{
+    position: absolute;
+    left: 0px;
+    width: 6px;
+    top: 6px;
+    bottom: 6px;
+    cursor: w-resize;
+}
+
+.default .window .border .resize_5
+{
+    position: absolute;
+    right: 0px;
+    width: 6px;
+    top: 6px;
+    bottom: 6px;
+    cursor: e-resize;
+}
+
+.default .window .border .resize_6
+{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 6px;
+    height: 6px;
+    cursor: sw-resize;
+}
+
+.default .window .border .resize_7
+{
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 0px;
+    height: 6px;
+    cursor: s-resize;
+}
+
+.default .window .border .resize_8
+{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 6px;
+    height: 6px;
+    cursor: se-resize;
+}
+
+.default .resizable .border
+{
+    display: block;
+}
+
+.default .window .title
+{
+    cursor: move;
+    line-height: 1em;
+    vertical-align: middle;
+    background-image: none;
+    background-color: Transparent;
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 6px;
+    height: 18px;
+    z-index: 2;
+}
+
+.default .window .title .text
+{
+    margin-top: 1px;
+    margin-right: 1px;
+    font-weight: bold;
+    color: #15428B;
+    font-size: 12px;
+    line-height: 1em;
+}
+
+.default .window .title .closeButton
+{
+    background: url(Images/common.png) no-repeat 0px -40px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin-left: 2px;
+}
+
+.default .window .title .minButton
+{
+    background: url(Images/common.png) no-repeat -30px -40px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin-left: 2px;
+    display: none;
+}
+
+.default .window .title .maxButton
+{
+    background: url(Images/common.png) no-repeat -15px -40px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin-left: 2px;
+    display: none;
+}
+
+.default .window .title .restoreButton
+{
+    background: url(Images/common.png) no-repeat -45px -40px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin-left: 2px;
+    display: none;
+}
+
+.default .window .title .closeButton:hover
+{
+    background: url(Images/common.png) no-repeat -100px -40px;
+}
+
+.default .window .title .minButton:hover
+{
+    background: url(Images/common.png) no-repeat -130px -40px;
+}
+
+.default .window .title .maxButton:hover
+{
+    background: url(Images/common.png) no-repeat -115px -40px;
+}
+
+.default .window .title .restoreButton:hover
+{
+    background: url(Images/common.png) no-repeat -145px -40px;
+}
+
+.default .min-button .title .minButton, .default .max-button .title .maxButton, .default .max-button .title .restoreButton
+{
+    display: block;
+}
+
+.default .client
+{
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 24px;
+    bottom: 6px;
+    z-index: 2;
+    _width: expression((this.parentElement.offsetWidth - 12) + 'px');
+    _height: expression((this.parentElement.offsetHeight - 30) + 'px');
+}
+
+.default .client .content
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.default .disabled
+{
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.2;
+    opacity: 0.2;
+    background-color: White;
+    z-index: 10;
+}
+
+.default .waiting
+{
+    position: absolute;
+    background-color: #FFFFDD;
+    text-align: left;
+    
+    left: 6px;
+    right: 6px;
+    top: 24px;
+    height: 24px;
+    z-index: 10;
+    _width: expression((this.parentElement.offsetWidth - 12) + 'px');
+}
+
+.default .waiting div
+{
+    margin-left: 4px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-family: SimSun;
+    color: Blue;
+}
+
+.default .shadow
+{
+    left: 0px;
+    top: 0px;
+    right: 6px;
+    bottom: 6px;
+    -webkit-box-shadow:2px 2px 4px #666666;
+    _width: expression((this.parentElement.offsetWidth - 6) + 'px');
+    _height: expression((this.parentElement.offsetHeight - 6) + 'px');
+}
+
+.popup .window
+{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+
+.popup .window .background,
+.popup .window .border,
+.popup .window .title
+{
+    display: none;
+}
+
+.popup .client
+{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 2;
+}
+
+.popup .client .content
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.popup .disabled
+{
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    background-color: White;
+    z-index: 10;
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.2;
+    opacity: 0.2;
+}
+
+.popup .waiting
+{
+    position: absolute;
+    background-color: #FFFFDD;
+    text-align: left;
+    overflow: hidden;
+    
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    height: 0px;
+    z-index: 10;
+    _width: expression(this.parentElement.offsetWidth + 'px');
+}
+
+.popup .waiting div
+{
+    margin-left: 4px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-family: SimSun;
+    color: Blue;
+}

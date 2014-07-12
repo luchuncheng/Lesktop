@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/LoginUI.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		html
+		{
+			overflow: hidden;
+			border: 0px;
+		}
+		body
+		{
+			background-color: #F4F5F7;
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			font-family: Simsun;
+			font-size: 12px;
+			border: 0px;
+		}
+		#loading_div
+		{
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 600px;
+			height: 400px;
+			background: White url("Themes/Default/login/waiting.gif") no-repeat center;
+			z-index: 2;
+			filter: alpha(opacity=20);
+			-moz-opacity: 0.2;
+			opacity: 0.2;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Sub.js" type="text/javascript"></script>
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+	<script src="UI/LoginUI.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+
+		document.oncontextmenu = function() { return false; }
+
+		document.onkeydown = function()
+		{
+			if (event.keyCode == 116 || (event.ctrlKey && event.keyCode == 82))
+			{
+				event.keyCode = 0;
+				event.returnValue = false;
+				return false;
+			}
+			if (event.keyCode == 70 && event.ctrlKey && !event.altKey && !event.shiftKey)
+			{
+				event.keyCode = 0;
+				event.returnValue = false;
+				return false;
+			}
+		}
+
+		function login_callback(ret)
+		{
+			window.LoginPanel.SetProps({ Password: "" });
+
+			if (!ClientMode && !Core.OutputPanel.IsLoad())
+			{
+				Core.OutputPanel.MoveEx("", 10000, 10000, true);
+				Core.OutputPanel.Show();
+				Core.OutputPanel.Load(Core.GetUrl("Output.htm"), null);
+				Core.OutputPanel.Hide();
+			}
+			if (ClientMode) window.external.InitClient(true);
+			
+			window.LoadingDiv.style.display = "none";
+			Core.Session.InitService(
+				ret.UserInfo.Name,
+				ret.UserInfo,
+				document.cookie,
+				ret.SessionID
+			);
+			if (!ClientMode) Core.Taskbar.Show();
+			else Core.Taskbar.Hide();
+			if(Core.PluginsUtil.ExistPlugin("EIM") || Core.PluginsUtil.ExistPlugin("Comm") || Core.PluginsUtil.ExistPlugin("EmbedCS"))
+			{
+				Core.Session.GetGlobal("SingletonForm").ShowMainForm();
+			}
+
+			if (ret.JoinGroup != undefined && ret.JoinGroup != 0)
+			{
+				Core.Session.GetGlobal("ChatService").Open(ret.JoinGroup);
+			}
+			Core.PluginsUtil.Call("AfterInitSession");
+			
+			CurrentWindow.Close();
+		}
+
+		function login(values)
+		{
+			var data = {
+				Action: "Login",
+				User: values.Name,
+				Password: values.Password,
+				ClietMode: ClientMode
+			};
+
+			if (Core.main.Core.Params["join"] != undefined)
+			{
+				data.Join = Core.main.Core.Params["join"];
+			}
+
+			window.LoadingDiv.style.display = "block";
+
+			if(!ClientMode)
+			{
+				Core.SendCommand(
+					login_callback,
+					function(ex)
+					{
+						window.LoadingDiv.style.display = "none";
+						if (ex.Message == "Unknown") ex.Message = "连接服务器错误！";
+						Core.Utility.ShowWarning(ex.Message == undefined ? ex.toString() : ex.Message);
+					},
+					Core.Utility.RenderJson(data), "Core.Web Common_CH", false
+				);
+			}
+			else
+			{
+				window.external.Login(
+					values.Name, values.Password,
+					{
+						onsuccess: function(status, content, cookie)
+						{
+							window.LoadingDiv.style.display = "none";
+							var ret = Core.Utility.ParseJson(content);
+							if(ret.IsSucceed)
+							{
+								window.external.EnableAutoLogin(window.LoginPanel.IsAutoLogin(), values.Name, values.Password);
+								window.external.EnableAutoStart(window.LoginPanel.IsAutoStart());
+
+								try
+								{
+									if(ret.Data.CSDetails != undefined)
+									{
+										var csconfig = {};
+										csconfig.Depts = {};
+										csconfig.CompanyInfo = ret.Data.CompanyInfo;
+										for(var i in ret.Data.CSDetails)
+										{
+											var r = ret.Data.CSDetails[i];
+											if (csconfig.Depts[r.DeptID] == undefined)
+											{
+												csconfig.Depts[r.DeptID] = { Name: r.DeptName, ID: r.DeptID, Users: [] };
+											}
+											var d = csconfig.Depts[r.DeptID];
+											d.Users.push(ret.Data.CSUsers[r.ID]);
+										}
+										Core.Session.RegisterGlobal("CSConfig", csconfig);
+									}
+								}
+								catch(ex)
+								{
+								}
+
+								window.external.InitClient(true);
+								document.cookie = cookie;
+								Core.Session.InitService(
+									ret.Data.UserInfo.Name,
+									ret.Data.UserInfo,
+									cookie,
+									ret.Data.SessionID
+								);
+								Core.PluginsUtil.Call("AfterInitSession");
+								Core.Taskbar.Hide();
+								if(Core.PluginsUtil.ExistPlugin("EIM") || Core.PluginsUtil.ExistPlugin("Comm") || Core.PluginsUtil.ExistPlugin("EmbedCS"))
+								{
+									Core.Session.GetGlobal("SingletonForm").ShowMainForm();
+								}
+								CurrentWindow.Close();
+							}
+							else
+							{
+								Core.Utility.ShowError(ret.Exception.Message);
+							}
+						},
+						onerror: function(name, message)
+						{
+							window.LoadingDiv.style.display = "none";
+							Core.Utility.ShowError(message);
+						}
+					}
+				);
+			}
+			return true;
+		}
+
+		function register(values)
+		{
+			var data = {
+				Action: "Register",
+				Name: values.RegName,
+				Nickname: values.RegNickname,
+				Password: values.RegPassword,
+				EMail: ""
+			};
+			
+			Core.SendCommand(
+				function(ret)
+				{
+					window.LoginPanel.SetProps({ Name: data.Name, Password: data.Password });
+					window.LoginPanel.DoLogin();
+				},
+				function(ex)
+				{
+					Core.Utility.ShowError(ex);
+				},
+				Core.Utility.RenderJson(data),"Core.Web Common_CH",false
+			);
+
+			return true;
+		}
+
+		function init()
+		{
+			window.LoadingDiv = document.getElementById("loading_div");
+			window.LoadingDiv.style.display = "none";
+
+			window.LoginPanel = new Core.UI.LoginPanel(document.getElementById("login_panel"), login, register);
+
+			window.LoginPanel.SetProps(
+				{
+					DownloadLink: (ClientMode || Core.main.Core.Params["join"] != undefined ? "none" : Core.GetUrl("Client.zip")),
+					ShowRegLink: Core.PluginsUtil.ExistPlugin("Comm")
+				}
+			);
+
+			if (CurrentWindow.GetTag() != undefined && CurrentWindow.GetTag().Name != undefined)
+			{
+				window.LoginPanel.SetProps(
+					{
+						Name: CurrentWindow.GetTag().Name,
+						EnableInputName: false
+					}
+				);
+			}
+			else
+			{
+				if(ClientMode)
+				{			
+					if(window.external.IsAutoStart())
+					{
+						window.LoginPanel.SetProps({ AutoStart: true });
+					}
+
+					var autologin = window.external.GetAutoLoginData();
+					if (autologin != "" && !window.external.NeedCreateTempUser())
+					{
+						var autologin_data = Core.Utility.ParseJson(autologin);
+						window.LoginPanel.SetProps(
+							{
+								Name: autologin_data.UserName,
+								Password: autologin_data.Password,
+								AutoLogin: true
+							}
+						);
+						window.LoginPanel.DoLogin();
+					}
+					else
+					{
+						if(window.external.NeedCreateTempUser())
+						{
+							window.LoadingDiv.style.display = "block";
+							var data = {
+								Action: "CreateTempUser"
+							};
+					
+							Core.SendCommand(
+								function(ret)
+								{									
+									window.LoginPanel.SetProps(
+										{
+											EnableInputName: false,
+											Name: ret.Info.Name,
+											Password: ret.Password,
+											AutoLogin: true
+										}
+									);
+
+									window.LoadingDiv.style.display = "none";
+									window.LoginPanel.DoLogin();
+								},
+								function(ex)
+								{
+									window.LoadingDiv.style.display = "none";
+									Core.Utility.ShowError(ex);
+								},
+								Core.Utility.RenderJson(data),"Core.Web Common_CH",false
+							);
+						}
+					}
+				}
+				else
+				{
+					var data = {
+						Action: "Login",
+						ClietMode: ClientMode
+					};
+
+					if (Core.main.Core.Params["join"] != undefined) data.Join = Core.main.Core.Params["join"];
+			
+					Core.SendCommand(
+						function(ret)
+						{
+							window.LoadingDiv.style.display = "none";
+							if(ret.IsLogin) login_callback(ret);
+						},
+						function(ex)
+						{
+							init_after_login();
+						},
+						Core.Utility.RenderJson(data), "Core.Web Common_CH", false
+					);
+				}
+			}
+		}
+	</script>
+
+</head>
+<body>
+	<div id="loading_div"></div>
+	<div id="login_panel"></div>
+</body>
+</html>

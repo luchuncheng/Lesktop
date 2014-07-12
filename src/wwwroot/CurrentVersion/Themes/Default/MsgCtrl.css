@@ -1,0 +1,178 @@
+﻿
+.msgpanel
+{
+    position: absolute;
+    font-family: SimSun;
+    font-size: 12px;
+    background-color: White;
+}
+
+.msgpanel .msgpanel_body
+{
+    position: absolute;
+    overflow: auto;
+    border: 0px solid #D0D0D0;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.msgmanager .rightpanel
+{
+    border: 1px solid #E0E0E0;
+}
+
+.pagebar
+{
+	background-color: #F2F2F2;
+}
+
+.pagebar *
+{
+    font-family: SimSun;
+    font-size: 12px;
+	vertical-align:middle;
+}
+
+.pagebar span
+{
+    line-height: 20px;
+    float: right;
+    padding: 0px 4px 0px 0px;
+    color: Blue;
+    float: right;
+}
+
+.pagebar .curpage
+{
+    border: 0px solid #D0D0D0;
+    height: 14px;
+    width: 30px;
+    line-height: 14px;
+    margin: 3px 0px 3px 0px;
+    padding: 0px 2px;
+    float: right;
+    text-align: center;
+}
+
+.pagebar a
+{
+    line-height: 20px;
+    float: right;
+    padding: 0px 4px;
+    color: Blue;
+    outline: none;
+    text-decoration: none;
+}
+
+.pagebar a:hover
+{
+    text-decoration: underline;
+}
+
+.searchbar *
+{
+    font-family: SimSun;
+    font-size: 12px;
+	vertical-align: middle;
+}
+
+.searchbar .text
+{
+    height: 28px;
+    color: #204070;
+    float: left;
+    line-height: 28px;
+    margin: 0px 4px 0px 0px;
+}
+
+.searchbar .search_user,
+.searchbar .search_time
+{
+    margin: 4px 8px 0px 0px;
+    height: 20px;
+    float: left;
+}
+
+.searchbar .search_content
+{
+    margin: 4px 6px 0px 0px;
+    height: 12px;
+    width: 100px;
+    float: left;
+    border: 1px solid #E0E0E0;  
+    padding: 3px;
+}
+
+.searchbar .search_time_from,
+.searchbar .search_time_to
+{
+    margin: 4px 6px 0px 0px;
+    height: 12px;
+    width: 50px;
+    float: left;
+    border: 1px solid #E0E0E0;  
+    padding: 3px;
+}
+
+.searchbar .search_btn
+{
+    margin: 4px 0px 0px 0px;
+}
+
+.searchbar .search_btn .btn_text
+{
+	background: url(Images/search.png) no-repeat 2px 1px;
+	_background: url(Images/search.gif) no-repeat 2px 1px;
+}
+
+.searchbar .search_btn.ct_toolbar_button .button_body
+{
+    height: 18px;
+    line-height: 18px;
+}
+
+.searchpanel
+{
+    border: 1px solid #E0E0E0;
+}
+
+.searchpanel .title div
+{
+	background-color: #FAF7F3;
+    height: 20px;
+    line-height: 20px;
+	vertical-align:middle;
+    border-bottom: solid 1px #ECD6C4;
+	color:#AA0000;
+    padding: 0px 6px;
+    font-size: 12px;
+    font-family: SimSun;
+}
+
+.searchpanel .title .close_link
+{
+    float: right;
+    display: block;
+    cursor: pointer;
+}
+
+.searchpanel .title .close_link:hover
+{
+    float: right;
+    display: block;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.searchbar .search_user_block
+{
+    background-color: White;
+    width: 100px;
+    height: 18px;
+    border: 1px solid #E0E0E0;
+    line-height: 18px;
+    text-indent: 4px;
+    cursor: pointer;
+}

@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title>无标题页</title>
+
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Sub.js" type="text/javascript"></script>
+	
+	<style type="text/css">
+	#message
+	{
+		left:0px;
+		top:0px;
+		position:absolute;
+		width:250px;
+		padding:6px;
+		line-height:1.5em;
+	}
+	a
+	{
+		color:Blue;
+		cursor:pointer;
+		text-decoration:none;
+		margin-left:6px;
+		margin-right:6px;
+	}
+	a:hover
+	{
+		text-decoration:underline;
+		
+	}
+	.afr_info
+	{
+		padding: 4px; 
+		color:#666666;
+	}
+	</style>
+	
+	<script language="javascript" type="text/javascript">
+	
+	function init()
+	{
+	}
+	
+	function AddFriend()
+	{
+		var data = {
+			Action:"AddFriend",
+			Peer:Data.Peer.Name
+		};
+		Core.SendCommand(
+			function(ret)
+			{
+				CurrentWindow.Close();
+			},
+			function(ex)
+			{
+				Core.Utility.ShowError(ex);
+				CurrentWindow.Close();
+			},
+			Core.Utility.RenderJson(data),"Core.Web Common_CH",false
+		);
+	}
+	
+	function AddToGroup()
+	{
+		var data = {
+			Action: "AddToGroup",
+			User: Data.User.ID,
+			Group: Data.Group.ID
+		};
+
+		Core.SendCommand(
+			function(ret)
+			{
+				CurrentWindow.Close();
+			},
+			function(ex)
+			{
+				Core.Utility.ShowError(ex);
+				CurrentWindow.Close();
+			},
+			Core.Utility.RenderJson(data), "Core.Web Common_CH", false
+		);
+	}
+	
+	function ReLogin()
+	{
+		var data = {
+			Action:"ReLogin",
+			SessionID: Core.Session.GetSessionID()
+		};
+		
+		CurrentWindow.Waiting("正在登录...");
+		Core.SendCommand(
+			function(ret)
+			{
+				CurrentWindow.Completed();
+				Core.Session.ResponsesHandler.Start();
+				CurrentWindow.Close();
+			},
+			function(ex)
+			{
+				CurrentWindow.Completed();
+				alert(ex);
+			},
+			Core.Utility.RenderJson(data),"Core.Web Common_CH",false
+		);
+	}
+	
+	function Login()
+	{
+		Core.Login(false);
+		CurrentWindow.Close();
+	}
+	
+	function Restart()
+	{
+		if(window.external != undefined && window.external.RestartApplication != undefined) window.external.RestartApplication();
+	}
+	
+	function RefreshPage()
+	{
+		top.window.navigate(top.window.location.toString());
+	}
+	
+	function ShowUnreadComment()
+	{
+		if(Core.PluginsNS.EmbedCS != undefined)
+		{
+			Core.PluginsNS.EmbedCS.ShowCommentForm(0);
+		}
+		CurrentWindow.Close();
+	}
+	
+	function ExitApp()
+	{
+		Core.main.Core.ExitApplication();
+	}
+	
+	var Data = null;
+	
+	function CreateMessageDom(json)
+	{
+		Data = Core.Utility.ParseJson(json);
+		
+		var dom = document.createElement("DIV");
+		
+		if(Data.Type == "UnauthorizedException")
+		{
+			dom.innerHTML = String.format("服务器验证您的身份时发生错误，请<a href='javascript:Login()'>重新登录</a>");
+		}
+		else if (Data.Type == "DeleteGroupNotify")
+		{
+			dom.innerHTML = String.format(
+				"群{0}({1})已解散！",
+				Data.Group.Nickname, Data.Group.Name
+			);
+		}
+		else if(Data.Type == "IncompatibleException")
+		{
+			if(ClientMode) dom.innerHTML = String.format("服务器已升级，请<a href='javascript:Restart()'>重新启动应用程序</a>！");
+			else dom.innerHTML = String.format("服务器已升级，请<a href='javascript:RefreshPage()'>刷新页面</a>！");
+		}
+		else if(Data.Type == "UnreadCommentNotify")
+		{
+			dom.innerHTML = String.format(
+				"<a href='javascript:ShowUnreadComment()'>您收到{0}条新留言...</a>", Data.Count
+			);
+		}
+		else if(Data.Type == "Offline")
+		{
+			if(ClientMode)
+			{
+				dom.innerHTML = String.format("您的账号在另一地点登录，您被迫下线。<br/><br/><br/><div style='text-align:left;'><a href='javascript:ReLogin()'>重新登录</a><a href='javascript:ExitApp()'>退出</a></div>");
+			}
+			else
+			{
+				dom.innerHTML = String.format("您的账号在另一地点登录，您被迫下线。<br/><br/><br/><div style='text-align:left;'><a href='javascript:ReLogin()'>重新登录</a></div>");
+			}
+		}
+		else if (Data.Type == "Custom")
+		{
+			var h = Core.Session.GetGlobal("CUSTOM_FLOAT:" + Data.Handler);
+			if (h != undefined) h(CurrentWindow, dom, Data);
+		}
+		else if(Data.Type == "AddFriendRequest")
+		{
+			dom.innerHTML = String.format(
+				"<div style='width: 100%;'>" +
+					"{0}(\"{1}\") 请求添加您为好友，验证信息:" +
+					"<div class='afr_info'>{2}</div>" +
+					"<div style='width: 100%; text-align:right;'><a onclick='return AddFriend();'>加为好友</a><a onclick='return Ingore();'>忽略</a></div>" +
+				"</div>",
+				Data.Peer.Nickname, Data.Peer.Name, Core.Utility.ReplaceHtml(Data.Info)
+			);
+		}
+		else if(Data.Type == "AddGroupRequest")
+		{
+			dom.innerHTML = String.format(
+				"<div style='width: 100%;'>" +
+					"{0}(\"{1}\") 请求加入群 {2}(\"{3}\")，验证信息:" +
+					"<div class='afr_info'>{4}</div>" +
+					"<div style='width: 100%; text-align:right;'><a onclick='return AddToGroup();'>同意加入</a><a onclick='return Ingore();'>忽略</a></div>" +
+				"</div>",
+				Data.User.Nickname, Data.User.Name, 
+				Data.Group.Nickname, Data.Group.Name, 
+				Core.Utility.ReplaceHtml(Data.Info)
+			);
+		}
+		else if(Data.Type == "DeleteFriendNotify")
+		{
+			if(Core.Session.GetUserID() == Data.User.ID)
+			{
+				dom.innerHTML = String.format(
+					"您已将 {0}({1}) 从好友中删除！",
+					Data.Peer.Nickname, Data.Peer.Name
+				);
+			}
+			else
+			{
+				dom.innerHTML = String.format(
+					"{0}({1}) 已将您从好友中删除！",
+					Data.User.Nickname, Data.User.Name
+				);
+			}
+
+		}
+		else if (Data.Type == "AddToGroupNotify")
+		{
+			if(Core.Session.GetUserInfo().ID == Data.User.ID)
+			{
+				dom.innerHTML = String.format(
+					"你已经加入群{0}({1})！",
+					Data.Group.Nickname, Data.Group.Name
+				);
+			}
+			else
+			{
+				dom.innerHTML = String.format(
+					"{0}({1}) 已加入群 {2}({3})！",
+					Data.User.Nickname, Data.User.Name,
+					Data.Group.Nickname, Data.Group.Name
+				);
+			}
+		}
+		else if (Data.Type == "ExitGroupNotify")
+		{
+			if(Core.Session.GetUserInfo().ID == Data.User.ID)
+			{
+				dom.innerHTML = String.format(
+					"你已经离开群{0}({1})！",
+					Data.Group.Nickname, Data.Group.Name
+				);
+			}
+			else
+			{
+				dom.innerHTML = String.format(
+					"{0}({1}) 已离开群 {2}({3})！",
+					Data.User.Nickname, Data.User.Name,
+					Data.Group.Nickname, Data.Group.Name
+				);
+			}
+		}
+		else if (Data.Type == "DeletetGroupNotify")
+		{
+			dom.innerHTML = String.format(
+				"群{0}({1})已解散！",
+				Data.Group.Nickname, Data.Group.Name
+			);
+		}
+		else if(Data.Type == "AddFriendNotify")
+		{
+			if(Core.Session.GetUserID() == Data.User.ID)
+			{
+				dom.innerHTML = String.format(
+					"您已将添加 {0}({1}) 为好友！",
+					Data.Peer.Nickname,Data.Peer.Name
+				);
+			}
+			else
+			{
+				dom.innerHTML = String.format(
+					"{0}({1}) 已将添加您为好友！",
+					Data.User.Nickname,Data.User.Name
+				);
+			}
+		}
+		return dom;
+	}
+	
+	function Ingore()
+	{
+		CurrentWindow.Close();
+	}
+		
+	function ShowMessage(json, type)
+	{
+		if (type == undefined) type = "text";
+		var msg_div = document.getElementById("message");
+		msg_div.innerHTML = "";
+		if (type == "text")
+		{
+			msg_div.innerHTML = json;
+		}
+		else
+		{
+			var dom = CreateMessageDom(json);
+			msg_div.appendChild(dom);
+		}
+		var height = Math.max(msg_div.offsetHeight, 80);
+		CurrentWindow.Resize(250 + 6 * 2 + 6 * 2, height + 18 + 6 * 2 + 6 * 2);
+	}
+	</script>
+</head>
+<body>
+	<div id="message"></div>
+</body>
+</html>

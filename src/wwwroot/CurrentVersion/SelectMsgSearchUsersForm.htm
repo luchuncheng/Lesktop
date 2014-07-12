@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<script src="Core/Extent.js" type="text/javascript"></script>
+
+	<script src="Core/Sub.js" type="text/javascript"></script>
+
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/TreeView.js" type="text/javascript"></script>
+
+	<script src="UI/Control.js" type="text/javascript"></script>
+
+	<script src="UI/AccountTree.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+
+		var usertree_ = null;
+
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			var page_ctrl = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl",
+					Css: "tabctrl ct_tab",
+					Margin: 1,
+					Tabs: [
+						{
+							ID: "TAB0", MinWidth: 100, Text: "所有员工", IsSelected: true,
+							Controls: [
+								{ ID: "usertree_conteiner", Css: "ct_treeview", Margin: 6, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+
+			var usertree_conf = {};
+
+			if (CurrentWindow.GetTag() == undefined || CurrentWindow.GetTag().DSConfig == undefined)
+			{
+				usertree_conf.DSConfig = {
+					ShowUser: true,
+					ShowGroup: true,
+					ShowUserState: true,
+					ShowAllUsersNode: true,
+					ShowTempGroup: true
+				};
+			}
+			else
+			{
+				usertree_conf.DSConfig = CurrentWindow.GetTag().DSConfig;
+			}
+
+			usertree_ = new Core.UI.AccountTree(page_ctrl.GetTabPanelContainer("TAB0", "usertree_conteiner"), usertree_conf);
+			usertree_.RefreshTree(
+				function()
+				{
+					usertree_.Select(Core.EmptyCallback, "/COMPANY");
+				},
+				true
+			);
+			usertree_.OnClick.Attach(
+				function()
+				{
+					var node = usertree_.GetSelectedNode();
+					if (node.GetTag().Type == "Dept") return;
+
+					if (CurrentWindow.GetTag() != null && CurrentWindow.GetTag().AfterSelect != undefined)
+					{
+						if (node.GetTag().Type == "All") CurrentWindow.GetTag().AfterSelect("");
+						else CurrentWindow.GetTag().AfterSelect(node.GetTag().Data.Nickname, node.GetTag().Data);
+						CurrentWindow.Close();
+					}
+				}
+			);
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

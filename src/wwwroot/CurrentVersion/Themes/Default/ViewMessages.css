@@ -1,0 +1,418 @@
+﻿html
+{
+}
+
+body 
+{
+	padding:6px;
+	margin:6px;
+    background-color: White;
+}
+
+*
+{
+    scrollbar-arrow-color: #AAAAAA;
+    scrollbar-face-color: #f3f3f5;
+    scrollbar-darkshadow-color: #ffffff;
+    scrollbar-base-color: #f3f3f5;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-shadow-color: #d4d4d4;
+    scrollbar-track-color: #f3f3f5;
+    scrollbar-3dlight-color: #d4d4d4;
+}
+
+#MsgDiv
+{
+	overflow-y:auto; 
+	overflow-x:hidden;
+}
+
+.operation
+{
+    border: 1px solid #C4D6EC;
+    background-color: #F3F7FA;
+    margin-bottom:0px;
+    margin-top:0px;
+}
+
+#search
+{
+    border: 1px solid #C4D6EC;
+    background-color: #F8FCFF;
+    margin-bottom:8px;
+    margin-top:0px;
+}
+
+.operation
+{
+	padding-top:8px;
+	padding-bottom:8px;
+	padding-left:0px;
+	padding-right:4px;
+	font-size:12px;
+	font-family:宋体;
+    height:12px;
+}
+
+#search
+{
+	padding-top:8px;
+	padding-bottom:8px;
+	padding-left:0px;
+	padding-right:4px;
+	font-size:12px;
+	font-family:宋体;
+}
+
+
+#search select
+{
+	width:150px;
+	font-size:12px;
+	font-family:Courier New;
+}
+
+#search table
+{
+	margin-left:8px;
+}
+
+#search table td
+{
+	vertical-align:middle;
+	padding-left:2px;
+	padding-right:2px;
+	color:#074977;
+}
+
+.operation .link,
+#search .link
+{
+	color:Blue;
+	text-decoration:none;
+	margin-left:8px;
+}
+
+.operation .link:hover,
+#search .link:hover
+{
+	text-decoration:underline;
+}
+
+.operation .link_invalid,
+#search .link_invalid
+{
+	color:#666666;
+	text-decoration:none;
+	margin-left:8px;
+}
+
+.operation .link_invalid:hover,
+#search .link_invalid:hover
+{
+}
+
+.operation #page,
+#search #page
+{
+	margin:0px;
+	padding:0px;
+	height:12px;
+	width:24px;
+    border: 1px solid #ECD6C4;
+	font-size:12px;
+	font-family:宋体;
+	margin-left:4px;
+	margin-right:4px;
+	text-align:center;
+}
+
+.messageCtrl
+{
+	width:100%;
+	text-align:left;
+    border-bottom: solid 1px #C4D6EC;
+    background-color: #F8FCFF;
+    table-layout : fixed;
+}
+
+.messageCtrl td
+{
+	font-size:12px;
+	font-family:宋体;
+	padding-top:8px;
+	padding-bottom:8px;
+	padding-left:4px;
+	padding-right:4px;
+	line-height: 1.5em;
+}
+
+.messageCtrl .tr_info
+{
+}
+
+.messageCtrl .checkbox
+{
+	width:32px;
+	text-align:center;
+}
+
+
+.messageCtrl .checkbox input
+{
+	padding:0px;
+	margin:0px;
+}
+
+.messageCtrl .nickname
+{
+	color:#AA0000;
+	width:140px;
+}
+
+.messageCtrl .summary
+{
+    white-space: nowrap;
+    word-break : keep-all; 
+    overflow: hidden;
+	cursor:pointer;
+}
+
+.messageCtrl .createdTime
+{
+	color:Blue;
+	width:150px;
+	text-align:left;
+}
+
+.messageCtrl .messageContentDiv
+{
+	margin:0px;
+	padding:8px;
+	background-color:White;
+    border: 1px solid #D8EAFF;
+    margin-right:24px;
+}
+
+.messageCtrl .message_file
+{
+    background-color: #ffffee;
+    border: 1px solid #C0C0C0;
+    width: 90%;
+    padding: 6px;
+    font-family: 宋体;
+    font-size: 12px;
+}
+
+.messageCtrl .message_file .operationContainer
+{
+    width: 100%;
+    height: 14px;
+}
+
+.messageCtrl .download_tip
+{
+	border-top:solid 1px #C4D6EC;
+	margin-top:8px;
+}
+
+.messageCtrl .message_file a
+{
+    color: Blue;
+    text-decoration: none;
+}
+
+.messageCtrl .message_file .operationContainer .link_open
+{
+    float: right;
+    margin-left: 6px;
+    cursor: pointer;
+    color: Blue;
+}
+
+.messageCtrl .message_file .operationContainer .link_open:hover
+{
+    text-decoration: underline;
+}
+
+.messageCtrl .message_file .operationContainer .link_saveas
+{
+    float: right;
+    margin-left: 6px;
+    cursor: pointer;
+    color: Blue;
+}
+
+.messageCtrl .message_file .operationContainer .link_saveas:hover
+{
+    text-decoration: underline;
+}
+
+.messageCtrl .message_file .operationContainer .link_download
+{
+    float: right;
+    margin-left: 6px;
+}
+
+.messageCtrl .message_file .div_filename
+{
+    margin-bottom: 8px;
+}
+
+.messageCtrl .message_file_dl
+{
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-family: 宋体;
+    font-size: 12px;
+    color: Blue;
+    line-height:1.5em;
+}
+
+.messageCtrl .message_file_dl .dl_image_dl
+{
+    width: 16px;
+    height: 16px;
+    float: left;
+    background-image: url("Images/dl.gif");
+}
+
+.messageCtrl .message_file_dl .dl_image_file
+{
+    width: 16px;
+    height: 16px;
+    float: left;
+    background-image: url("Images/file.gif");
+}
+
+.messageCtrl .message_file_dl .dl_image_cancel
+{
+    width: 16px;
+    height: 16px;
+    float: left;
+    background-image: url("Images/cancel.gif");
+}
+
+.messageCtrl .message_file_dl .dl_image_error
+{
+    width: 16px;
+    height: 16px;
+    float: left;
+    background-image: url("Images/error.gif");
+}
+
+.messageCtrl .message_file_dl .dl_text
+{
+    padding-top: 2px;
+}
+
+.messageCtrl .message_file_dl .processing
+{
+    font-family: 宋体;
+    margin-left: 6px;
+    margin-right: 6px;
+    color: Green;
+}
+
+.messageCtrl .message_file_dl .span_green
+{
+    font-family: 宋体;
+    color: Green;
+}
+
+.messageCtrl .message_file_dl .span_red
+{
+    font-family: 宋体;
+    color: Red;
+}
+
+.messageCtrl .message_file_dl .span_normal
+{
+    font-family: 宋体;
+    color: Blue;
+}
+
+.messageCtrl .message_file_dl a
+{
+    font-family: 宋体;
+    color: Blue;
+    cursor: pointer;
+}
+
+.messagegroup
+{
+	width:100%;
+	text-align:left;
+    border-bottom: solid 1px #C4D6EC;
+    background-color: #F8FCFF;
+    table-layout : fixed;
+}
+
+.messagegroup td
+{
+	font-size:12px;
+	font-family:宋体;
+	padding-top:8px;
+	padding-bottom:8px;
+	padding-left:8px;
+	padding-right:8px;
+}
+
+.messagegroup .tr_info
+{
+}
+
+.messagegroup .checkbox
+{
+	width:32px;
+	text-align:center;
+}
+
+
+.messagegroup .checkbox input
+{
+	padding:0px;
+	margin:0px;
+}
+
+.messagegroup .listname
+{
+}
+
+.messagegroup .messagesCount
+{
+	width:60px;
+	text-align:right;
+}
+
+.messagegroup .createdTime
+{
+	width:150px;
+	text-align:right;
+}
+
+.messagegroup .link
+{
+	width:100px;
+	text-align:right;
+}
+
+
+.messagegroup .link a
+{
+	color:Blue;
+	text-decoration:none;
+	cursor:pointer;
+}
+
+.messagegroup .link a:hover
+{
+	color:Blue;
+	text-decoration:underline;
+}
+
+.messagegroup .content div
+{
+}

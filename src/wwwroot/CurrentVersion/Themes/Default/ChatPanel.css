@@ -1,0 +1,178 @@
+﻿
+.ct_hspliter_resizable
+{
+	cursor: w-resize;
+}
+.ct_vspliter_resizable
+{
+	cursor: s-resize;
+}
+
+.ct_hsplitter
+{
+	background-color: #F2F2F2;
+}
+.ct_vsplitter
+{
+	background-color: #F2F2F2;
+}
+
+
+.userimagectrl
+{
+    border: 1px solid #E0E0E0;
+    background-color: White;
+}
+
+.userinfopanel
+{
+    border: 1px solid #E0E0E0;
+    background-color: White;
+}
+
+.msgarea
+{
+    border: 1px solid #D0D0D0;
+}
+
+.msgeditor .richeditor
+{
+    border: 1px solid #D0D0D0;
+    background-color: White;
+}
+
+.btnsendfile .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -508px;
+}
+
+.btnsendimage .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -662px;
+}
+
+.fbtnsendfile
+{
+	height: 22px;
+	width: 74px;
+	background: url(Images/framebtns.png) no-repeat 0px 0px;
+}
+
+.fbtnsendfile .ct_hover
+{
+	background: url(Images/framebtns.png) no-repeat 0px -22px;
+}
+
+.fbtnsendfile .ct_press
+{
+	background: url(Images/framebtns.png) no-repeat 0px -44px;
+}
+
+.fbtnsendimage
+{
+	height: 22px;
+	width: 74px;
+	background: url(Images/framebtns.png) no-repeat 0px -66px;
+}
+
+.fbtnsendimage .ct_hover
+{
+	background: url(Images/framebtns.png) no-repeat 0px -88px;
+}
+
+.fbtnsendimage .ct_press
+{
+	background: url(Images/framebtns.png) no-repeat 0px -110px;
+}
+
+.btnsendwebimage .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -662px;
+}
+
+.btngradscreen .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -662px;
+}
+
+.btnmsgrecord .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -486px;
+}
+
+.btnaddfriend .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -24px;
+}
+
+.btnexittempgroup .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -332px;
+}
+
+.btnaddtotempgroup .btn_text
+{
+	background: url(Images/Image22.png) no-repeat -2px -24px;
+}
+
+.chatpanel .ct_toolbar .btn_text
+{
+    color: Black;
+}
+
+.userinfopanel .userinfo_image
+{
+	margin: 10px 14px 0px 14px;
+	width: 150px;
+	height: 150px;
+}
+
+.userinfopanel .userinfo_table
+{
+	margin-top: 5px;
+	margin-left: 10px;
+	width: 160px;
+	word-break: break-all;
+	table-layout: fixed;
+}
+
+.userinfopanel .userinfo_table td
+{
+	padding: 6px 0px 6px 4px;
+	font-family: SimSun;
+	font-size: 12px;
+}
+
+.userinfopanel .userinfo_table td.userinfo_table_left
+{
+	font-weight: bold;
+	width: 44px;
+	text-align: left;
+}
+
+.userinfopanel .userinfo_table td.userinfo_table_right
+{
+	text-align: left;
+}
+
+.userimagectrl .userinfo_image
+{
+	margin: 10px 14px 0px 14px;
+}
+
+.leavetip div
+{
+	border-style: solid;
+	border-color: #ECD6C4;
+	border-width: 0px 0px 1px 0px;
+	background-color: #FFFCF8;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 20px;
+	line-height: 20px;
+	vertical-align: middle;
+	text-indent: 6px;
+	width: 100%;
+	color: #AA0000;
+}

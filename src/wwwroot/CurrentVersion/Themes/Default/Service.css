@@ -1,0 +1,95 @@
+﻿
+.user-panel
+{
+	width: 100%;
+}
+
+.user-panel *
+{
+	cursor:default;
+}
+
+.user-panel .category .category_header
+{
+	background: url("Images/horiz.png") repeat-x 0px -800px;
+	height: 16px;
+	cursor: pointer;
+	padding: 4px 0px 4px 8px;
+}
+
+.user-panel .category .category_header .button_collapse
+{
+	background: url("Images/btns.png") no-repeat 0px -0px;
+	float: left;
+	display: block;
+	width: 16px;
+	height: 16px;
+	cursor:pointer;
+}
+
+.user-panel .category .category_header .button_expand
+{
+	background: url("Images/btns.png") no-repeat 0px -20px;
+	float: left;
+	display: block;
+	width: 16px;
+	height: 16px;
+	cursor:pointer;
+}
+
+.user-panel .category .category_header .title
+{
+	padding-left: 4px;
+	font-size: 12px;
+	font-family: Microsoft YaHei, SimSun;
+	float: left;
+	display: block;
+	color: #15428B;
+	cursor:pointer;
+}
+
+.user-panel .category .items
+{
+}
+
+.user-panel .user-item
+{
+	height: 40px;
+	margin: 3px;
+	border: 0px solid #316AC5;
+	padding: 6px 2px 6px 8px;
+}
+
+.user-panel .user-item_hover
+{
+	height: 40px;
+	margin: 3px;
+	border: 1px solid #316AC5;
+	background-color: #C6D6EF;
+	padding: 5px 1px 5px 7px;
+}
+
+.user-panel .user-item .header-image, .user-panel .user-item_hover .header-image
+{
+	margin: 0px;
+	float: left;
+	display: block;
+}
+
+.user-panel .user-item .user-info, .user-panel .user-item_hover .user-info
+{
+	margin: 0px;
+	padding-left: 4px;
+	padding-right: 4px;
+	float: left;
+	display: block;
+	height: 40px;
+}
+
+.user-panel .user-item .user-info .nickname, .user-panel .user-item_hover .user-info .nickname
+{
+	font-size: 12px;
+	font-family: Microsoft YaHei, SimSun;
+	white-space: nowrap;
+}
+

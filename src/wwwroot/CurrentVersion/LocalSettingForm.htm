@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<style type="text/css" >
+		*
+		{
+			font-family:SimSun;
+			font-size: 12px;
+		}
+		.label
+		{
+			position: absolute;
+			display: block;
+			vertical-align: middle;
+			height: 22px;
+			line-height: 22px;
+		}
+		.textbox
+		{
+			position: absolute;
+			display: block;
+			border: 1px solid #D0D0D0;
+			height: 12px;
+			padding: 4px;
+		}
+		.label1
+		{
+			left: 0px;
+			top: 16px;
+			width: 96px;
+			text-align:right;
+		}
+		.label2
+		{
+			left: 0px;
+			top: 54px;
+			width: 96px;
+			text-align:right;
+		}
+		#edithkmainform
+		{
+			top: 16px;
+			left: 100px;
+			width: 232px;
+		}
+		#edithkmsg
+		{
+			top: 54px;
+			left: 100px;
+			width: 232px;
+		}
+		.label3
+		{
+			left: 20px;
+			top: 16px;
+			width: 135px;
+		}
+		#editfilesize
+		{
+			left: 145px;
+			top: 16px;
+			width: 40px;
+		}
+		.label4
+		{
+			left: 200px;
+			top: 16px;
+			width: 50px;
+		}
+		.label5
+		{
+			left: 20px;
+			top: 45px;
+			width: 160px;
+		}
+		.label6
+		{
+			left: 20px;
+			top: 16px;
+			width: 65px;
+		}
+		#editleavetime
+		{
+			left: 85px;
+			top: 16px;
+			width: 40px;
+		}
+		.label7
+		{
+			left: 140px;
+			top: 16px;
+			width: 200px;
+		}
+		#msgbox
+		{
+			position: absolute;
+			display: block;
+			left: 17px;
+			top: 54px;
+		}
+		.label8
+		{
+			left: 37px;
+			top: 54px;
+			width: 100px;
+			outline: none;
+		}
+		#slient
+		{
+			position: absolute;
+			display: block;
+			left: 17px;
+			top: 84px;
+		}
+		.label9
+		{
+			left: 37px;
+			top: 84px;
+			width: 100px;
+			outline: none;
+		}
+		#hk_btnok, #file_btnok, #other_btnok
+		{
+			position: absolute;
+			display: block;
+			right: 12px;
+			bottom: 12px;
+			height: 26px;
+			width: 64px;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Sub.js" type="text/javascript"></script>
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+	<script src="UI/Control.js" type="text/javascript"></script>
+	<script type="text/javascript" language="javascript">
+
+		function match(reg, str)
+		{
+			reg.lastIndex = 0;
+			var ft = reg.exec(str);
+			return (ft != null && ft.length == 1 && ft[0] == str)
+		}
+
+		function GetHotKeyText(hk)
+		{
+			var hk_text = "";
+			if (hk.CtrlKey) hk_text += "Ctrl + ";
+			if (hk.AltKey) hk_text += "Alt + ";
+			if (hk.ShiftKey) hk_text += "Shift + ";
+			hk_text += String.fromCharCode(hk.KeyCode);
+			return hk_text;
+		}
+
+		function InitHotKeyEdit(hk_edit, hkJson)
+		{
+			var init_hk = Core.Utility.ParseJson(hkJson);
+			hk_edit.HotKey = init_hk;
+	
+			hk_edit.value = GetHotKeyText(init_hk);
+	
+			hk_edit.readOnly = true;
+			hk_edit.onkeydown = function(evt)
+			{
+				if (evt == undefined) evt = window.event;
+				if (!evt.ctrlKey && !evt.shiftKey && !evt.altKey) return;
+	
+				var hk = {};
+				hk.CtrlKey = evt.ctrlKey;
+				hk.ShiftKey = evt.shiftKey;
+				hk.AltKey = evt.altKey;
+	
+				if (evt.keyCode >= 48 && evt.keyCode <= 57)
+				{
+					hk.KeyCode = evt.keyCode;
+				}
+				else if (evt.keyCode >= 65 && evt.keyCode <= 90)
+				{
+					hk.KeyCode = evt.keyCode;
+				}
+				else
+				{
+					return;
+				}
+	
+				hk_edit.value = GetHotKeyText(hk);
+				hk_edit.HotKey = hk;
+	
+				evt.keyCode = 0;
+				Core.Utility.PreventDefault(evt);
+				Core.Utility.CancelBubble(evt);
+			}
+		}
+
+		function init()
+		{
+			Core.UI.PagePanel.Create("");
+
+			var tab_ = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl",
+					Css: "tabctrl ct_tab",
+					Tabs: [
+						{
+							ID: "TAB0", MinWidth: 100, Text: "热键设置", IsSelected: true,
+							Controls: [
+								{
+									DockStyle: Core.UI.DockStyle.Fill,
+									Content: "<div class='label label1'>打开主窗口：</div><input class='textbox' id='edithkmainform' type='text' readonly/>" +
+										"<div class='label label2'>提取消息：</div><input class='textbox' id='edithkmsg' type='text' readonly/>" +
+										"<div id='hk_btnok' class='ct_custom_default_button'></div>"
+								}
+							]
+						},
+						{
+							ID: "TAB1", MinWidth: 100, Text: "文件传送",
+							Controls: [
+								{ 
+									DockStyle: Core.UI.DockStyle.Fill,
+									Content: "<div class='label label3'>当发送文件总大小小于</div><input id='editfilesize' class='textbox' type='text'/><div class='label label4'>MB 时</div>" +
+										"<div class='label label5'>自动以离线文件方式发送</div>" +
+										"<div id='file_btnok' class='ct_custom_default_button'></div>"
+								}
+							]
+						},
+						{
+							ID: "TAB2", MinWidth: 100, Text: "其他设置",
+							Controls: [
+								{ 
+									DockStyle: Core.UI.DockStyle.Fill,
+									Content: "<div class='label label6'>鼠标和键盘</div><input id='editleavetime' class='textbox' type='text'/><div class='label label7'>分钟没有动作，自动切换为离开状态</div>" +
+										"<input class='checkbox' id='msgbox' type='checkbox'/><label for='msgbox' class='label label8'>使用消息盒子</label>" +
+										"<input class='checkbox' id='slient' type='checkbox'/><label for='slient' class='label label9'>关闭所有声音</label>" +
+										"<div id='other_btnok' class='ct_custom_default_button'></div>"
+								}
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+
+			var hk_btnok = new Core.UI.Button(document.getElementById('hk_btnok'), { Text: "确 定" });
+
+			var edithkmainform = document.getElementById("edithkmainform");
+			var edithkmsg = document.getElementById("edithkmsg");
+
+			var hkmainform = window.external.LocalSetting.GetValue("HotKeyUF");
+			if (hkmainform == "") hkmainform = '{"CtrlKey":true,"ShiftKey":true,"AltKey":false,"KeyCode":90}';
+			InitHotKeyEdit(edithkmainform, hkmainform);
+
+			var hkmsg = window.external.LocalSetting.GetValue("HotKeyMB");
+			if (hkmsg == "") hkmsg = '{"CtrlKey":true,"ShiftKey":true,"AltKey":false,"KeyCode":83}';
+			InitHotKeyEdit(edithkmsg, hkmsg);
+
+			hk_btnok.OnClick.Attach(
+				function (btn)
+				{
+					var hkuf = edithkmainform.HotKey;
+
+					if (!window.external.RegisterHotKey(1, "HotKeyUF", hkuf.CtrlKey, hkuf.ShiftKey, hkuf.AltKey, hkuf.KeyCode))
+					{
+						Core.Utility.ShowWarning(String.format("设置\"打开联系人面板\"热键为\"{0}\"出错，\"{0}\"已被占用！", GetHotKeyText(hkuf)));
+						return;
+					}
+
+					var hkmb = edithkmsg.HotKey;
+
+					if (!window.external.RegisterHotKey(2, "HotKeyMB", hkmb.CtrlKey, hkmb.ShiftKey, hkmb.AltKey, hkmb.KeyCode))
+					{
+						Core.Utility.ShowWarning(String.format("设置\"打开消息盒子\"热键为\"{0}\"出错，\"{0}\"已被占用！", GetHotKeyText(hkmb)));
+						return;
+					}
+
+					CurrentWindow.Close();
+				}
+			);
+	
+			var file_btnok = new Core.UI.Button(document.getElementById('file_btnok'), { Text: "确 定" });
+			var editfilesize = document.getElementById("editfilesize");
+			editfilesize.value = window.external.LocalSetting.AttachSize.toString();
+			file_btnok.OnClick.Attach(
+				function(btn)
+				{
+					if (!match(/[0-9]+/ig, editfilesize.value))
+					{
+						Core.Utility.ShowError("请输入正确的数值！");
+						editfilesize.focus();
+						return;
+					}
+					window.external.LocalSetting.SetValue("AttachSize", editfilesize.value);
+					CurrentWindow.Close();
+				}
+			);
+			
+			var other_btnok = new Core.UI.Button(document.getElementById('other_btnok'), { Text: "确 定" });
+			var editleavetime = document.getElementById("editleavetime");
+			var msgbox = document.getElementById("msgbox");
+			var slient = document.getElementById("slient");
+			
+			editleavetime.value = window.external.LocalSetting.LeavePeriod.toString();
+			msgbox.checked = (window.external.LocalSetting.GetValue("UseMsgBox") == "true");
+			slient.checked = (window.external.LocalSetting.GetValue("Slience") == "true");
+			other_btnok.OnClick.Attach(
+				function(btn)
+				{
+					if (!match(/[0-9]+/ig, editleavetime.value))
+					{
+						Core.Utility.ShowError("请输入正确的数值！");
+						editleavetime.focus();
+						return;
+					}
+					var val = parseInt(editleavetime.value);
+					if (val < 5) val = 5;
+					editleavetime.value = val.toString();
+					window.external.LocalSetting.LeavePeriod = val;
+					window.external.LocalSetting.SetValue("UseMsgBox", msgbox.checked ? "true": "false");
+					window.external.LocalSetting.SetValue("Slience", slient.checked ? "true": "false");
+			
+					CurrentWindow.Close();
+				}
+			)
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>

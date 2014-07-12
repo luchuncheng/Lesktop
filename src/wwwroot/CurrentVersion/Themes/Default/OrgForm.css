@@ -1,0 +1,25 @@
+﻿
+.ct_hspliter_resizable
+{
+	cursor: w-resize;
+}
+.ct_vspliter_resizable
+{
+	cursor: s-resize;
+}
+
+.ct_hsplitter
+{
+	background-color: #F2F2F2;
+}
+.ct_vsplitter
+{
+	background-color: #F2F2F2;
+}
+
+.frame_container
+{
+    overflow: hidden;
+    border: solid 1px #D0D0D0;
+    background-color: White;
+}

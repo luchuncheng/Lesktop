@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="../Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="../Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<link href="../Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		.panel
+		{
+			background-color: #F2F2F2;
+		}
+		.left_panel
+		{
+			background-color: #006600;
+			border: 1px solid Black;
+		}
+		.right_panel
+		{
+			background-color: Red;
+			border: 1px solid Black;
+		}
+		.bottom_panel
+		{
+			background-color: Blue;
+			border: 1px solid Black;
+		}
+		.fill_panel
+		{
+			background-color: Aqua;
+		}
+		.top_panel2
+		{
+			background-color: Green;
+		}
+		.fill_panel2
+		{
+			background-color: Maroon;
+		}
+		.ct_hsplitter
+		{
+			background-color: #F2F2F2;
+		}
+		.ct_vsplitter
+		{
+			background-color: #F2F2F2;
+		}
+		.ct_hspliter_resizable
+		{
+			cursor: w-resize;
+		}
+		.ct_vspliter_resizable
+		{
+			cursor: s-resize;
+		}
+		.ct_treeview
+		{
+			background-color: White;
+		}
+		.tv_image
+		{
+			background: url(images/tv_image.png) no-repeat -4px -4px;
+		}
+		.tab_right_panel,
+		.tab_fill_panel
+		{
+			border: 1px solid Black;
+			background-color: White;
+		}
+	</style>
+
+	<script src="../Core/Common.js" type="text/javascript"></script>
+
+	<script src="../UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="../UI/TreeView.js" type="text/javascript"></script>
+
+	<script src="../UI/Control.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+		window.onload = function()
+		{
+			Core.UI.PagePanel.Create('');
+			var page_ctrl = new Core.UI.Control(
+				Core.UI.PagePanel,
+				{
+					Padding: 6,
+					Css: "panel",
+					Controls: [
+						{
+							ID: "left_panel",
+							Css: "left_panel",
+							Width: 200,
+							MinWidth: 100,
+							MaxWidth: 400,
+							Resizable: true,
+							SplitterSize: 5,
+							BorderWidth: 1,
+							DockStyle: Core.UI.DockStyle.Left
+						},
+						{
+							ID: "left_panel2",
+							Css: "left_panel",
+							Width: 200,
+							MinWidth: 100,
+							MaxWidth: 400,
+							Resizable: true,
+							SplitterSize: 5,
+							BorderWidth: 1,
+							DockStyle: Core.UI.DockStyle.Left
+						},
+						{
+							ID: "right_panel",
+							Css: "right_panel",
+							Width: 250,
+							MinWidth: 100,
+							MaxWidth: 400,
+							BorderWidth: 1,
+							Resizable: true,
+							SplitterSize: 5,
+							DockStyle: Core.UI.DockStyle.Right,
+							Controls: [
+								{
+									ID: "top_panel2",
+									Css: "top_panel2",
+									Padding: 6,
+									Height: 200,
+									Resizable: true,
+									SplitterSize: 5,
+									MinHeight: 100,
+									MaxHeight: 300,
+									DockStyle: Core.UI.DockStyle.Top,
+									Margin: [35, 10, 0, 20]
+								},
+								{
+									ID: "fill_panel2",
+									Css: "fill_panel2",
+									Width: 150,
+									DockStyle: Core.UI.DockStyle.Fill,
+									Margin: [35, 10, 15, 20]
+								}
+							]
+						},
+						{
+							ID: "bottom_panel",
+							Css: "bottom_panel ct_tab",
+							Type: Core.UI.TabControl,
+							Tabs: [
+								{ 
+									ID: "Tab1", Text: "Tab1", MinWidth: 80,
+									Padding: 4,
+									Controls: [
+										{
+											ID: "tab_right_panel",
+											Css: "tab_right_panel ct_treeview",
+											Padding: 6,
+											Width: 200,
+											Resizable: true,
+											SplitterSize: 5,
+											MinWidth: 100,
+											MaxWidth: 300,
+											BorderWidth: 0,
+											DockStyle: Core.UI.DockStyle.Right
+										},
+										{
+											ID: "tab_fill_panel",
+											Css: "tab_fill_panel",
+											BorderWidth: 1,
+											DockStyle: Core.UI.DockStyle.Fill
+										}
+									]
+								},
+								{ ID: "Tab2", Text: "Tab2", IsSelected: true },
+								{ ID: "Tab3", Text: "Tab3" }
+							],
+							Height: 300,
+							MinHeight: 100,
+							MaxHeight: 400,
+							BorderWidth: 0,
+							Resizable: true,
+							SplitterSize: 5,
+							DockStyle: Core.UI.DockStyle.Bottom
+						},
+						{
+							ID: "fill_panel",
+							Css: "fill_panel ct_treeview",
+							DockStyle: Core.UI.DockStyle.Fill
+						}
+					]
+				}
+			);
+			
+			var fill_panel = page_ctrl.FindControl("fill_panel");
+		
+			var ds = (function()
+			{
+				var obj_ = {};
+
+				obj_.GetSubNodes = function(callback, node)
+				{
+					var nodes = [];
+
+					nodes.push({
+						Name: "1",
+						Text: "节点1",
+						Tag: {
+							Type: "All"
+						},
+						HasChildren: true,
+						ImageCss: "tv_image"
+					}, {
+						Name: "2",
+						Text: "节点2",
+						Tag: {
+							Type: "All"
+						},
+						HasChildren: true,
+						ImageCss: "tv_image"
+					}, {
+						Name: "3",
+						Text: "节点3",
+						Tag: {
+							Type: "All"
+						},
+						HasChildren: true,
+						ImageCss: "tv_image"
+					});
+
+					callback(nodes);
+				}
+
+				return obj_;
+			})();
+			var treeview = new Core.UI.TreeView(fill_panel.GetContainer(), { DataSource: ds });
+			treeview.Load();
+			
+			var left_panel = page_ctrl.FindControl("left_panel");
+			AddButtons(left_panel);
+			var left_panel2 = page_ctrl.FindControl("left_panel2");
+			AddButtons(left_panel2, true);
+			var right_panel = page_ctrl.FindControl("right_panel");
+			AddButtons(right_panel);
+			var fill_panel2 = page_ctrl.FindControl("right_panel/fill_panel2");
+			AddButtons(fill_panel2);
+			var top_panel2 = page_ctrl.FindControl("right_panel/top_panel2");
+			AddButtons(top_panel2, true);
+			var null_panel = page_ctrl.FindControl("right_panel1/fill_panel2");
+			
+			var tab_right_panel = page_ctrl.FindControl("bottom_panel/Tab1/tab_right_panel");
+			var treeview2 = new Core.UI.TreeView(tab_right_panel.GetContainer(), { DataSource: ds });
+			treeview2.Load();
+			
+			var tab_fill_panel = page_ctrl.FindControl("bottom_panel/Tab1/tab_fill_panel");
+			AddButtons(tab_fill_panel);
+		}
+		
+		function AddButtons(panel, auto_restore)
+		{
+			var btn = document.createElement("button");
+			btn.innerHTML = "Hide";
+			btn.className = "ct_button";
+			panel.GetContainer().appendChild(btn);
+			btn.onclick = function()
+			{
+				panel.SetVisible(false);
+				if(auto_restore)
+				{
+					setTimeout(function() { panel.SetVisible(true); }, 5000);
+				}
+			}
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

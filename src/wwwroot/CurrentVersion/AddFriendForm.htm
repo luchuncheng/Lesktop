@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		.tab0 *
+		{
+			font-family: SimSun;
+			font-size: 12px;
+		}
+		.label1
+		{
+			position: absolute;
+			left: 12px;
+			top: 16px;
+			width: 110px;
+			height: 20px;
+			line-height: 20px;
+		}
+		#edit_name
+		{
+			position: absolute;
+			left: 121px;
+			top: 16px;
+			padding: 0px 4px;
+			height: 20px;
+			line-height: 20px;
+			width: 240px;
+			border: 1px solid #D0D0D0;
+		}
+		.label2
+		{
+			position: absolute;
+			left: 12px;
+			top: 45px;
+			width: 110px;
+			height: 20px;
+			line-height: 20px;
+		}
+		#edit_msg
+		{
+			position: absolute;
+			left: 12px;
+			top: 68px;
+			padding: 4px;
+			height: 120px;
+			width: 349px;
+			border: 1px solid #D0D0D0;
+			overflow: hidden;
+		}
+		
+		#btnok
+		{
+			position: absolute;
+			right: 12px;
+			bottom: 6px;
+			height: 26px;
+			width: 64px;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Sub.js" type="text/javascript"></script>
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+	<script src="UI/Control.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript">
+
+		var usertree_ = null;
+
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			var tabctrl = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl",
+					Css: "tabctrl ct_tab",
+					Margin: 1,
+					Tabs: [
+						{
+							Css: "tab0", ID: "TAB0", MinWidth: 120, Text: "添加好友/群", IsSelected: true,
+							Controls: [
+								{
+									DockStyle: Core.UI.DockStyle.Fill,
+									Content: "<div class='label1'>用户（群）账户名：</div><input id='edit_name' type='text' />" +
+										"<div class='label2'>验证信息：</div><textarea id='edit_msg'></textarea>" + 
+										"<div id='btnok' class='ct_custom_default_button'></div>"
+								}
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+			
+			var edit_name_ = document.getElementById("edit_name");
+			var edit_msg_ = document.getElementById("edit_msg");
+			var btnok_ = new Core.UI.Button(document.getElementById("btnok"), { Text: "确 定", TabIndex: 1 });
+			btnok_.OnClick.Attach(
+				function()
+				{
+					if(edit_name_.value == "")
+					{
+						Core.Utility.ShowError("请输入账户名！");
+						edit_name_.focus();
+						return;
+					}
+
+					var data = {
+						Action: "SendAddFriendRequest",
+						Peer: edit_name_.value,
+						Info: edit_msg_.value
+					};
+					Core.SendCommand(
+						function(ret)
+						{
+							edit_name_.value = "";
+							edit_msg_.value = "";
+
+							Core.Utility.ShowFloatForm("添加好友的请求已发送，等待对方确认...", "text");
+
+							CurrentWindow.Close();
+						},
+						function(ex)
+						{
+							Core.Utility.ShowError(ex.toString());
+						},
+						Core.Utility.RenderJson(data), "Core.Web Common_CH", false
+					);
+				}
+			);
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>

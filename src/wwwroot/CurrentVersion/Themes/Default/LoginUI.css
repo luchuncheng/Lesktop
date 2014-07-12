@@ -1,0 +1,186 @@
+﻿
+.login_panel 
+{
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    background: url(Images/login_panel_bk.png) repeat-x;
+}
+
+.login_panel .logo
+{
+    position: absolute;
+    width: 140px;
+    height: 60px;
+    left: 20px;
+    top: 8px;
+    background: url(Images/logo.png) repeat-x;
+}
+
+.login_panel .login
+{
+    position: absolute;
+    left: 0px;
+    top: 140px;
+    bottom: 0px;
+    right: 0px;
+    _width: expression(this.parentElement.offsetWidth + 'px');
+    _height: expression((this.parentElement.offsetHeight - 140) + 'px');
+}
+
+.login_panel .login .viewreg_button
+{
+    position: absolute;
+    bottom: 7px;
+    right: 90px;
+    width: 60px;
+    display: none;
+}
+
+.clientmode .login .viewreg_button 
+{
+    display: block;
+}
+
+.login_panel .login .login_button
+{
+    position: absolute;
+    bottom: 7px;
+    right: 20px;
+    width: 60px;
+}
+
+.login_panel .login .client_opt
+{
+    width: 480px;
+    height: 20px;
+    text-align: right;
+    margin-top: 20px;
+    display: none;
+}
+
+.clientmode .login .client_opt
+{
+    display: block;
+}
+
+.login_panel .login .client_opt label
+{
+	margin: 5px 2px 0px 0px;
+	float: right;
+	color: #305080;
+}
+
+.login_panel .login .client_opt #cb_autostart,
+.login_panel .login .client_opt #cb_autologin
+{
+	margin: 4px 2px 0px 8px;
+	_margin: 0px 2px 0px 8px;
+	+margin: 0px 2px 0px 8px;
+	padding: 0px;
+	float: right;
+}
+
+.login_panel .login .link_container
+{
+    width: 480px;
+    height: 20px;
+    text-align: right;
+    margin-top: 20px;
+}
+
+.clientmode .login .link_container
+{
+    display: none;
+}
+
+.login_panel .login .link_container a
+{
+    margin-left: 16px;
+}
+
+.login_panel .register
+{
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 120px;
+    bottom: 0px;
+    right: 0px;
+    _width: expression(this.parentElement.offsetWidth + 'px');
+    _height: expression((this.parentElement.offsetHeight - 120) + 'px');
+}
+
+.login_panel .register .register_button
+{
+    position: absolute;
+    bottom: 7px;
+    right: 20px;
+    width: 60px;
+}
+
+.login_panel .register .link_container
+{
+    width: 480px;
+    height: 14px;
+    text-align: right;
+}
+
+.login_panel .register .link_container a
+{
+    margin-left: 16px;
+}
+
+.login_panel .input_unit
+{
+    padding: 0px;
+    margin: 0px 0px 0px 10px;
+}
+
+.login_panel .input_unit .input_area
+{
+    height: 26px;
+}
+
+.login_panel .input_unit .input_unit_label
+{
+    width: 216px;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+    padding: 0px 4px 0px 0px;
+    text-align: right;
+    float: left;
+}
+
+.login_panel .input_unit .input_unit_textbox
+{
+    width: 240px;
+    float: left;
+    margin: 0px;
+}
+
+.login_panel .input_unit .input_unit_tip
+{
+    margin: 0px 0px 0px 220px;
+    width: 250px;
+    vertical-align: middle;
+    color: #AAAAAA;
+    min-height: 1.4em;
+    _height: 1.4em;
+}
+
+.login_panel .input_unit_error .input_unit_tip
+{
+    color: #DD4B39;
+}
+
+.login_panel .input_unit_error .input_unit_textbox
+{
+    border: solid 1px #DD4B39;
+}
+
+.login_panel .ct_link
+{
+	color: #305080;
+}

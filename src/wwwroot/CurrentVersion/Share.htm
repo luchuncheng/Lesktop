@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<link href="Themes/Default/EditorCss.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Table.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body
+		{
+			margin: 4px;
+		}
+		.filename
+		{
+		}
+		.size
+		{
+			width: 80px;
+			text-align: right;
+		}
+		.operation
+		{
+			width: 100px;
+			text-align: right;
+		}
+		.operation a
+		{
+			color: Blue;
+			margin-left: 4px;
+			text-decoration: none;
+		}
+		.operation a:hover
+		{
+			color: Blue;
+			text-decoration: underline;
+		}
+		.operation a:visited
+		{
+			color: Blue;
+		}
+		.filename input
+		{
+			width: 90%;
+			border: 1px solid #D0D0D0;
+			font-family: SimSun;
+			font-size: 12px;
+			padding: 3px;
+		}
+	</style>
+
+	<script type="text/javascript" language="javascript">
+		var _dispose = false;
+
+		var CurrentWindow = parent.CurrentWindow;
+
+		var Params = (function()
+		{
+			var pairs = window.location.search.substr(1, window.location.search.length - 1).split("&");
+			var params = {};
+			for (var i in pairs)
+			{
+				var vs = pairs[i].split("=");
+				params[vs[0]] = vs[1];
+			}
+			return params;
+		})();
+
+		var GroupID = Params["Group"];
+		var client_call = null;
+
+		window.onload = function()
+		{
+			client_call = parent.window.external;
+
+			LoadFileList();
+		}
+
+		var _dl_handlers = {};
+
+		function LoadFileList()
+		{
+			CurrentWindow.Waiting("正在刷新文件列表，请稍候...");
+
+			var data = {
+				Action: "GetFileList",
+				GroupID: GroupID
+			};
+			parent.Core.SendCommand(
+				function(ret)
+				{
+					CurrentWindow.Completed();
+					ShowFileList(ret.Files, ret.GroupInfo);
+				},
+				function(ex)
+				{
+					CurrentWindow.Completed();
+					parent.Core.Utility.ShowError(ex.toString());
+				},
+				Core.Utility.RenderJson(data), "Core.Web GroupShare_CH", false
+			);
+		}
+
+		function ShowFileList(files, groupInfo)
+		{
+			var fl = document.getElementById("filelist");
+			while (fl.rows.length > 1) fl.deleteRow(1);
+			for (var i in files)
+			{
+				var row = fl.insertRow(-1);
+
+				var cell = row.insertCell(-1);
+				cell.className = "filename";
+				cell.innerHTML = files[i].Name;
+
+				var temp = "", size = files[i].Size;
+				if (size > 1024 * 1024 * 1024) temp = Math.round(size / (1024 * 1024 * 1024) * 100) / 100 + "GB";
+				else if (size > 1024 * 1024) temp = Math.round(size / (1024 * 1024) * 100) / 100 + "MB";
+				else if (size > 1024) temp = Math.round(size / 1024 * 100) / 100 + "KB";
+				else temp = size + "B";
+
+				cell = row.insertCell(-1);
+				cell.className = "size";
+				cell.innerHTML = temp;
+
+				cell = row.insertCell(-1);
+				cell.className = "operation";
+				var opeHtml = "<a href='javascript:Save({0})'>另存为</a><a href='javascript:Open({0})'>打开</a>";
+				if (groupInfo.SubType == 1 || (groupInfo.SubType == 0 && String.compareIngoreCase(groupInfo.Creator, parent.Core.Session.GetUserInfo().Name)))
+				{
+					opeHtml += "<a href='javascript:Delete({1})'>删除</a>";
+				}
+				cell.innerHTML = String.format(
+					opeHtml,
+					Core.Utility.RenderJson(files[i].FullName), Core.Utility.RenderJson(files[i].Name)
+				);
+			}
+		}
+
+		function UploadHandler(file, container, afterUpload)
+		{
+			var _ctr_id = parent.Core.GenerateUniqueId();
+			var _ctr = null;
+
+			var html_format = "<div class='dl_image_dl'></div>" +
+			"<div class='dl_text'>" +
+			"<span class='span_normal'>正在上传 \"{0}\"...</span>" +
+			"<span class='processing'></span>" +
+			"<a>取消</a>" +
+			"</div>";
+
+			var html = String.format(html_format, file);
+
+			var dom = document.createElement("DIV");
+			dom.className = 'message_file_dl';
+			dom.innerHTML = html;
+
+			var info_dom = dom.childNodes[1].childNodes[0];
+			var pdom = dom.childNodes[1].childNodes[1];
+			var a_dom = dom.childNodes[1].childNodes[2];
+			var img_dom = dom.childNodes[0];
+
+			var _isCanceled = false;
+			a_dom.onclick = function()
+			{
+				_isCanceled = true;
+			}
+
+			this.Cancel = function()
+			{
+				_isCanceled = true;
+				if (_ctr != null) _ctr.Cancel();
+			}
+
+			var _recv = 0, _total = 0;
+
+			this.BeforeUpload = function(ctr)
+			{
+				_ctr = ctr;
+				_dl_handlers[_ctr_id] = this;
+				container.insertBefore(dom, container.firstChild);
+				dom.scrollIntoView();
+			}
+
+			this.Processing = function(length, size, speed)
+			{
+				_recv = length;
+				_total = size;
+				var temp;
+				if (size > 1024 * 1024 * 1024) temp = Math.round(size / (1024 * 1024 * 1024) * 100) / 100 + "GB";
+				else if (size > 1024 * 1024) temp = Math.round(size / (1024 * 1024) * 100) / 100 + "MB";
+				else if (size > 1024) temp = Math.round(size / 1024 * 100) / 100 + "KB";
+				else temp = size + "B";
+				pdom.innerHTML = String.format("上传速度:{2}KB/s 已完成:{0}%, 共 {1}", (Math.round(length / size * 1000) / 10), temp, Math.round(speed / 10) / 100);
+				return (_dispose || _isCanceled) ? 0 : 1;
+			}
+
+			this.AfterUpload = function(path)
+			{
+				info_dom.innerHTML = String.format(_recv == _total ? "\"{0}\" 上传完毕" : "\"{0}\" 上传已取消！", file);
+				info_dom.className = (_recv == _total ? "span_normal" : "span_red");
+				pdom.innerHTML = "";
+				a_dom.style.display = 'none';
+				img_dom.className = (_recv == _total ? "dl_image_file" : "dl_image_cancel");
+				delete _dl_handlers[_ctr_id];
+				if (afterUpload != undefined) afterUpload(path);
+			}
+
+			this.HandleError = function(msg)
+			{
+				info_dom.className = "span_red";
+				info_dom.innerHTML = String.format("上传 \"{0}\" 时发生错误: {1}", file, msg);
+				pdom.innerHTML = "";
+				a_dom.style.display = 'none';
+				img_dom.className = "dl_image_error";
+				delete _dl_handlers[_ctr_id];
+			}
+		}
+
+		function DownloadHandler(file, container)
+		{
+			var _ctr_id = parent.Core.GenerateUniqueId();
+
+			var _ctr = null;
+
+			var html = String.format(
+				"<div class='dl_image_dl'></div><div class='dl_text'><span class='span_normal'>正在下载 \"{0}\"...</span><span class='processing'></span><a>取消</a></div>",
+				file
+			);
+			var dom = document.createElement("DIV");
+			dom.className = 'message_file_dl';
+			dom.innerHTML = html;
+
+			var info_dom = dom.childNodes[1].childNodes[0];
+			var pdom = dom.childNodes[1].childNodes[1];
+			var a_dom = dom.childNodes[1].childNodes[2];
+			var img_dom = dom.childNodes[0];
+
+			var _isCanceled = false;
+			a_dom.onclick = function()
+			{
+				_isCanceled = true;
+				if (_ctr != null) _ctr.Cancel();
+			}
+
+			var _recv = 0,
+			_total = 0;
+
+			this.Cancel = function()
+			{
+				_isCanceled = true;
+				if (_ctr != null) _ctr.Cancel();
+			}
+
+			this.BeforeDownload = function(ctr)
+			{
+				_ctr = ctr;
+				_dl_handlers[_ctr_id] = this;
+				container.insertBefore(dom, container.firstChild);
+				dom.scrollIntoView();
+			}
+
+			this.Processing = function(length, size, speed)
+			{
+				_recv = length;
+				_total = size;
+				var temp;
+				if (size > 1024 * 1024 * 1024) temp = Math.round(size / (1024 * 1024 * 1024) * 100) / 100 + "GB";
+				else if (size > 1024 * 1024) temp = Math.round(size / (1024 * 1024) * 100) / 100 + "MB";
+				else if (size > 1024) temp = Math.round(size / 1024 * 100) / 100 + "KB";
+				else temp = size + "B";
+				pdom.innerHTML = String.format("下载速度:{2}KB/s 已完成:{0}%, 共 {1}", (Math.round(length / size * 1000) / 10), temp, Math.round(speed / 10) / 100);
+				return (_dispose || _isCanceled) ? 0 : 1;
+			}
+
+			this.AfterDownload = function()
+			{
+				info_dom.innerHTML = String.format(_recv == _total ? "\"{0}\" 下载完毕" : "\"{0}\" 下载已取消！", file);
+				info_dom.className = (_recv == _total ? "span_normal" : "span_red");
+				pdom.innerHTML = "";
+				a_dom.style.display = 'none';
+				img_dom.className = (_recv == _total ? "dl_image_file" : "dl_image_cancel");
+				delete _dl_handlers[_ctr_id];
+			}
+
+			this.HandleError = function(msg)
+			{
+				info_dom.className = "span_red";
+				info_dom.innerHTML = String.format("下载 \"{0}\" 时发生错误: {1}", file, msg);
+				pdom.innerHTML = "";
+				a_dom.style.display = 'none';
+				img_dom.className = "dl_image_error";
+				delete _dl_handlers[_ctr_id];
+			}
+		}
+
+		function Upload(localFile)
+		{
+			var handler = new UploadHandler(
+				parent.Core.Path.GetFileName(localFile),
+				document.getElementById("container"),
+				function(f)
+				{
+					var data = {
+						Action: "Upload",
+						GroupID: GroupID,
+						FileName: f
+					};
+					parent.Core.SendCommand(
+						function(ret)
+						{
+							CurrentWindow.Completed();
+							ShowFileList(ret.Files, ret.GroupInfo);
+						},
+						function(ex)
+						{
+							CurrentWindow.Completed();
+							parent.Core.Utility.ShowError(ex.toString());
+						},
+						Core.Utility.RenderJson(data), "Core.Web GroupShare_CH", false
+					);
+				}
+			);
+			client_call.Upload(document.cookie, localFile, handler);
+		}
+
+		function Save(filename)
+		{
+			var url = parent.Core.CreateDownloadUrl(filename);
+			client_call.Save(
+				parent.Core.Session.GetCookie(),
+				url,
+				Core.Path.GetFileName(url),
+				new DownloadHandler(parent.Core.Path.GetFileName(filename), document.getElementById("container"))
+			);
+		}
+
+		function Open(filename)
+		{
+			var url = parent.Core.CreateDownloadUrl(filename);
+			client_call.Open(
+				parent.Core.Session.GetCookie(),
+				url,
+				Core.Path.GetFileName(url),
+				new DownloadHandler(parent.Core.Path.GetFileName(filename), document.getElementById("container"))
+			);
+		}
+
+		function Delete(filename)
+		{
+			if (confirm(String.format("您确定要删除文件\"{0}\"", filename)))
+			{
+				CurrentWindow.Waiting("正在删除文件，请稍候...");
+
+				var data = {
+					Action: "Delete",
+					GroupID: GroupID,
+					FileName: filename
+				};
+				parent.Core.SendCommand(
+					function(ret)
+					{
+						CurrentWindow.Completed();
+						ShowFileList(ret.Files, ret.GroupInfo);
+					},
+					function(ex)
+					{
+						CurrentWindow.Completed();
+						parent.Core.Utility.ShowError(ex.toString());
+					},
+					Core.Utility.RenderJson(data), "Core.Web GroupShare_CH", false
+				);
+			}
+		}
+
+		function CancelAll()
+		{
+			for (var k in _dl_handlers)
+			{
+				try
+				{
+					_dl_handlers[k].Cancel();
+				}
+				catch (ex)
+				{
+					//
+				}
+				_dispose = true;
+			}
+		}
+	</script>
+
+</head>
+<body>
+	<div class="table_blue">
+		<table id="filelist" cellpadding="0" cellspacing="0">
+			<tr class='header'>
+				<td class='filename'>
+					文件名
+				</td>
+				<td class='size'>
+					大小
+				</td>
+				<td class='operation'>
+					操作
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="container">
+		<div>
+		</div>
+	</div>
+</body>
+</html>

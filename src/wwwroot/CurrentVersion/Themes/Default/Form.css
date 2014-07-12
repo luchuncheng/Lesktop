@@ -1,0 +1,372 @@
+﻿*
+{
+    scrollbar-arrow-color: #AAAAAA;
+    scrollbar-face-color: #f3f3f5;
+    scrollbar-darkshadow-color: #ffffff;
+    scrollbar-base-color: #f3f3f5;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-shadow-color: #d4d4d4;
+    scrollbar-track-color: #f3f3f5;
+    scrollbar-3dlight-color: #d4d4d4;
+}
+
+div
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+html
+{
+	overflow: hidden;
+	border:0px;
+}
+
+body
+{
+	background-color:Transparent;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	font-family:宋体;
+	font-size:12px;
+	border:0px;
+}
+
+/***********************公共小图片************************/
+.Image22_Acc
+{
+	background: url(Images/Image22.png) no-repeat -1px -1px;
+}
+.Image22_Add
+{
+	background: url(Images/Image22.png) no-repeat -1px -23px;
+}
+.Image22_Application
+{
+	background: url(Images/Image22.png) no-repeat -1px -45px;
+}
+.Image22_B
+{
+	background: url(Images/Image22.png) no-repeat -1px -67px;
+}
+.Image22_CheckBox
+{
+	background: url(Images/Image22.png) no-repeat -1px -89px;
+}
+.Image22_Clear
+{
+	background: url(Images/Image22.png) no-repeat -1px -111px;
+}
+.Image22_ComboxBtn
+{
+	background: url(Images/Image22.png) no-repeat -1px -133px;
+}
+.Image22_Control
+{
+	background: url(Images/Image22.png) no-repeat -1px -155px;
+}
+.Image22_Copy
+{
+	background: url(Images/Image22.png) no-repeat -1px -177px;
+}
+.Image22_CopyTo
+{
+	background: url(Images/Image22.png) no-repeat -1px -199px;
+}
+.Image22_CustomCtrl
+{
+	background: url(Images/Image22.png) no-repeat -1px -221px;
+}
+.Image22_Cut
+{
+	background: url(Images/Image22.png) no-repeat -1px -243px;
+}
+.Image22_Delete
+{
+	background: url(Images/Image22.png) no-repeat -1px -265px;
+}
+.Image22_DownButton
+{
+	background: url(Images/Image22.png) no-repeat -1px -287px;
+}
+.Image22_Emotion
+{
+	background: url(Images/Image22.png) no-repeat -1px -309px;
+}
+.Image22_Exec
+{
+	background: url(Images/Image22.png) no-repeat -1px -331px;
+}
+.Image22_File
+{
+	background: url(Images/Image22.png) no-repeat -1px -353px;
+}
+.Image22_Folder
+{
+	background: url(Images/Image22.png) no-repeat -1px -375px;
+}
+.Image22_Form
+{
+	background: url(Images/Image22.png) no-repeat -1px -397px;
+}
+.Image22_Group
+{
+	background: url(Images/Image22.png) no-repeat -1px -419px;
+}
+.Image22_I
+{
+	background: url(Images/Image22.png) no-repeat -1px -441px;
+}
+.Image22_Link
+{
+	background: url(Images/Image22.png) no-repeat -1px -463px;
+}
+.Image22_MessageRecord
+{
+	background: url(Images/Image22.png) no-repeat -1px -485px;
+}
+.Image22_MoveTo
+{
+	background: url(Images/Image22.png) no-repeat -1px -507px;
+}
+.Image22_NewFolder
+{
+	background: url(Images/Image22.png) no-repeat -1px -529px;
+}
+.Image22_NewProject
+{
+	background: url(Images/Image22.png) no-repeat -1px -551px;
+}
+.Image22_OpenFile
+{
+	background: url(Images/Image22.png) no-repeat -1px -573px;
+}
+.Image22_OpenProject
+{
+	background: url(Images/Image22.png) no-repeat -1px -595px;
+}
+.Image22_Option
+{
+	background: url(Images/Image22.png) no-repeat -1px -617px;
+}
+.Image22_Paste
+{
+	background: url(Images/Image22.png) no-repeat -1px -639px;
+}
+.Image22_Picture
+{
+	background: url(Images/Image22.png) no-repeat -1px -661px;
+}
+.Image22_Radio
+{
+	background: url(Images/Image22.png) no-repeat -1px -683px;
+}
+.Image22_Refresh
+{
+	background: url(Images/Image22.png) no-repeat -1px -705px;
+}
+.Image22_Save
+{
+	background: url(Images/Image22.png) no-repeat -1px -727px;
+}
+.Image22_SaveAs
+{
+	background: url(Images/Image22.png) no-repeat -1px -749px;
+}
+.Image22_Share
+{
+	background: url(Images/Image22.png) no-repeat -1px -771px;
+}
+.Image22_U
+{
+	background: url(Images/Image22.png) no-repeat -1px -793px;
+}
+.Image22_UpButton
+{
+	background: url(Images/Image22.png) no-repeat -1px -815px;
+}
+.Image22_Upload
+{
+	background: url(Images/Image22.png) no-repeat -1px -837px;
+}
+.Image22_Upward
+{
+	background: url(Images/Image22.png) no-repeat -1px -859px;
+}
+.Image22_User
+{
+	background: url(Images/Image22.png) no-repeat -1px -881px;
+}
+.Image22_TextColor
+{
+	background: url(Images/Image22.png) no-repeat -1px -925px;
+}
+.Image22_BgColor
+{
+	background: url(Images/Image22.png) no-repeat -1px -947px;
+}
+.Image16_Acc
+{
+	background: url(Images/Image16.png) no-repeat -1px -1px;
+}
+.Image16_Add
+{
+	background: url(Images/Image16.png) no-repeat -1px -17px;
+}
+.Image16_Application
+{
+	background: url(Images/Image16.png) no-repeat -1px -33px;
+}
+.Image16_B
+{
+	background: url(Images/Image16.png) no-repeat -1px -49px;
+}
+.Image16_CheckBox
+{
+	background: url(Images/Image16.png) no-repeat -1px -65px;
+}
+.Image16_Clear
+{
+	background: url(Images/Image16.png) no-repeat -1px -81px;
+}
+.Image16_Control
+{
+	background: url(Images/Image16.png) no-repeat -1px -113px;
+}
+.Image16_Copy
+{
+	background: url(Images/Image16.png) no-repeat -1px -129px;
+}
+.Image16_CopyTo
+{
+	background: url(Images/Image16.png) no-repeat -1px -145px;
+}
+.Image16_CustomCtrl
+{
+	background: url(Images/Image16.png) no-repeat -1px -161px;
+}
+.Image16_Cut
+{
+	background: url(Images/Image16.png) no-repeat -1px -177px;
+}
+.Image16_Delete
+{
+	background: url(Images/Image16.png) no-repeat -1px -193px;
+}
+.Image16_DownButton
+{
+	background: url(Images/Image16.png) no-repeat -1px -209px;
+}
+.Image16_Emotion
+{
+	background: url(Images/Image16.png) no-repeat -1px -225px;
+}
+.Image16_Exec
+{
+	background: url(Images/Image16.png) no-repeat -1px -241px;
+}
+.Image16_File
+{
+	background: url(Images/Image16.png) no-repeat -1px -257px;
+}
+.Image16_Folder
+{
+	background: url(Images/Image16.png) no-repeat -1px -273px;
+}
+.Image16_Form
+{
+	background: url(Images/Image16.png) no-repeat -1px -289px;
+}
+.Image16_Group
+{
+	background: url(Images/Image16.png) no-repeat -1px -305px;
+}
+.Image16_I
+{
+	background: url(Images/Image16.png) no-repeat -1px -321px;
+}
+.Image16_Link
+{
+	background: url(Images/Image16.png) no-repeat -1px -337px;
+}
+.Image16_MessageRecord
+{
+	background: url(Images/Image16.png) no-repeat -1px -353px;
+}
+.Image16_MoveTo
+{
+	background: url(Images/Image16.png) no-repeat -1px -369px;
+}
+.Image16_NewFolder
+{
+	background: url(Images/Image16.png) no-repeat -1px -385px;
+}
+.Image16_NewProject
+{
+	background: url(Images/Image16.png) no-repeat -1px -401px;
+}
+.Image16_OpenFile
+{
+	background: url(Images/Image16.png) no-repeat -1px -417px;
+}
+.Image16_OpenProject
+{
+	background: url(Images/Image16.png) no-repeat -1px -433px;
+}
+.Image16_Option
+{
+	background: url(Images/Image16.png) no-repeat -1px -449px;
+}
+.Image16_Paste
+{
+	background: url(Images/Image16.png) no-repeat -1px -465px;
+}
+.Image16_Picture
+{
+	background: url(Images/Image16.png) no-repeat -1px -481px;
+}
+.Image16_Radio
+{
+	background: url(Images/Image16.png) no-repeat -1px -497px;
+}
+.Image16_Refresh
+{
+	background: url(Images/Image16.png) no-repeat -1px -513px;
+}
+.Image16_Save
+{
+	background: url(Images/Image16.png) no-repeat -1px -529px;
+}
+.Image16_SaveAs
+{
+	background: url(Images/Image16.png) no-repeat -1px -545px;
+}
+.Image16_Share
+{
+	background: url(Images/Image16.png) no-repeat -1px -561px;
+}
+.Image16_U
+{
+	background: url(Images/Image16.png) no-repeat -1px -577px;
+}
+.Image16_UpButton
+{
+	background: url(Images/Image16.png) no-repeat -1px -593px;
+}
+.Image16_Upload
+{
+	background: url(Images/Image16.png) no-repeat -1px -609px;
+}
+.Image16_Upward
+{
+	background: url(Images/Image16.png) no-repeat -1px -625px;
+}
+.Image16_User
+{
+	background: url(Images/Image16.png) no-repeat -1px -641px;
+}
+.Image16_Zip
+{
+	background: url(Images/Image16.png) no-repeat -1px -657px;
+}

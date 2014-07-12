@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	
+	<style type="text/css">
+		.frame_container
+		{
+			overflow: hidden;
+			border: 1px solid #D0D0D0;
+			background-color: White;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<script src="Core/Extent.js" type="text/javascript"></script>
+
+	<script src="Core/Sub.js" type="text/javascript"></script>
+
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/Control.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+			
+		var usertree_ = null;
+		
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			var tabctrl = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl",
+					Css: "tabctrl ct_tab",
+					Margin: 1,
+					Tabs: [
+						{ 
+							ID: "TAB0", MinWidth: 100, Text: "基本资料", IsSelected: true,
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", BorderWidth:1, Margin: 6, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+			var frame_container = tabctrl.GetTabPanelContainer("TAB0", "frame_container");
+			var frame = Core.UI.CreateFrame(frame_container);
+			frame.src = String.format("Management/UpdateUserInfo.aspx?ID={1}&random={0}", (new Date()).getTime(), Core.Session.GetUserID());
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

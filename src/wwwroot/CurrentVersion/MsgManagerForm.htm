@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/MsgCtrl.css" rel="stylesheet" type="text/css" />
+
+	<style type="text/css">		
+		.ct_hspliter_resizable
+		{
+			cursor: w-resize;
+		}
+
+		.ct_vspliter_resizable
+		{
+			cursor: s-resize;
+		}
+
+		.ct_hsplitter
+		{
+			background-color: #F2F2F2;
+		}
+
+		.ct_vsplitter
+		{
+			background-color: #F2F2F2;
+		}
+
+		.btnprevious .btn_text
+		{
+			background: url(Images/Image22.png) no-repeat -2px -816px;
+		}
+
+		.btnnext .btn_text
+		{
+			background: url(Images/Image22.png) no-repeat -2px -288px;
+		}
+
+		.btnsearch .btn_text
+		{
+			background: url(Images/Image22.png) no-repeat -2px -486px;
+		}
+
+		.rightpanel
+		{
+			border: 1px solid #E0E0E0;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Sub.js" type="text/javascript"></script>
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+	<script src="UI/TreeView.js" type="text/javascript"></script>
+	<script src="UI/Control.js" type="text/javascript"></script>
+	<script src="UI/MsgCtrl.js" type="text/javascript"></script>
+
+	<script type="text/javascript" language="javascript">
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			var fillpanel_ = new Core.UI.Control(
+				Core.UI.PagePanel,
+				{
+					ID: "pagectrl",
+					Css: "",
+					BorderWidth: 0,
+					Padding: 2,
+					DockStyle: Core.UI.DockStyle.Fill,
+					Controls: [
+						{
+							ID: "msgmanager",
+							Css: "msgmanager",
+							BorderWidth: 0,
+							Type: Core.UI.MsgManager,
+							DockStyle: Core.UI.DockStyle.Fill
+						}
+					]
+				}
+			);
+
+			var msgmanager_ = fillpanel_.FindControl("msgmanager");
+
+			var tag = CurrentWindow.GetTag();
+			if (tag != null && tag.OnCreated != undefined)
+			{
+				tag.OnCreated(msgmanager_);
+			}
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/MsgCtrl.css" rel="stylesheet" type="text/css" />
+	
+	<style type="text/css">
+		.frame_container
+		{
+			overflow: hidden;
+			border: 1px solid #D0D0D0;
+			background-color: White;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<script src="Core/Extent.js" type="text/javascript"></script>
+
+	<script src="Core/Sub.js" type="text/javascript"></script>
+
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/TreeView.js" type="text/javascript"></script>
+
+	<script src="UI/Control.js" type="text/javascript"></script>
+
+	<script src="UI/MsgCtrl.js" type="text/javascript"></script>
+
+	<script type="text/javascript" language="javascript">
+	
+		var tabctrl_ = null;
+		var frames_ = {};
+		var comment_tab_interface_ = null;
+		
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			tabctrl_ = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl_",
+					Css: "tabctrl_ ct_tab",
+					Margin: 1,
+					Tabs: [
+						{ 
+							ID: "TAB0", MinWidth: 100, Text: "聊天记录",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						},
+						{ 
+							ID: "TAB1", MinWidth: 100, Text: "群组消息",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						},
+						{ 
+							ID: "TAB2", MinWidth: 100, Text: "多人会话",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						},
+						{ 
+							ID: "TAB3", MinWidth: 100, Text: "消息搜索",
+							Controls: [
+								{ 
+									ID: "searchbar", 
+									Css: "searchbar", 
+									Margin: [3, 2, 0, 2], 
+									BorderWidth: 1, 
+									Height: 31,
+									DockStyle: Core.UI.DockStyle.Top
+								},
+								{ 
+									ID: "searchpanel", 
+									Css: "searchpanel", 
+									Margin: [2, 2, 2, 2], 
+									BorderWidth: 1, 
+									DockStyle: Core.UI.DockStyle.Fill,
+									Controls: [
+										{
+											ID: "pagebar",
+											Css: "pagebar",
+											BorderWidth: 0,
+											Height: 20,
+											Visible: false,
+											DockStyle: Core.UI.DockStyle.Bottom
+										},
+										{
+											ID: "msgpanel",
+											Css: "msgpanel",
+											BorderWidth: 0,
+											Height: 20,
+											DockStyle: Core.UI.DockStyle.Fill
+										}
+									]
+								}
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+	
+			for(var i = 0; i <= 2; i++)
+			{
+				var tid = "TAB" + i.toString();
+				var tab_panel = tabctrl_.GetPanel(tid);
+				var frame_container = tab_panel.FindControl("frame_container");
+				var frame = Core.UI.CreateFrame(frame_container.GetContainer());
+				frames_[tid] = frame;
+			}
+			
+			tabctrl_.OnSelectedTab.Attach(
+				function(cur, pre)
+				{
+					if (cur == "TAB0")
+					{
+						CurrentWindow.Waiting("正在载入聊天记录...");
+						frames_[cur].src = "Management/MessageList_User.aspx?" + (new Date()).getTime();
+					}
+					else if (cur == "TAB1")
+					{
+						CurrentWindow.Waiting("正在载入聊天记录...");
+						frames_[cur].src = "Management/MessageList_Group.aspx?IsTemp=0&random=" + (new Date()).getTime();
+					}
+					else if (cur == "TAB2")
+					{
+						CurrentWindow.Waiting("正在载入聊天记录...");
+						frames_[cur].src = "Management/MessageList_Group.aspx?IsTemp=1&random=" + (new Date()).getTime();
+					}
+				}
+			);
+			
+			var msgmanager_ = {};
+	
+			msgmanager_.View = function(msg)
+			{
+				if (msg.Receiver.Type == 1)
+				{
+					if (msg.Receiver.IsTemp == 0)
+					{
+						tabctrl_.Select("TAB1");
+						var retUrl = "MessageList_Group.aspx?IsTemp=0&random=" + (new Date()).getTime();
+						var url = String.format("Management/ViewMessages.aspx?User={0}&Peer=0&ReturnUrl={1}&MsgID={2}", msg.Receiver.ID, escape(retUrl), msg.ID);
+						frames_["TAB1"].src = url;
+					}
+					else
+					{
+						tabctrl_.Select("TAB2");
+						var retUrl = "MessageList_Group.aspx?IsTemp=1&random=" + (new Date()).getTime();
+						var url = String.format("Management/ViewMessages.aspx?User={0}&Peer=0&ReturnUrl={1}&MsgID={2}", msg.Receiver.ID, escape(retUrl), msg.ID);
+						frames_["TAB2"].src = url;
+					}
+				}
+				else
+				{
+					tabctrl_.Select("TAB0");
+					var retUrl = "MessageList_User.aspx?random=" + (new Date()).getTime();
+					var url = String.format("Management/ViewMessages.aspx?User={0}&Peer={1}&ReturnUrl={2}&MsgID={3}", msg.Sender.ID, msg.Receiver.ID, escape(retUrl), msg.ID);
+					frames_["TAB0"].src = url;
+				}
+			}
+			
+			var tab3_panel = tabctrl_.GetPanel("TAB3");
+			
+			var searchpanel_ = new Core.UI.SearchPanel(msgmanager_, tabctrl_.GetTabPanelContainer("TAB3", "searchbar"),
+				tab3_panel.FindControl("searchpanel"));
+
+			tabctrl_.Select("TAB0");
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

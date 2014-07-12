@@ -1,0 +1,396 @@
+﻿*
+{
+	scrollbar-arrow-color: #AAAAAA;
+	scrollbar-face-color: #f3f3f5;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-base-color: #f3f3f5;
+	scrollbar-highlight-color: #ffffff;
+	scrollbar-shadow-color: #d4d4d4;
+	scrollbar-track-color: #f3f3f5;
+	scrollbar-3dlight-color: #d4d4d4;
+}
+
+::-webkit-scrollbar{width:12px;height:12px;}
+::-webkit-scrollbar-button{}
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment{width:0;height:0;}
+::-webkit-scrollbar-track-piece{background-clip:padding-box;background-color:whitesmoke;border:solid white;}
+::-webkit-scrollbar-track-piece:vertical{box-shadow:inset 1px 0 0 rgba(0,0,0,.14),inset -1px 0 0 rgba(0,0,0,.05);border-width:0;}
+::-webkit-scrollbar-track-piece:horizontal{box-shadow:inset 0 1px 0 rgba(0,0,0,.14),inset 0 -1px 0 rgba(0,0,0,.05);border-width:0;}
+::-webkit-scrollbar-thumb{background-color:rgba(210,210,210,1);background-clip:padding-box;border:solid transparent;}
+::-webkit-scrollbar-thumb:vertical{border-width:1px 1px 1px 2px;min-height:24px;box-shadow:inset 1px 1px 0 rgba(210,210,210,.8),inset 0 -1px 0 rgba(210,210,210,8);}
+::-webkit-scrollbar-thumb:horizontal{border-width:2px 1px 1px 1px;min-width:24px;box-shadow:inset 1px 1px 0 rgba(210,210,210,.8),inset -1px 0 0 rgba(210,210,210,.8);}
+::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(210,210,210,.6);box-shadow:inset 1px 1px 0 rgba(210,210,210,1),inset 0 -1px 0 rgba(210,210,210,1);}
+::-webkit-scrollbar-thumb:horizontal:hover{background-color:rgba(210,210,210,.6);box-shadow:inset 1px 1px 0 rgba(210,210,210,1),inset -1px 0 0 rgba(210,210,210,1);}
+
+body
+{
+	margin: 0px;
+	padding: 8px;
+	font-size: 12px;
+	font-family: 宋体;
+	height: 14px;
+}
+
+p
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+.message
+{
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+	font-size: 12px;
+	font-family: 宋体;
+	width: 100%;
+	text-align: left;
+	padding: 0px;
+}
+
+.message .messageTitle
+{
+	color: Blue;
+	height: 16px;
+	cursor: default;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 6px;
+	padding-bottom: 4px;
+}
+
+.message .messageTitle div
+{
+	float: left;
+	height: 16px;
+	height: 16px;
+	line-height: 16px;
+	vertical-align: middle;
+	margin: 0px 6px 0px 0px;
+}
+
+.message .messageTitle .sender
+{
+}
+
+.message .messageTitle .time
+{
+}
+
+.messageTitle .operationContainer
+{
+	display: inline;
+}
+
+.messageTitle .operationContainer a
+{
+	margin: 0px 8px 0px 0px;
+	cursor: pointer;
+	color: #DD0000;
+}
+
+.messageTitle .operationContainer a:hover
+{
+	text-decoration: underline;
+}
+
+.message .messageContent
+{
+	color: Black;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 4px;
+	padding-bottom: 6px;
+}
+
+.message .error
+{
+	border: 1px solid #ECD6C4;
+	background-color: #FFFCF8;
+	padding: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	color: #AA0000;
+	line-height: 1.5em;
+}
+
+.message_quote
+{
+	background-color: #ffffee;
+	border: 1px solid #C0C0C0;
+	padding: 8px;
+	font-size: 12px;
+	margin-bottom: 4px;
+}
+
+.message_file
+{
+	background-color: #ffffee;
+	border: 1px solid #C0C0C0;
+	width: 90%;
+	padding: 6px;
+	font-family: 宋体;
+	font-size: 12px;
+}
+
+.message_file .operationContainer
+{
+	width: 100%;
+	height: 14px;
+}
+
+.message_file a
+{
+	color: Blue;
+	text-decoration: none;
+}
+
+.message_file .operationContainer .link_open
+{
+	float: right;
+	margin-left: 6px;
+	cursor: pointer;
+	color: Blue;
+}
+
+.message_file .operationContainer .link_open:hover
+{
+	text-decoration: underline;
+}
+
+.message_file .operationContainer .link_saveas
+{
+	float: right;
+	margin-left: 6px;
+	cursor: pointer;
+	color: Blue;
+}
+
+.message_file .operationContainer .link_saveas:hover
+{
+	text-decoration: underline;
+}
+
+.message_file .operationContainer .link_download
+{
+	float: right;
+	margin-left: 6px;
+}
+
+.message_file .operationContainer a
+{
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.message_file .operationContainer a:hover
+{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.message_file .div_filename
+{
+	margin-bottom: 8px;
+}
+
+.message_file_dl
+{
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	font-family: 宋体;
+	font-size: 12px;
+	color: Blue;
+	line-height: 1.5em;
+}
+
+.message_file_dl .dl_image_dl
+{
+	width: 16px;
+	height: 16px;
+	float: left;
+	background-image: url("Images/dl.gif");
+}
+
+.message_file_dl .dl_image_file
+{
+	width: 16px;
+	height: 16px;
+	float: left;
+	background-image: url("Images/file.gif");
+}
+
+.message_file_dl .dl_image_cancel
+{
+	width: 16px;
+	height: 16px;
+	float: left;
+	background-image: url("Images/cancel.gif");
+}
+
+.message_file_dl .dl_image_error
+{
+	width: 16px;
+	height: 16px;
+	float: left;
+	background-image: url("Images/error.gif");
+}
+
+.message_file_dl .dl_text
+{
+	height: 16px;
+	line-height: 16px;
+	padding: 0px 2px;
+}
+
+.message_file_dl .dl_text a
+{
+	color: #AA0000;
+	padding-left: 6px;
+}
+
+.message_file_dl .dl_text a:hover
+{
+	color: #AA0000;
+	padding-left: 6px;
+	text-decoration: underline;
+}
+
+.message_file_dl .processing
+{
+	font-family: 宋体;
+	margin-left: 6px;
+	margin-right: 6px;
+	color: Green;
+}
+
+.message_file_dl .span_green
+{
+	font-family: 宋体;
+	color: Green;
+}
+
+.message_file_dl .span_red
+{
+	font-family: 宋体;
+	color: Red;
+}
+
+.message_file_dl .span_normal
+{
+	font-family: 宋体;
+	color: Blue;
+}
+
+.message_file_dl a
+{
+	font-family: 宋体;
+	color: Blue;
+	cursor: pointer;
+}
+
+
+
+
+.mf_message
+{
+	font-size: 12px;
+	font-family: 宋体;
+	text-align: left;
+	margin-top: 8px;
+	border: 1px solid #C4D6EC;
+	margin-bottom: 8px;
+	background-color: #F8FCFF;
+	width: 100%;
+	padding: 0px;
+}
+
+.mf_message .messageTitle
+{
+	color: #000066;
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	cursor: default;
+	border-bottom: dotted 1px #E5EEF8;
+}
+
+.mf_message .messageContent
+{
+	color: Black;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 12px;
+	padding-bottom: 6px;
+}
+
+.mf_message .messageTitle .sender
+{
+	margin-right: 8px;
+}
+
+.mf_message .messageTitle .time
+{
+	margin-right: 8px;
+}
+
+.mf_message .mf_msg_custom
+{
+	border-top: dotted 1px #E5EEF8;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.mf_message .mf_msg_custom .mf_msg_ope
+{
+	height: 16px;
+	text-align: right;
+}
+
+
+.mf_message .mf_msg_custom .mf_msg_ope a
+{
+	margin-left: 8px;
+	cursor: pointer;
+	color: Blue;
+}
+
+.mf_message .mf_msg_custom .mf_msg_editor
+{
+	border: 1px solid #E9E9E9;
+	background-color: #F5F5F5;
+	padding: 16px;
+	margin-top: 6px;
+}
+
+
+.mf_message .mf_msg_custom .mf_msg_editor textarea
+{
+	width: 100%;
+	height: 50px;
+	border: 1px solid #BBBBBB;
+	overflow: auto;
+}
+
+.mf_message .mf_msg_custom .mf_msg_editor .reply_message
+{
+	color: Red;
+	padding-bottom: 6px;
+}
+
+.nodata
+{
+	border: 1px solid #ECD6C4;
+	background-color: #FFFCF8;
+	padding: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	color: #660000;
+}

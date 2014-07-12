@@ -1,0 +1,673 @@
+﻿*
+{
+    scrollbar-arrow-color: #AAAAAA;
+    scrollbar-face-color: #f3f3f5;
+    scrollbar-darkshadow-color: #ffffff;
+    scrollbar-base-color: #f3f3f5;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-shadow-color: #d4d4d4;
+    scrollbar-track-color: #f3f3f5;
+    scrollbar-3dlight-color: #d4d4d4;
+}
+
+div
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+html, body
+{
+    overflow: hidden;
+}
+
+.page_panel div
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+.page_panel
+{
+	left: 0px;
+	top: 0px;
+	z-index:1;
+	overflow: visible;
+	position: fixed;
+	_position: absolute;
+}
+
+.move_div
+{
+    left: 0px;
+    top: 0px;
+    z-index: 2;
+    position: fixed;
+	_position: absolute;
+}
+
+.move_div .move_div_bk
+{
+    position: fixed;
+	_position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: White;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    opacity: 0;
+}
+
+.move_div div
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+.ct input,
+.ct div,
+.ct a,
+.ct label
+.ct .single_line_label
+.ct .ct_button
+{
+    font-family: SimSun;
+    font-size: 12px;
+}
+
+.en .ct input,
+.en .ct div,
+.en .ct a,
+.en .ct label
+.en .ct single_line_label
+.en .ct .ct_button
+{
+    font-family: Arial;
+    font-size: 12px;
+}
+
+.ct_label 
+{
+    height: 1em;
+}
+
+.ct_single_line_label 
+{
+}
+
+.ct_textbox
+{
+    position: absolute;
+    border: 1px solid #7F9DB9;
+    padding: 5px 5px;
+    height: 1em;
+}
+
+.ct_button
+{
+    font-size: 12px;
+    padding: 0px 12px;
+    height: 26px;
+    vertical-align: middle;
+}
+
+.ct_link
+{
+    cursor:pointer;
+    color: Blue;
+    text-decoration: none;
+}
+
+.ct_link:hover
+{
+    cursor:pointer;
+    color: Blue;
+    text-decoration: underline;
+}
+
+/*button begin*/
+
+.ct_custom_button *
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+.ct_custom_button
+{
+    position: absolute;
+}
+
+.ct_custom_button .button_body
+{
+    display: block;
+    width: 100%;
+    height: 26px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 26px;
+    cursor: pointer;
+    color: #204070;
+}
+
+.ct_custom_button .btn_left
+{
+    position: absolute;
+    height: 26px;
+    left: 0px;
+    width: 7px;
+}
+
+.ct_custom_button .btn_center
+{
+    position: absolute;
+    height: 26px;
+    left: 7px;
+    right: 7px;
+    _width: expression((this.parentElement.offsetWidth - 14) + 'px');
+}
+
+.ct_custom_button .btn_right
+{
+    position: absolute;
+    height: 26px;
+    width: 7px;
+    right: 0px;
+}
+
+.ct_custom_button .ct_normal .btn_left
+{
+	background: url("images/commctrl.png") no-repeat 0px 0px;
+}
+
+.ct_custom_button .ct_normal .btn_center
+{
+	background: url("images/commctrl.h.png") repeat-x 0px 0px;
+}
+
+.ct_custom_button .ct_normal .btn_right
+{
+	background: url("images/commctrl.png") no-repeat 0px -26px;
+}
+
+.ct_custom_button .ct_hover
+{
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.8;
+    opacity: 0.8;
+}
+
+.ct_custom_button .ct_hover .btn_left
+{
+	background: url("images/commctrl.png") no-repeat 0px 0px;
+}
+
+.ct_custom_button .ct_hover .btn_center
+{
+	background: url("images/commctrl.h.png") repeat-x 0px 0px;
+}
+
+.ct_custom_button .ct_hover .btn_right
+{
+	background: url("images/commctrl.png") no-repeat 0px -26px;
+}
+
+.ct_custom_button .ct_press .btn_left
+{
+	background: url("images/commctrl.png") no-repeat 0px -52px;
+}
+
+.ct_custom_button .ct_press .btn_center
+{
+	background: url("images/commctrl.h.png") repeat-x 0px -26px;
+}
+
+.ct_custom_button .ct_press .btn_right
+{
+	background: url("images/commctrl.png") no-repeat 0px -78px;
+}
+
+/*button end*/
+
+/*default button begin*/
+
+.ct_custom_default_button *
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+	outline: none;
+}
+
+.ct_custom_default_button
+{
+    position: absolute;
+}
+
+.ct_custom_default_button .button_body
+{
+    display: block;
+    width: 100%;
+    height: 26px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 26px;
+    cursor: pointer;
+    color: #204070;
+}
+
+.ct_custom_default_button .btn_left
+{
+    position: absolute;
+    height: 26px;
+    width: 7px;
+    left: 0px;
+}
+
+.ct_custom_default_button .btn_center
+{
+    position: absolute;
+    height: 26px;
+    left: 7px;
+    right: 7px;
+    _width: expression((this.parentElement.offsetWidth - 14) + 'px');
+}
+
+.ct_custom_default_button .btn_right
+{
+    position: absolute;
+    height: 26px;
+    width: 7px;
+    right: 0px;
+}
+
+.ct_custom_default_button .ct_normal .btn_left
+{
+	background: url("images/commctrl.png") no-repeat 0px -104px;
+}
+
+.ct_custom_default_button .ct_normal .btn_center
+{
+	background: url("images/commctrl.h.png") repeat-x 0px -52px;
+}
+
+.ct_custom_default_button .ct_normal .btn_right
+{
+	background: url("images/commctrl.png") no-repeat 0px -130px;
+}
+
+.ct_custom_default_button .ct_hover
+{
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.8;
+    opacity: 0.8;
+}
+
+.ct_custom_default_button .ct_hover .btn_left
+{
+	background: url("images/commctrl.png") no-repeat 0px -104px;
+}
+
+.ct_custom_default_button .ct_hover .btn_center
+{
+	background: url("images/commctrl.h.png") repeat-x 0px -52px;
+}
+
+.ct_custom_default_button .ct_hover .btn_right
+{
+	background: url("images/commctrl.png") no-repeat 0px -130px;
+}
+
+.ct_custom_default_button .ct_press .btn_left
+{
+	background: url("images/commctrl.png") no-repeat 0px -156px;
+}
+
+.ct_custom_default_button .ct_press .btn_center
+{
+	background: url("images/commctrl.h.png") repeat-x 0px -78px;
+}
+
+.ct_custom_default_button .ct_press .btn_right
+{
+	background: url("images/commctrl.png") no-repeat 0px -182px;
+}
+
+/*default button end*/
+
+/*combox begin*/
+.ct_combox
+{
+    position: absolute;
+    height: 22px;
+}
+
+.ct_combox .combox_body
+{
+    background-color: White;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    _width: expression((this.parentElement.offsetWidth - 2) + 'px');  
+    _height: expression((this.parentElement.offsetHeight - 2) + 'px');  
+}
+
+.ct_combox .combox_body.ct_normal
+{
+    border: 1px solid #E0E0E0;
+}
+
+.ct_combox .combox_body.ct_hover,
+.ct_combox .combox_body.ct_press,
+.ct_combox .combox_body.ct_checked
+{
+    border: 1px solid #2999ff;
+}
+
+.ct_combox .combox_text
+{
+    line-height: 20px;
+    text-indent: 4px;
+    overflow: hidden;
+    position: absolute;
+    cursor: default;
+    left: 0px;
+    right: 17px;
+    height: 20px;
+    _width: expression((this.parentElement.offsetWidth - 15) + 'px'); 
+}
+
+.ct_combox .combox_button
+{
+    position: absolute;
+    right: 0px;
+    width: 15px;
+    height: 20px;
+}
+
+.ct_combox .ct_normal .combox_button
+{
+	background: url("images/commctrl.png") no-repeat 0px -416px;
+}
+
+.ct_combox .ct_hover .combox_button
+{
+	background: url("images/commctrl.png") no-repeat 0px -436px;
+}
+
+.ct_combox .ct_press .combox_button
+{
+	background: url("images/commctrl.png") no-repeat 0px -396px;
+}
+
+.ct_combox .ct_checked .combox_button
+{
+	background: url("images/commctrl.png") no-repeat 0px -396px;
+}
+/*combox end*/
+
+/*listbox begin*/
+.ct_listbox
+{
+    position: absolute;
+}
+
+.ct_listbox .listbox_body
+{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+	_width: expression((this.parentElement.offsetWidth - 2) + 'px');
+	_height: expression((this.parentElement.offsetHeight - 2) + 'px');
+    border:solid 1px #D0D0D0;
+    background-color:White;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
+.ct_listbox .listbox_item
+{
+    margin:0px;
+    padding:4px 0px;
+    cursor:default;
+    white-space:nowrap;
+    width: 100%;
+    text-align: left;
+}
+
+.ct_listbox .listbox_item.ct_normal,
+.ct_listbox .listbox_item.ct_press
+{
+    background-color: Transparent;
+}
+
+.ct_listbox .listbox_item.ct_hover,
+.ct_listbox .listbox_item.ct_checked
+{
+    background-color:#D6E9F8;
+}
+/*listbox end*/
+
+/*toolbar begin*/
+.ct_toolbar
+{
+    height: 22px;
+    overflow: hidden;
+}
+
+.ct_toolbar .tb_item
+{
+    float: left;
+    margin-right: 1px;
+}
+
+.ct_toolbar_button
+{
+}
+
+.ct_toolbar_button *
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+.ct_toolbar_button .button_body
+{
+    height: 20px;
+    line-height: 20px;
+    color: #204070;
+    outline: none;
+    cursor: pointer;
+    float: left;
+}
+
+.ct_toolbar .ct_toolbar_button .button_body
+{
+}
+
+.ct_toolbar_button .button_body.ct_normal
+{
+    border: 0px solid #2999FF;
+    padding: 1px;
+}
+
+.ct_toolbar_button .button_body.ct_hover
+{
+    padding: 0px;
+    border: 1px solid #2999FF;
+	background: url("images/commctrl.h.png") repeat-x 0px -155px;
+}
+
+.ct_toolbar_button .button_body.ct_press,
+.ct_toolbar_button .button_body.ct_checked
+{
+    padding: 0px;
+    border: 1px solid #2999FF;
+	background: url("images/commctrl.h.png") repeat-x 0px -177px;
+}
+
+.ct_toolbar_button .btn_left
+{
+    display: none;
+}
+
+.ct_toolbar_button .btn_center
+{
+}
+
+.ct_toolbar_button .btn_text
+{
+    padding: 0px 2px;
+}
+
+.ct_toolbar_button .btn_right
+{
+    display: none;
+}
+
+.ct_toolbar_button .ct_normal .btn_left
+{
+}
+
+.ct_toolbar_button .ct_normal .btn_center
+{
+}
+
+.ct_toolbar_button .ct_normal .btn_right
+{
+}
+
+.ct_toolbar_button .ct_hover
+{
+}
+
+.ct_toolbar_button .ct_hover .btn_left
+{
+}
+
+.ct_toolbar_button .ct_hover .btn_center
+{
+}
+
+.ct_toolbar_button .ct_hover .btn_right
+{
+}
+
+.ct_toolbar_button .ct_press .btn_left
+{
+}
+
+.ct_toolbar_button .ct_press .btn_center
+{
+}
+
+.ct_toolbar_button .ct_press .btn_right
+{
+}
+
+.image_text_button .btn_text
+{
+	padding: 0px 4px 0px 20px;
+}
+
+.image_button .btn_text
+{
+	padding: 0px;
+	margin: 0px;
+	height: 20px;
+	width: 20px;
+}
+
+.ct_toolbar_combox
+{
+}
+
+.ct_toolbar_combox *
+{
+	-moz-user-select:-moz-none;
+	-webkit-user-select:none;
+}
+
+.ct_toolbar .ct_toolbar_combox
+{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.ct_toolbar_combox .combox_body
+{
+    background-color: White;
+    width: 100px;
+    height: 18px;
+}
+
+.ct_toolbar_combox .combox_body.ct_normal
+{
+    border: 1px solid #E0E0E0;
+}
+
+.ct_toolbar_combox .combox_body.ct_hover,
+.ct_toolbar_combox .combox_body.ct_press,
+.ct_toolbar_combox .combox_body.ct_checked
+{
+    border: 1px solid #2999ff;
+}
+
+.ct_toolbar_combox .combox_text
+{
+    line-height: 18px;
+    text-indent: 4px;
+    overflow: hidden;
+    width: 85px;
+    height: 18px;
+    float: left; 
+    cursor: default;
+}
+
+.ct_toolbar_combox .combox_button
+{
+    float: right; 
+}
+
+.ct_toolbar_combox .ct_normal .combox_button
+{
+    width: 13px;
+    height: 16px;
+    border: 1px solid White;
+	background: url("images/commctrl.png") no-repeat -1px -418px;
+}
+
+.ct_toolbar_combox .ct_hover .combox_button
+{
+    width: 15px;
+    height: 18px;
+    border: 0px solid White;
+	background: url("images/commctrl.png") no-repeat 0px -437px;
+}
+
+.ct_toolbar_combox .ct_press .combox_button
+{
+    width: 15px;
+    height: 18px;
+    border: 0px solid White;
+	background: url("images/commctrl.png") no-repeat 0px -397px;
+}
+
+.ct_toolbar_combox .ct_checked .combox_button
+{
+    width: 15px;
+    height: 18px;
+    border: solid 0px White;
+	background: url("images/commctrl.png") no-repeat 0px -397px;
+}
+
+.ct_toolbar .ct_toolbar_combox .combox_body
+{
+    margin: 1px 1px 0px 2px;
+}
+/*toolbar end*/

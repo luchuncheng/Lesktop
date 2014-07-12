@@ -1,0 +1,192 @@
+﻿
+/*treeview begin*/
+.ct_treeview
+{
+    position: absolute;
+    overflow: hidden;
+    background-color:White;
+}
+
+.ct_treeview .treeview_body
+{
+    position: absolute;
+    overflow: auto;
+    border: 1px solid #E0E0E0;
+    text-align: left;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	_width: expression((this.parentElement.offsetWidth - 2) + 'px');
+	_height: expression((this.parentElement.offsetHeight - 2) + 'px');
+}
+
+.ct_treeview.noborder .treeview_body
+{
+    border: 0px solid #D0D0D0;
+	_width: 100%;
+	_height: 100%;
+}
+
+.ct_treeview .ct_treenode
+{
+    height: 20px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.ct_treeview .ct_treenode table
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+.ct_treeview .ct_treenode td
+{
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+.ct_treeview .nodeImage
+{
+    margin: 2px;
+    height: 16px;
+    width: 16px;
+}
+
+.ct_treeview .nodeText
+{
+    cursor: default;
+    height: 20px;
+    line-height: 20px;
+    padding: 0px 2px;
+}
+
+.ct_treeview .nodeText_Selected
+{
+    cursor: default;
+    margin: 0px;
+    background-color: #316AC5;
+    color: White;
+    border: 1px dotted black;
+    _border: 1px solid #EEEEEE;
+    height: 18px;
+    line-height: 18px;
+    padding: 0px 2px;
+}
+
+.ct_treeview .nodeText.editing,
+.ct_treeview .nodeText_Selected.editing
+{
+    border: 0px dotted black;
+    padding: 0px;
+    background-color: Transparent;
+}
+
+.ct_treeview_nodetext_editor
+{
+    font-size: 12px;
+    line-height: 12px;
+    font-family: SimSun;
+    border: 1px solid Gray;
+    height: 12px;
+    padding: 2px;
+    outline: none;
+    width: 100px;
+}
+
+.ct_treeview .line_es, 
+.ct_treeview .line_nes, 
+.ct_treeview .line_ne, 
+.ct_treeview .line_e, 
+.ct_treeview .line_ns, 
+.ct_treeview .line_none, 
+.ct_treeview .expand_es, 
+.ct_treeview .expand_nes, 
+.ct_treeview .expand_ne, 
+.ct_treeview .expand_e, 
+.ct_treeview .collapse_es, 
+.ct_treeview .collapse_nes, 
+.ct_treeview .collapse_ne, 
+.ct_treeview .collapse_e
+{
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+}
+
+.ct_treeview .line_es
+{
+    background: url(Images/tree.png) no-repeat -200px -5px;
+}
+
+.ct_treeview .line_nes
+{
+    background: url(Images/tree.png) no-repeat -240px -5px;
+}
+
+.ct_treeview .line_ne
+{
+    background: url(Images/tree.png) no-repeat -220px -5px;
+}
+
+.ct_treeview .line_e
+{
+    background: url(Images/tree.png) no-repeat -180px -5px;
+}
+
+.ct_treeview .line_ns
+{
+    background: url(Images/tree.png) no-repeat -160px -5px;
+}
+
+.ct_treeview .line_none
+{
+    background: url(Images/tree.png) no-repeat -260px -5px;
+}
+
+.ct_treeview .expand_es
+{
+    background: url(Images/tree.png) no-repeat -100px -5px;
+}
+
+.ct_treeview .expand_nes
+{
+    background: url(Images/tree.png) no-repeat -140px -5px;
+}
+
+.ct_treeview .expand_ne
+{
+    background: url(Images/tree.png) no-repeat -120px -5px;
+}
+
+.ct_treeview .expand_e
+{
+    background: url(Images/tree.png) no-repeat -80px -5px;
+}
+
+
+.ct_treeview .collapse_es
+{
+    background: url(Images/tree.png) no-repeat -20px -5px;
+}
+
+.ct_treeview .collapse_nes
+{
+    background: url(Images/tree.png) no-repeat -60px -5px;
+}
+
+.ct_treeview .collapse_ne
+{
+    background: url(Images/tree.png) no-repeat -40px -5px;
+}
+
+.ct_treeview .collapse_e
+{
+    background: url(Images/tree.png) no-repeat 0px -5px;
+}
+/*treeview end*/

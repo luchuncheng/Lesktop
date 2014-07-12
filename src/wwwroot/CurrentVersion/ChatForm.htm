@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/MsgCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/ChatPanel.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/ChatForm.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/RichEditor.css" rel="stylesheet" type="text/css" />
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<script src="Core/Extent.js" type="text/javascript"></script>
+
+	<script src="Core/Sub.js" type="text/javascript"></script>
+
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/TreeView.js" type="text/javascript"></script>
+
+	<script src="UI/Control.js" type="text/javascript"></script>
+
+	<script src="UI/MsgCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/RichEditor.js" type="text/javascript"></script>
+
+	<script src="UI/ChatPanel.js" type="text/javascript"></script>
+
+	<script src="UI/ChatForm.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+	
+		var chatpanel_ = null;
+
+		function OnActivated(wParam, lParam)
+		{
+			try
+			{
+				var hi = wParam >> 16;
+				var lw = wParam & 0xFFFF;
+				if (hi == 0 && (lw == 1 || lw == 2) && chatpanel_ != null) chatpanel_.Focus();
+			}
+			catch (ex)
+			{
+			}
+		}
+
+		function CreateChatForm(peerInfo)
+		{
+			var data = {
+				User: Core.Session.GetUserInfo()
+			};
+
+			data.Peer = peerInfo;
+			data.IsPeerOnline = data.Peer.State != "Offline";
+
+			var config = {
+				Peer: data.Peer,
+				User: data.User
+			};
+
+			chatpanel_ = data.Peer.Type == 0 ? new Core.UI.UserChatPanel(config) : new Core.UI.GroupChatPanel(config);
+			CurrentWindow.SetTitle(String.format("{0}({1})", data.Peer.Nickname, data.Peer.Name));
+			CurrentWindow.GetTag().OnFormCreated.Call(chatpanel_);
+			if (peerInfo.Type == 0 && peerInfo.State == "Leave") chatpanel_.MarkLeaveStatus();
+			try
+			{
+				if(!CurrentWindow.GetTag().Slient) chatpanel_.Focus();
+			}
+			catch (ex)
+			{
+			}
+		}
+
+		function Create(peer, peerInfo)
+		{
+			if (peerInfo == undefined || peerInfo == null)
+			{
+				CurrentWindow.Waiting("读取用户信息，请稍候...");
+				Core.GetMultiUsersInfo(
+					function(infos, ex)
+					{
+						CurrentWindow.Completed();
+						if (infos != null)
+						{
+							CreateChatForm(infos[peer]);
+						}
+						else
+						{
+							Core.Utility.ShowError(ex.toString());
+						}
+					},
+					(typeof(peer) == "string"), peer
+				);
+			}
+			else
+			{
+				CreateChatForm(peerInfo);
+			}
+		}
+		
+		function init()
+		{
+			CurrentWindow.OnActivated.Attach(OnActivated);
+			
+			Core.UI.PagePanel.Create("");
+			var peer = CurrentWindow.GetTag().Peer;
+			var peerInfo = CurrentWindow.GetTag().PeerInfo;
+			Create(peer, peerInfo);
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,245 @@
+﻿
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+
+</title>
+
+	<script src="../Core/WinScript.js" type="text/javascript"></script>
+
+	<link href="../Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+
+	<script src="../UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<style type="text/css">
+		body
+		{
+			background-color: #EEEEEE;
+		}
+		.ct_toolbar .my_tb_combox
+		{
+			width: 60px;
+		}
+		#toolbar1
+		{
+			position: absolute;
+			left: 30px;
+			top: 100px;
+			width: 400px;
+			height: 24px;
+		}
+		.ct_toolbar_combox .combox2
+		{
+			width: 80px;
+		}
+		.ct_toolbar_combox .combox2 .combox_text
+		{
+			width: 65px;
+		}
+		.sample_button
+		{
+			margin-top: 8px;
+			margin-left: 8px;
+		}
+	</style>
+
+	<script language="javascript" type="text/javascript">
+		function init()
+		{
+			Lesktop.AddString("zh-CN", "Close Window", "\u5173\u95ED\u7A97\u53E3");
+			Lesktop.AddString("zh-CN", "Modal Window", "\u6A21\u6001\u7A97\u53E3");
+			Lesktop.AddString("zh-CN", "Menu Test", "\u83DC\u5355\u6D4B\u8BD5");
+			Lesktop.AddString("zh-CN", "Flash Window", "\u95EA\u70C1\u7A97\u53E3");
+			Lesktop.AddString("zh-CN", "Show Loading Tip", "\u663E\u793A\u201C\u6B63\u5728\u52A0\u8F7D\u002E\u002E\u002E\u201D\u63D0\u793A");
+			Lesktop.AddString("zh-CN", "Loading...", "\u6B63\u5728\u52A0\u8F7D\u002E\u002E\u002E");
+			Lesktop.AddString("zh-CN", "Irregular Window", "\u4E0D\u89C4\u5219\u7A97\u53E3");
+			Lesktop.AddString("zh-CN", "Show \u0022Loading...\u0022", "\u663E\u793A \x22\u6B63\u5728\u52A0\u8F7D...\x22");
+			Lesktop.AddString("zh-CN", "Show \u0022Loading...\u0022 ({0})", "\u663E\u793A \x22\u6B63\u5728\u52A0\u8F7D...\x22 ({0})");
+			Lesktop.AddString("zh-CN", "Hide \u0022Loading...\u0022", "\u9690\u85CF \x22\u6B63\u5728\u52A0\u8F7D...\x22");
+			Lesktop.AddString("zh-CN", "SetTitle(\u0022New Title\u0022)", "SetTitle(\u0022\u65B0\u7A97\u53E3\u6807\u9898\u0022)");
+			Lesktop.AddString("zh-CN", "New Title", "\u65B0\u7A97\u53E3\u6807\u9898");
+
+			var html = 
+			"<input class='ct_button sample_button' type='button' id='button1' value='##Modal Window##' />" +
+			"<input class='ct_button sample_button' type='button' id='button2' value='WebForm(*.aspx)' />" +
+			"<input class='ct_button sample_button' type='button' id='button3' value='##Irregular Window##' />" +
+			"<input class='ct_button sample_button' type='button' id='button4' value='##Flash Window##' />" +
+			"<input class='ct_button sample_button' type='button' id='button5' value='##Menu Test##' />" +
+			'<div class="ct_toolbar" id="toolbar1"></div>';
+			
+			Lesktop.UI.PagePanel.Create(Lesktop.TranslateHtml(html));
+			
+			document.getElementById("button1").onclick = function()
+			{
+				var sample_modal_window = Lesktop.CreateWindow(
+					{
+						Left: 0,
+						Top: 0,
+						Width: 400,
+						Height: 350,
+						Title: Lesktop.GetString("Modal Window"),
+						Page: Lesktop.GetPageUrl("Tests/ModalWindow.htm"),
+						ExtCss: ""
+					}
+				);
+				sample_modal_window.ShowDialog(
+					CurrentWindow, "CENTER", 0, -10,
+					function()
+					{
+						alert("ShowDialog Callback");
+					}
+				);
+			}
+			
+			document.getElementById("button2").onclick = function()
+			{
+				var w = Lesktop.CreateWindow(
+					{
+						Left: 200,
+						Top: 150,
+						Width: 600,
+						Height: 450,
+						Title: "TestWindow.aspx",
+						Page: Lesktop.GetPageUrl("Tests/TestWindow.aspx"),
+						ExtCss: "resizable min-button"
+					}
+				);
+				w.MoveEx("CENTER", -200, -132, true);
+				w.Show();
+			}
+			
+			document.getElementById("button3").onclick = function()
+			{
+				var w = Lesktop.CreateWindow(
+					{
+						Left: 200,
+						Top: 200,
+						Width: 512,
+						Height: 512,
+						Title: Lesktop.GetString("Irregular Window"),
+						Page: Lesktop.GetPageUrl("Tests/IrregularWindow.htm"),
+						Css: "popup",
+						ExtCss: ""
+					}
+				);
+				w.Show();
+			}
+			
+			document.getElementById("button4").onclick = function()
+			{
+				CurrentWindow.Flash();
+			}
+
+			var menu_config = {
+				Items: [{
+					Text: "Menu1",
+					ID: "ID1"
+				},
+				{
+					Text: "Menu2",
+					ID: "ID2"
+				},
+				{
+					Text: "Menu3",
+					ID: "ID3",
+					SubMenu: {
+						Items: [{
+							Text: "Sub Menu 31",
+							ID: "ID3_1"
+						},
+						{
+							Text: "Sub Menu 32",
+							ID: "ID3_2"
+						}]
+					}
+				},
+				{
+					Text: "Menu4",
+					ID: "ID4"
+				}]
+			};
+		    
+			var menu = Lesktop.CreateMenu(menu_config);		    
+			menu.OnCommand.Attach(
+				function(command)
+				{ 
+					alert(command == "" ? "close menu" : command); 
+				}
+			);
+			CurrentWindow.OnClosed.Attach(function(){ menu = null; })
+			
+			document.getElementById("button5").onclick = function()
+			{
+				var coord = Lesktop.Utility.GetClientCoord(document.getElementById("button5"));
+				var clientCoord = CurrentWindow.GetClientCoord(coord.X, coord.Y + document.getElementById("button5").offsetHeight + 2);
+				menu.Popup(clientCoord.X, clientCoord.Y);
+			}
+
+			var toolbar1 = new Lesktop.UI.Toolbar(
+				document.getElementById("toolbar1"),
+				{
+					Items: [
+						{
+							ID: "tb_button1",
+							Type: "Button",
+							Config: { 
+								Text: "Menu Button", TabIndex: 3,
+								Menu: {
+									Items: [{
+										Text: "Menu1",
+										ID: "ID1"
+									},
+									{
+										Text: "Menu2",
+										ID: "ID2"
+									},
+									{
+										Text: "Menu3",
+										ID: "ID3",
+										SubMenu: {
+											Items: [{
+												Text: "Sub Menu 31",
+												ID: "ID3_1"
+											},
+											{
+												Text: "Sub Menu 32",
+												ID: "ID3_2"
+											}]
+										}
+									},
+									{
+										Text: "Menu4",
+										ID: "ID4"
+									}]
+								}
+							}
+						},
+						{
+							ID: "combox2",
+							Type: "Combox",
+							Config: { CustomCss: "combox2" }
+						}
+					]
+				}
+			);    
+			 toolbar1.GetItem("tb_button1").OnCommand.Attach(
+				function(command)
+				{ 
+					if(command != "") alert(command); 
+				}
+			);
+
+			var combox2 = toolbar1.GetItem("combox2");
+			combox2.AddItem("1111111111111", 1);
+			combox2.AddItem("22222222222222", 2);
+			combox2.AddItem("333333333333", 3);
+			combox2.SetValue(3);
+			combox2.SetText("1111111111111");
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

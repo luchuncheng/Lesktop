@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<style type="text/css">
+		html
+		{
+			overflow: hidden;
+			border: 0px;
+		}
+		body
+		{
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			font-family: Simsun;
+			font-size: 12px;
+			border: 0px;
+		}
+	</style>
+	<script language="javascript" type="text/javascript">
+
+		document.oncontextmenu = function () { return false; }
+
+		document.onkeydown = function ()
+		{
+			if (event.keyCode == 116 || (event.ctrlKey && event.keyCode == 82))
+			{
+				event.keyCode = 0;
+				event.returnValue = false;
+				return false;
+			}
+			if (event.keyCode == 70 && event.ctrlKey && !event.altKey && !event.shiftKey)
+			{
+				event.keyCode = 0;
+				event.returnValue = false;
+				return false;
+			}
+		}
+	</script>
+	<script language="javascript" type="text/javascript">
+		window.ClientMode = true;
+	</script>
+	<script src="Core/Common.js" type="text/javascript"></script>
+	<script src="Core/Extent.js" type="text/javascript"></script>
+	<script src="Core/Config.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript">
+		if (Core.Config.EnableDynamicApp)
+		{
+			document.writeln('<script src="Applications.js?' + (new Date()).getTime() + '" type="text/javascript"></' + 'script>');
+		}
+	</script>
+	<script src="Core/Plugins.js" type="text/javascript"></script>
+	<script src="Core/Main.js" type="text/javascript"></script>
+	<script src="WebDesktop/Desktop.js" type="text/javascript"></script>
+	<script src="WebDesktop/Window.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="loading_div">
+	</div>
+</body>
+</html>

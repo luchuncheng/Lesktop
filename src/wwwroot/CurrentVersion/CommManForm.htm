@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+	
+	<style type="text/css">
+		.frame_container
+		{
+			overflow: hidden;
+			border: 1px solid #D0D0D0;
+			background-color: White;
+		}
+	</style>
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<script src="Core/Extent.js" type="text/javascript"></script>
+
+	<script src="Core/Sub.js" type="text/javascript"></script>
+
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/Control.js" type="text/javascript"></script>
+
+	<script type="text/javascript" language="javascript">
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			var tabctrl = new Core.UI.TabControl(
+				Core.UI.PagePanel,
+				{
+					ID: "tabctrl",
+					Css: "tabctrl ct_tab",
+					Margin: 1,
+					Tabs: [
+						{
+							ID: "TAB0", MinWidth: 100, Text: "好友管理",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						},
+						{
+							ID: "TAB1", MinWidth: 100, Text: "群管理",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						},
+						{
+							ID: "TAB2", MinWidth: 100, Text: "所有用户",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						},
+						{
+							ID: "TAB3", MinWidth: 100, Text: "所有群组",
+							Controls: [
+								{ ID: "frame_container", Css: "frame_container", Margin: 6, BorderWidth: 1, DockStyle: Core.UI.DockStyle.Fill }
+							]
+						}
+					],
+					DockStyle: Core.UI.DockStyle.Fill
+				}
+			);
+			
+			tabctrl.SetTabVisible("TAB2", Core.Session.GetUserID() == Core.AccountData.AdminID);
+			tabctrl.SetTabVisible("TAB3", Core.Session.GetUserID() == Core.AccountData.AdminID);
+			
+			var frames_ = {};
+
+			for (var i = 0; i <= 3; i++)
+			{
+				var tid = "TAB" + i.toString();
+				var tab_panel = tabctrl.GetPanel(tid);
+				var frame_container = tab_panel.FindControl("frame_container");
+				var frame = Core.UI.CreateFrame(frame_container.GetContainer());
+				frames_[tid] = frame;
+			}
+
+			tabctrl.OnSelectedTab.Attach(
+				function(cur, pre)
+				{
+					var current_tab = tabctrl.GetCurrentTab();
+					if (current_tab == "TAB0")
+					{
+						CurrentWindow.CompleteAll();
+						CurrentWindow.Waiting("正在载入好友列表...");
+						frames_[current_tab].src = String.format("Management/Comm_FriendList.aspx?random={0}", (new Date()).getTime());
+					}
+					else if (current_tab == "TAB1")
+					{
+						CurrentWindow.CompleteAll();
+						CurrentWindow.Waiting("正在载入群列表...");
+						frames_[current_tab].src = String.format("Management/Comm_GroupList.aspx?random={0}", (new Date()).getTime());
+					}
+					else if (current_tab == "TAB2")
+					{
+						CurrentWindow.CompleteAll();
+						CurrentWindow.Waiting("正在载入用户列表...");
+						frames_[current_tab].src = String.format("Management/Comm_AllUSers.aspx?random={0}", (new Date()).getTime());
+					
+					}
+					else if (current_tab == "TAB3")
+					{
+						CurrentWindow.CompleteAll();
+						CurrentWindow.Waiting("正在载入群列表...");
+						frames_[current_tab].src = String.format("Management/Comm_AllGroups.aspx?random={0}", (new Date()).getTime());
+					
+					}
+				}
+			);
+
+			tabctrl.Select(Core.Session.GetUserID() == Core.AccountData.AdminID ? "TAB2" : "TAB0");
+		}
+	</script>
+
+</head>
+<body>
+</body>
+</html>

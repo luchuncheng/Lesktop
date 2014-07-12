@@ -1,0 +1,161 @@
+﻿
+html
+{
+	_overflow-y: auto;
+	_overflow-x: hidden;
+}
+
+body
+{
+	margin: 8px;
+	_margin-right: 25px;
+}
+		
+.table_blue
+{
+}
+
+.table_blue table
+{
+	border-width: 0px;
+	border-style: solid;
+	border-color: #C4D6EC;
+	width: 100%;
+    border-collapse:collapse;
+}
+
+.table_blue td
+{
+	font-size: 12px;
+	font-family: SimSun;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+	padding-right: 8px;
+	line-height:1.5em;
+	border-style: solid;
+	border-color: #C4D6EC;
+	empty-cells:show;
+}
+
+.table_blue tr td
+{
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #C4D6EC;
+	background-color: #F8FCFF;
+	color:#074977;
+}
+
+.table_blue tr.header td
+{
+	border-width: 1px 0px 1px 0px;
+	background-color: #F3F7FA;
+	font-weight: bold;
+}
+
+.table_blue_ng
+{
+}
+
+.table_blue_ng .table
+{
+	border-width: 0px;
+	border-style: solid;
+	border-color: #C4D6EC;
+	width: 100%;
+    border-collapse:collapse;
+}
+
+.table_blue_ng .td
+{
+	font-size: 12px;
+	font-family: SimSun;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+	padding-right: 8px;
+	line-height:1.5em;
+	border-style: solid;
+	border-color: #C4D6EC;
+	empty-cells:show;
+}
+
+.table_blue_ng .tr .td
+{
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #C4D6EC;
+	background-color: #F8FCFF;
+	color:#074977;
+}
+
+.table_blue_ng .header .td
+{
+	border-width: 1px 0px 1px 0px;
+	background-color: #F3F7FA;
+	font-weight: bold;
+}
+
+.table_red
+{
+}
+
+.table_red table
+{
+	border-width: 0px;
+	border-style: solid;
+	border-color: #ECC4D6;
+	width: 100%;
+}
+
+.table_red td
+{
+	font-size: 12px;
+	font-family: SimSun;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+	padding-right: 8px;
+	line-height:1.5em;
+}
+
+.table_red tr td
+{
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #ECD6C4;
+	background-color: #FFFCF8;
+	color:#AA0000;
+}
+
+.table_red tr.header td
+{
+	border-width: 1px 0px 1px 0px;
+	background-color: #FAF7F3;
+	font-weight: bold;
+}
+
+
+.link
+{
+	color:Blue;
+	text-decoration:none;
+	margin-left:8px;
+}
+
+.link:hover
+{
+	text-decoration:underline;
+}
+
+.link_invalid
+{
+	color:#666666;
+	text-decoration:none;
+	margin-left:8px;
+}
+
+.link_invalid:hover
+{
+}

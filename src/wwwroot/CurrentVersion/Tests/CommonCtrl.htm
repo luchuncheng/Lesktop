@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="../Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="../Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+
+	<script src="../Core/Common.js" type="text/javascript"></script>
+
+	<script src="../UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="../UI/TreeView.js" type="text/javascript"></script>
+
+	<style type="text/css">
+		body
+		{
+			background-color: #EEEEEE;
+		}
+		#tab1
+		{
+			position: absolute;
+			left: 100px;
+			top: 50px;
+			right: 200px;
+			bottom: 50px;
+			z-index: 10;
+			_width: expression((this.parentElement.offsetWidth - 300) + 'px');
+			_height: expression((this.parentElement.offsetHeight - 100) + 'px');
+		}
+		#combox1
+		{
+			position: absolute;
+			left: 30px;
+			top: 80px;
+			width: 100px;
+		}
+		#listbox1
+		{
+			left: 30px;
+			top: 130px;
+			width: 280px;
+			height: 150px;
+		}
+		.ct_toolbar .my_tb_combox
+		{
+			width: 60px;
+		}
+		#treeview1
+		{
+			left: 400px;
+			top: 20px;
+			right: 50px;
+			bottom: 50px;
+			_width: expression((this.parentElement.offsetWidth - 450) + 'px');
+			_height: expression((this.parentElement.offsetHeight - 70) + 'px');
+		}
+		#btn2
+		{
+			left: 30px;
+			top: 30px;
+			width: 70px;
+		}
+		#btn1
+		{
+			left: 140px;
+			top: 30px;
+			width: 80px;
+		}
+		#btn3
+		{
+			left: 250px;
+			top: 30px;
+			width: 120px;
+		}
+		#toolbar1
+		{
+			position: absolute;
+			left: 30px;
+			top: 300px;
+			width: 400px;
+			height: 24px;
+		}
+		.tb_image .btn_text
+		{
+			background: url(images/tv_image.png) no-repeat -2px -2px;
+		}
+		.tv_image
+		{
+			background: url(images/tv_image.png) no-repeat -4px -4px;
+		}
+		.ct_toolbar_combox .combox2
+		{
+			width: 80px;
+		}
+		.ct_toolbar_combox .combox2 .combox_text
+		{
+			width: 65px;
+		}
+	</style>
+
+	<script language="javascript" type="text/javascript">
+		window.onload = function()
+		{
+			Core.UI.PagePanel.Create(
+				'<div class="ct_custom_default_button" id="btn2"></div>' +
+				'<div class="ct_custom_button" id="btn1"></div>' +
+				'<div class="ct_combox" id="combox1"></div>' +
+				'<div class="ct_listbox" id="listbox1"></div>' +
+				'<div class="ct_toolbar" id="toolbar1"></div>' +
+				'<div class="ct_treeview" id="treeview1"></div>'
+			);
+
+			var button1 = new Core.UI.Button(document.getElementById("btn1"), { Text: "Button1", TabIndex: 1 });
+			button1.OnClick.Attach(function() { alert("button1"); });
+
+			var button2 = new Core.UI.Button(document.getElementById("btn2"), { Text: "Button2", TabIndex: 2 });
+
+			var combox1 = new Core.UI.Combox(document.getElementById("combox1"));
+			combox1.AddItem("1111111111111", 1);
+			combox1.AddItem("222222222222225555555555555555555", 2);
+			combox1.AddItem("333333333333", 3);
+			combox1.SetValue(3);
+			combox1.SetText("1111111111111");
+
+			var listbox1 = new Core.UI.ListBox(document.getElementById("listbox1"));
+			listbox1.AddItem("Item1", 1);
+			listbox1.AddItem("Item2", 2);
+			listbox1.AddItem("Item 333333333333333333333333", 3);
+			listbox1.SetValue(3);
+			listbox1.SetValue(2);
+
+			var toolbar1 = new Core.UI.Toolbar(
+				document.getElementById("toolbar1"),
+				{
+					Items: [
+						{
+							ID: "tb_button1",
+							Type: "Button",
+							Config: { 
+								Text: "Text Button", TabIndex: 3 
+							}
+						},
+						{
+							ID: "tb_button5",
+							Type: "Button",
+							Config: { 
+								Text: "Menu Button", TabIndex: 3,
+								Menu: {
+									Items: [{
+										Text: "Menu1",
+										ID: "ID1"
+									},
+									{
+										Text: "Menu2",
+										ID: "ID2"
+									},
+									{
+										Text: "Menu3",
+										ID: "ID3",
+										SubMenu: {
+											Items: [{
+												Text: "Sub Menu 31",
+												ID: "ID3_1"
+											},
+											{
+												Text: "Sub Menu 32",
+												ID: "ID3_2"
+											}]
+										}
+									},
+									{
+										Text: "Menu4",
+										ID: "ID4"
+									}]
+								}
+							}
+						},
+						{
+							ID: "tb_button2",
+							Type: "Button",
+							Css: "image_text_button tb_image",
+							Config: { Text: "Image & Text", TabIndex: 4 }
+						},
+						{
+							ID: "tb_button3",
+							Type: "Button",
+							Css: "image_button tb_image",
+							Config: { CheckMode: true, Text: "", TabIndex: 3 }
+						},
+						{
+							ID: "combox2",
+							Type: "Combox",
+							Config: { CustomCss: "combox2" }
+						}
+					]
+				}
+			);
+
+			var combox2 = toolbar1.GetItem("combox2");
+			combox2.AddItem("1111111111111", 1);
+			combox2.AddItem("222222222222225555555555555555555", 2);
+			combox2.AddItem("333333333333", 3);
+			combox2.SetValue(3);
+			combox2.SetText("1111111111111");
+		
+			var ds = (function()
+			{
+				var obj_ = {};
+
+				obj_.GetSubNodes = function(callback, node)
+				{
+					var nodes = [];
+
+					nodes.push({
+						Name: "1",
+						Text: "节点1",
+						Tag: {
+							Type: "All"
+						},
+						HasChildren: true,
+						ImageCss: "tv_image"
+					}, {
+						Name: "2",
+						Text: "节点2",
+						Tag: {
+							Type: "All"
+						},
+						HasChildren: true,
+						ImageCss: "tv_image"
+					}, {
+						Name: "3",
+						Text: "节点3",
+						Tag: {
+							Type: "All"
+						},
+						HasChildren: true,
+						ImageCss: "tv_image"
+					});
+
+					callback(nodes);
+				}
+
+				return obj_;
+			})();
+			var treeview = new Core.UI.TreeView(document.getElementById("treeview1"), { DataSource: ds });
+			treeview.Load();
+			button2.OnClick.Attach(
+				function() 
+				{ 
+					var node = treeview.GetSelectedNode();
+					node.Edit();
+				}
+			);
+		}
+	</script>
+
+</head>
+<body style="margin: 0px; padding: 0px;">
+</body>
+</html>

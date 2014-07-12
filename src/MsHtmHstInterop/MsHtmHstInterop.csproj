@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>local</ProjectType>
+    <ProjectVersion>7.10.3077</ProjectVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CAA21575-73FD-46E4-824A-926BB0410B3F}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>MsHtmHstInterop</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <NoStdLib>false</NoStdLib>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugSymbols>false</DebugSymbols>
+    <NoStdLib>false</NoStdLib>
+    <Optimize>true</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Global.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IAdviseSink.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IBindCtx.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\ICustomDoc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IDataObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IDocHostShowUI.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IDocHostUIHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IDocHostUIHandler2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IDropTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IEnumFORMATETC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IEnumMoniker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IEnumSTATDATA.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IEnumString.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IHostDialogHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IMoniker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IOleCommandTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IOleInPlaceActiveObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IOleInPlaceFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IOleInPlaceUIWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IOleWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IPersist.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IPersistStream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IRunningObjectTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\ISequentialStream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\IStream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagBIND_OPTS2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagDOCHOSTUIDBLCLK.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagDOCHOSTUIFLAG.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagDOCHOSTUITYPE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagDVTARGETDEVICE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagFORMATETC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagLOGPALETTE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagMSG.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagOleMenuGroupWidths.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagPALETTEENTRY.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagPOINT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagRECT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagSTATDATA.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\tagSTATSTG.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_BYTE_BLOB.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_COAUTHIDENTITY.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_COAUTHINFO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_COSERVERINFO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_DOCHOSTUIINFO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_FILETIME.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_FLAGGED_BYTE_BLOB.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_GDI_OBJECT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_LARGE_INTEGER.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_POINTL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_RemotableHandle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_remoteMETAFILEPICT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_STGMEDIUM_UNION.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_tagOLECMD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_tagOLECMDTEXT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_ULARGE_INTEGER.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userBITMAP.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userCLIPFORMAT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userFLAG_STGMEDIUM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userHBITMAP.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userHENHMETAFILE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userHGLOBAL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userHMETAFILE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userHMETAFILEPICT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userHPALETTE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\_userSTGMEDIUM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IAdviseSink_0002.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IAdviseSink_0003.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0001.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0003.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0004.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0005.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0006.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0007.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0008.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsHtmHstInterop\__MIDL_IWinTypes_0009.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

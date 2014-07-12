@@ -1,0 +1,153 @@
+﻿
+.ct_splitter_placeholder
+{
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    border: 0px solid Black;
+    background-color: Black;
+    font-size: 1px;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
+
+.ct_hsplitter
+{
+    font-size: 1px;
+}
+
+.ct_vsplitter
+{
+    font-size: 1px;
+}
+
+.ct_control
+{
+    overflow: hidden;
+}
+
+/*tab begin*/
+
+.ct_tab
+{
+    overflow: hidden;
+}
+
+.ct_tab .tab_body
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    border: 1px solid #E0E0E0;
+    background-color: #F2F2F2;
+    _width: expression((this.parentElement.offsetWidth - 2) + 'px');
+    _height: expression((this.parentElement.offsetHeight - 2) + 'px');
+}
+
+.ct_tab .tab_body .tab_header *
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+.ct_tab .tab_body .tab_header
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    height: 25px;
+    color: #204070;
+	background: url("images/commctrl.h.png") repeat-x 0px -104px;
+	overflow: hidden;
+    border: 0px solid #E0E0E0;
+    _width: expression((this.parentElement.offsetWidth - 2) + 'px');
+}
+
+.ct_tab .tab_content
+{
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    right: 0px;
+    bottom: 0px;
+    _width: expression((this.parentElement.offsetWidth - 2) + 'px');
+    _height: expression((this.parentElement.offsetHeight - 26) + 'px');
+    overflow: hidden;
+}
+
+.ct_tab .tab_button_normal
+{
+    float: left;
+    height: 25px;
+    cursor: default;
+}
+
+.ct_tab .tab_button_normal .btn_left
+{
+    float: left;
+    width: 7px;
+    height: 25px;
+	background: url("images/commctrl.png") no-repeat 0px -208px;
+}
+
+.ct_tab .tab_button_normal .btn_center
+{
+    float: left;
+    height: 25px;
+	line-height: 25px;
+	text-align: center;
+	vertical-align: middle;
+	background: url("images/commctrl.h.png") repeat-x 0px -104px;
+}
+
+.ct_tab .tab_button_normal .btn_right
+{
+    float: left;
+    width: 7px;
+    height: 25px;
+	background: url("images/commctrl.png") no-repeat 0px -233px;
+}
+
+.ct_tab .tab_button_selected
+{
+    float: left;
+    height: 25px;
+    cursor: default;
+}
+
+.ct_tab .tab_button_selected .btn_left
+{
+    float: left;
+    width: 7px;
+    height: 25px;
+	background: url("images/commctrl.png") no-repeat 0px -258px;
+}
+
+.ct_tab .tab_button_selected .btn_center
+{
+    float: left;
+    height: 25px;
+	text-align: center;
+    font-size: 15px;
+	background: url("images/commctrl.h.png") repeat-x 0px -129px;
+}
+
+.ct_tab .tab_button_selected .btn_center span
+{
+    margin-top: 6px;
+    display: block;
+}
+
+.ct_tab .tab_button_selected .btn_right
+{
+    float: left;
+    width: 7px;
+    height: 25px;
+	background: url("images/commctrl.png") no-repeat 0px -283px;
+}
+
+/*tab end*/

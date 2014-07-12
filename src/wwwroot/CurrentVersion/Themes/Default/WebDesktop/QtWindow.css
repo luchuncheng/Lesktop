@@ -1,0 +1,353 @@
+﻿
+body
+{
+	padding: 0px;
+	margin: 0px;
+	overflow: hidden;
+}
+
+div
+{
+	-webkit-user-select: none;
+}
+
+.window
+{
+	position: fixed;
+	font-size: 12px;
+	font-family: SimSun;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.window .background
+{
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	position: absolute;
+	z-index: 0;
+}
+
+.window .background div
+{
+	position: absolute;
+}
+
+.window .background .background_block_0
+{
+
+	background: url(Images/common.png) no-repeat -163px -31px;
+	left: 0px;
+	top: 0px;
+	width: 6px;
+	height: 24px;
+}
+
+.window .background .background_block_1
+{
+	background: url(Images/horiz.png) repeat-x 0px -20px;
+	left: 6px;
+	top: 0px;
+	right: 6px;
+	height: 24px;
+}
+
+.window .background .background_block_2
+{
+	background: url(Images/common.png) no-repeat -172px -31px;
+	right: 0px;
+	top: 0px;
+	width: 6px;
+	height: 24px;
+}
+
+.window .background .background_block_3
+{
+	background: url(Images/vertical.png) repeat-y -10px 0px;
+	left: 0px;
+	width: 6px;
+	top: 24px;
+	bottom: 6px;
+}
+
+.window .background .background_block_4
+{
+	background-color: #EFF0F2;
+	left: 6px;
+	right: 6px;
+	top: 24px;
+	bottom: 6px;
+}
+
+.window .background .background_block_5
+{
+	background: url(Images/vertical.png) repeat-y 0px 0px;
+	right: 0px;
+	width: 6px;
+	top: 24px;
+	bottom: 6px;
+}
+
+.window .background .background_block_6
+{
+	background: url(Images/common.png) no-repeat -179px -49px;
+	left: 0px;
+	width: 6px;
+	bottom: 0px;
+	height: 6px;
+}
+
+.window .background .background_block_7
+{
+	background: url(Images/horiz.png) repeat-x 0px -10px;
+	left: 6px;
+	right: 6px;
+	height: 6px;
+	bottom: 0px;
+}
+
+.window .background .background_block_8
+{
+	background: url(Images/common.png) no-repeat -188px -49px;
+	right: 0px;
+	width: 6px;
+	bottom: 0px;
+	height: 6px;
+}
+
+.window .disabled
+{
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	position: absolute;
+	opacity: 0.2;
+	background-color: White;
+	z-index: 4;
+}
+
+.window .waiting
+{
+	position: absolute;
+	background-color: #FFFFDD;
+	text-align: left;
+	z-index: 4;
+	left: 6px;
+	top: 24px;
+	right: 6px;
+	height: 24px;
+	font-size: 12px;
+	font-family: 宋体;
+}
+
+.window .waiting div
+{
+	margin-left: 4px;
+	height: 24px;
+	line-height: 24px;
+	vertical-align: middle;
+	color: Blue;
+}
+
+.window .border
+{
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	position: absolute;
+	z-index: 1;
+}
+
+.window .border div
+{
+	position: absolute;
+}
+
+.window .border .resize_0
+{
+	left: 0px;
+	top: 0px;
+	width: 6px;
+	height: 6px;
+	cursor: nw-resize;
+}
+
+.window .border .resize_1
+{
+	left: 6px;
+	top: 0px;
+	right: 6px;
+	height: 6px;
+	cursor: n-resize;
+}
+
+.window .border .resize_2
+{
+	right: 0px;
+	top: 0px;
+	width: 6px;
+	height: 6px;
+	cursor: ne-resize;
+}
+
+.window .border .resize_3
+{
+	left: 0px;
+	width: 6px;
+	top: 6px;
+	bottom: 6px;
+	cursor: w-resize;
+}
+
+.window .border .resize_4
+{
+}
+
+.window .border .resize_5
+{
+	right: 0px;
+	width: 6px;
+	top: 6px;
+	bottom: 6px;
+	cursor: e-resize;
+}
+
+.window .border .resize_6
+{
+	left: 0px;
+	width: 6px;
+	bottom: 0px;
+	height: 6px;
+	cursor: sw-resize;
+}
+
+.window .border .resize_7
+{
+	left: 6px;
+	right: 6px;
+	height: 6px;
+	bottom: 0px;
+	cursor: s-resize;
+}
+
+.window .border .resize_8
+{
+	right: 0px;
+	width: 6px;
+	bottom: 0px;
+	height: 6px;
+	cursor: se-resize;
+}
+
+.window .client
+{
+	left: 6px;
+	top: 24px;
+	right: 6px;
+	bottom: 6px;
+	z-index: 2;
+	border: 0px none Black;
+	margin: 0px;
+	padding: 0px;
+	position: absolute;
+}
+
+
+.window .client iframe, .window .client embed
+{
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	background-color: Transparent;
+}
+
+.window .title
+{
+	cursor: move;
+	line-height: 1em;
+	vertical-align: middle;
+	background-image: none;
+	background-color: Transparent;
+	left: 6px;
+	right: 6px;
+	top: 6px;
+	height: 18px;
+	z-index: 2;
+	position: absolute;
+}
+
+.window .title div
+{
+}
+
+.window .title .text
+{
+	margin-left: 0px;
+	height: 18px;
+	line-height: 18px;
+	vertical-align: middle;
+	font-weight: bold;
+	color: #15428B;
+}
+
+.window .title .closeButton
+{
+	background: url(Images/common.png) no-repeat 0px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .minButton
+{
+	background: url(Images/common.png) no-repeat -30px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .maxButton
+{
+	background: url(Images/common.png) no-repeat -15px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .restoreButton
+{
+	background: url(Images/common.png) no-repeat -45px -40px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	margin-left: 2px;
+}
+
+.window .title .closeButton:hover
+{
+	background: url(Images/common.png) no-repeat -100px -40px;
+}
+
+.window .title .minButton:hover
+{
+	background: url(Images/common.png) no-repeat -130px -40px;
+}
+
+.window .title .maxButton:hover
+{
+	background: url(Images/common.png) no-repeat -115px -40px;
+}
+
+.window .title .restoreButton:hover
+{
+	background: url(Images/common.png) no-repeat -145px -40px;
+}
