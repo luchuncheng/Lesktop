@@ -1,6 +1,6 @@
 set SERVICEURL=http://r.eim.cc
 set APPPATH=/
-set VERSION=2.0.0.0
+set VERSION=3.0.0.0
 set FILEROOT=Files
 set DBSERVER=localhost\SQLEXPRESS
 set DBUSER=sa
