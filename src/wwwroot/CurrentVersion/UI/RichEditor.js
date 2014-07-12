@@ -341,7 +341,7 @@ Core.UI.RichEditor = function(container, config_)
 	}
 
 	editor_document_.open();
-	editor_document_.write("<html><head></head><body style='margin:0px; padding: 0px; font-family: SimSun; font-size: small'></body></html>");
+	editor_document_.write("<html><head></head><body style='margin:0px; padding: 0px; font-family: SimSun; font-size: small; height:100%;'></body></html>");
 	editor_document_.close();
 	
 	Core.Utility.AttachEvent(
