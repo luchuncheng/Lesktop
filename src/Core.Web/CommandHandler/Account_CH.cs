@@ -51,6 +51,20 @@ class Account_CH : Core.CommandHandler
 				"CommFriends", comm_friends
 			);
 		}
+		else if (action == "GetDeptData")
+		{
+			int dept_id = Convert.ToInt32(ps["DeptID"]);
+			DataRowCollection items = ServerImpl.Instance.CommonStorageImpl.GetDeptItems(cu.ID, dept_id);
+			List<AccountInfo.Details> item_infos = new List<AccountInfo.Details>();
+			foreach (DataRow item in items)
+			{
+				item_infos.Add(AccountImpl.Instance.GetUserInfo(Convert.ToInt32(item["UserID"])).DetailsJson);
+			}
+			return Utility.RenderHashJson(
+				"Items", item_infos,
+				"SubDepts", ServerImpl.Instance.CommonStorageImpl.GetSubDepts(dept_id)
+			);
+		}
 		throw new NotImplementedException(String.Format("Command \"{0}\" isn't implemented", action));
 	}
 

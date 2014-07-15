@@ -774,6 +774,51 @@ Core.AllPlugins = {
 			Core.PluginsNS.EmbedCS.AfterInitSession();
 		}
 	},
+	"EIM": {
+		"Name": "EIM",
+		"InjectModules": {
+			"MainForm": {
+				"DependentModules": [],
+				"MainMenuExtent": [
+					{
+						Command: "Management",
+						Text: "公司部门管理",
+						AdminPermission: true,
+						OnCommand: function()
+						{
+							Core.Session.GetGlobal("SingletonForm").ShowOrgForm();
+						}
+					},
+					{
+						Command: "Management",
+						Text: "公司人员管理",
+						AdminPermission: true,
+						OnCommand: function()
+						{
+							Core.Session.GetGlobal("SingletonForm").ShowOrgForm();
+						}
+					},
+					{
+						Command: "Management",
+						Text: "公司群组管理",
+						AdminPermission: true,
+						OnCommand: function()
+						{
+							Core.Session.GetGlobal("SingletonForm").ShowOrgForm();
+						}
+					}
+				],
+				"UserFormToolbarExtent": []
+			}
+		},
+		"Global": null,
+		"AfterInit": function()
+		{
+		},
+		"AfterInitSession": function()
+		{
+		}
+	},
 	"Comm":{
 		"Name": "Comm",
 		"InjectModules": {

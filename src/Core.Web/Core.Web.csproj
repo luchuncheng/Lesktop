@@ -61,6 +61,12 @@
     </Compile>
     <Compile Include="DownloadHandler.cs" />
     <Compile Include="LogoutHandler.cs" />
+    <Compile Include="Management\AllGroups.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Management\AllUsers.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Management\Comm_AllGroups.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -78,6 +84,12 @@
     </Compile>
     <Compile Include="CommandHandler\Common_CH.cs" />
     <Compile Include="Management\Share.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Management\UpdateDeptInfo.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Management\AllDepts.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Management\SearchUsers.aspx.cs">

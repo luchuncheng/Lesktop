@@ -87,6 +87,15 @@ namespace Core.Web
 					Hashtable info = data as Hashtable;
 					AccountImpl.Instance.UpdateUserInfo(Info.ID, info);
 				}
+				else if (command == "ResetUserDepts")
+				{
+					Hashtable hash_data = data as Hashtable;
+					AccountInfo userInfo = AccountImpl.Instance.GetUserInfo(Convert.ToInt32(hash_data["UserID"]));
+					AccountImpl.Instance.ResetUserDepts(userInfo.ID, hash_data["NewDepts"].ToString());
+					Depts = AccountImpl.Instance.GetUserDepts(userInfo.ID);
+					cmdCtrl.State["Action"] = "ResetDeptData";
+					cmdCtrl.State["DeptID"] = 0;
+				}
 			}
 			catch (Exception ex)
 			{

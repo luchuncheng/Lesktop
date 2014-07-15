@@ -100,6 +100,12 @@
 			{
 				parent.Core.Utility.ShowError(state.Exception.Message);
 			}
+			else if (state.Action == "ResetDeptData")
+			{
+				parent.Core.AccountData.ClearDeptData(state.DeptID);
+				parent.Core.AccountData.FireDataChangedEvent("DeptDataChanged", { DeptID: state.DeptID });
+				delete state["Action"];
+			}
 
 			document.getElementById("headimg").innerHTML = "<img/>";
 

@@ -1041,6 +1041,11 @@ function InitGlobal()
 					}
 				}
 			},
+			"GLOBAL:CLEAR_DEPT_DATA": function(data)
+			{
+				Core.AccountData.ClearDeptData(data.DeptID);
+				Core.AccountData.FireDataChangedEvent("DeptDataChanged", data);
+			},
 			"GLOBAL:ADD_COMM_FRIEND": function(data)
 			{
 				Core.AccountData.AddCommFriend(data.CommFriend);
@@ -1417,6 +1422,79 @@ Core.AccountData = (function() {
 	
 	obj.AdminstratorID = 2;
 	obj.AdminID = 3;
+		
+	obj.GetDeptData = function (callback, dept_id)
+	{
+		var args = [];
+		args.push(true);
+		args.push({});
+		for(var i = 2; i < arguments.length; i++) args.push(arguments[i]);
+		
+		if(dept_data_[dept_id] != null)
+		{
+			args[0] = true;
+			args[1] = dept_data_[dept_id];
+			callback.apply(Core.AccountData, args);
+		}
+		else
+		{
+			var data = {
+				Action: "GetDeptData",
+				DeptID: dept_id
+			};
+			
+			Core.SendCommand(
+				function(ret)
+				{
+					dept_data_[dept_id] = ret;
+					Core.AccountData.UpdateMultiAccountInfo(ret.Items);
+					args[0] = true;
+					args[1] = dept_data_[dept_id];
+					callback.apply(Core.AccountData, args);
+				},
+				function(ex)
+				{
+					args[0] = true;
+					args[1] = ex;
+					callback.apply(Core.AccountData, args);
+				},
+				Core.Utility.RenderJson(data),"Core.Web Account_CH",false
+			);
+		}
+	}
+	
+	obj.ClearDeptData = function(dept_id)
+	{
+		if(dept_id == undefined || dept_id == 0)
+		{
+			dept_data_ = {};
+		}
+		else
+		{
+			delete dept_data_[dept_id];
+		}
+	}
+	
+	obj.ResetDeptData = function(dept_id, dept_info)
+	{
+		for(var k in dept_data_)
+		{
+			var sub_depts = dept_data_[k].SubDepts;
+			for(var i in sub_depts)
+			{
+				var dept = sub_depts[i];
+				if(dept.ID == dept_id)
+				{
+					for(var prop in dept_info)
+					{
+						dept[prop] = dept_info[prop];
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 		
 	var temp_group_data = {};
 	var has_fetch_temp_group_data_ = false;

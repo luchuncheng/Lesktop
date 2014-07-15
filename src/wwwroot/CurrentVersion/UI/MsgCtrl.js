@@ -916,6 +916,35 @@ Core.UI.SearchPanel = function(msgmanager_, searchbar_, searchpanel_, config)
 				ID: 0
 			};
 			search_ctrl_.Elem.innerHTML = "全部";
+			search_ctrl_.Elem.onclick = function()
+			{
+				var config = {
+					Left: 0, Top: 0,
+					Width: 450, Height: 500,
+					MinWidth: 450, MinHeight: 500,
+					Title: {
+						InnerHTML: "选择查找范围"
+					},
+					Resizable: false,
+					HasMaxButton: false,
+					HasMinButton: false
+				}
+
+				var form = Core.CreateWindow(config);
+				var tag = {
+					AfterSelect: function(nickname, data)
+					{
+						search_ctrl_.ID = (nickname == "" ? 0 : data.ID);
+						search_ctrl_.User = data;
+						search_ctrl_.Elem.innerHTML = (nickname == "" ? "全部" : nickname);
+					}
+				}
+				form.SetTag(tag);
+				form.MoveEx('CENTER', 0, 0, true);
+				form.ShowDialog(CurrentWindow, 'CENTER', 0, 0, true, null);
+				var url = Core.GetUrl("SelectMsgSearchUsersForm.htm");
+				form.Load(url, null);
+			}
 		}
 	}
 

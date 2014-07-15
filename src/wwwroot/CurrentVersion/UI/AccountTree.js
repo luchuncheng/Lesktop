@@ -106,6 +106,24 @@ function CatetoryTreeDataSource(config)
 		}
 		
 		var cu = Core.Session.GetUserInfo();
+		
+		if(cu.SubType == 1 && !cu.IsTemp && config.ShowCompany)
+		{
+			nodes.push(
+				{
+					Name: "COMPANY",
+					Text: category_data.CompanyInfo.Name,
+					Tag: {
+						Type: "Dept",
+						Data: category_data.CompanyInfo,
+						IsFCNode: false
+					},
+					HasChildren: true,
+					ImageCss: "Image16_Folder",
+					HasCheckBox: config.ShowRootDeptCheckBox
+				}
+			);
+		}
 
 		if(config.ShowCSUsers && Core.Session.GetGlobal("CSConfig") != null)
 		{
@@ -126,7 +144,91 @@ function CatetoryTreeDataSource(config)
 		}
 		callback(nodes);
 	}
+	
+	function AddDeptSubNodes(result, dept_data, callback, node)
+	{
+		CurrentWindow.Completed();
+		if(!result)
+		{
+			Core.Utility.ShowError(dept_data.toString());
+			callback([]);
+			return;
+		}
 		
+		var nodes = [];
+		var dept_id = node.GetTag().Data.ID;
+		for (var k in dept_data.SubDepts)
+		{
+			var dept = dept_data.SubDepts[k];
+			nodes.push(
+				{
+					Name: dept.ID.toString(),
+					Text: dept.Name,
+					Tag: {
+						Type: "Dept",
+						Data: dept,
+						IsFCNode: false
+					},
+					HasChildren: true,
+					ImageCss: "Image16_Folder",
+					HasCheckBox: config.ShowDeptCheckBox
+				}
+			);
+		}
+		
+		if (config.ShowUser)
+		{
+			for (var k in dept_data.Items)
+			{
+				var user = dept_data.Items[k];
+				if(user.Type == 0)
+				{
+					var gred = user.State == undefined || user.State == "Offline";
+					nodes.push(
+						{
+							Name: user.ID.toString(),
+							Text: user.Nickname,
+							Tag: {
+								Type: "User",
+								Data: user,
+								IsFCNode: false
+							},
+							HasChildren: false,
+							ImageSrc:  Core.CreateHeadImgUrl(user.ID, 16, config.ShowUserState ? gred: false, user.HeadIMG),
+							HasCheckBox: config.ShowUserCheckBox
+						}
+					);
+				}
+			}
+		}
+		
+		if(config.ShowGroup)
+		{
+			for (var k in dept_data.Items)
+			{
+				var group = dept_data.Items[k];
+				if(group.Type == 1)
+				{
+					nodes.push(
+						{
+							Name: group.ID.toString(),
+							Text: group.Nickname,
+							Tag: {
+								Type: "Group",
+								Data: group,
+								IsFCNode: false
+							},
+							HasChildren: false,
+							ImageSrc: Core.CreateGroupImgUrl(group.ID, group.IsTemp),
+							HasCheckBox: config.ShowGroupCheckBox
+						}
+					);
+				}
+			}
+		}
+		callback(nodes);
+	}
+	
 	function AddCommFriendNodes(result, data, callback, node)
 	{
 		CurrentWindow.Completed();
@@ -301,6 +403,11 @@ function CatetoryTreeDataSource(config)
 			CurrentWindow.Waiting("正在获取联系人列表...");
 			Core.CategoryData.Fetch(RootNodeHandler, callback, node);
 		}
+		else if(node.GetTag().Type == "Dept")
+		{
+			CurrentWindow.Waiting("正在获取联系人列表...");
+			Core.AccountData.GetDeptData(AddDeptSubNodes, node.GetTag().Data.ID, callback, node);
+		}
 		else if(node.GetTag().Type == "CommFriends" || node.GetTag().Type == "CommGroups")
 		{
 			CurrentWindow.Waiting("正在获取联系人列表...");
@@ -353,6 +460,28 @@ Core.UI.AccountTree = function(container, config)
 			}
 		}
 		return false;
+	}
+	
+	this_.RefreshDeptNode = function(dept_id, dept_info)
+	{
+		var all_nodes = [];
+		this_.GetAllNodes(all_nodes);
+		for(var i in all_nodes)
+		{
+			var node = all_nodes[i];
+			if (node.GetTag().Type == "Dept" && (dept_id == 0 || node.GetTag().Data.ID == dept_id))
+			{
+				if(node.GetTag().Data.ID == dept_id && dept_info != undefined)
+				{
+					node.SetText(dept_info.Name);
+					node.GetTag().Data = dept_info;
+				}
+				if(node.HasRefresh())
+				{
+					node.Refresh(EmptyCallback, dept_id);
+				}
+			}
+		}
 	}
 	
 	this_.RefreshTempGroups = function()
@@ -439,6 +568,10 @@ Core.UI.AccountTree = function(container, config)
 		{
 			this_.RefreshCommNodes();
 		}
+		else if(reason == "DeptDataChanged")
+		{
+			this_.RefreshDeptNode(data.DeptID, data.DeptInfo);
+		}
 	}
 	Core.AccountData.OnDataChanged.Attach(OnAccountDataChanged);
 	
@@ -512,6 +645,19 @@ Core.UI.AccountTree = function(container, config)
 	};
 	var m_TempGroupMenu = Core.CreateMenu(m_TempGroupMenuConfig);
 	if (m_TempGroupMenu != null) m_TempGroupMenu.OnCommand.Attach(Menu_Command);
+
+	//组织架构右键菜单
+	var m_RefreshRootDeptMenuConfig = {
+		Items: [
+			{
+				Text: "刷新组织架构",
+				ID: "RefreshRootDept"
+			}
+		],
+		OwnerForm: CurrentWindow
+	};	
+	var m_RefreshRootDeptMenu = Core.CreateMenu(m_RefreshRootDeptMenuConfig);
+	if (m_RefreshRootDeptMenu != null) m_RefreshRootDeptMenu.OnCommand.Attach(Menu_Command);
 	
 	function OnContextMenu(evt)
 	{
@@ -527,6 +673,10 @@ Core.UI.AccountTree = function(container, config)
 			if (node.GetTag().Type == "Group" && node.GetTag().Data.IsTemp)
 			{
 				menu = m_TempGroupMenu;
+			}
+			else if (node.GetTag().Type == "Dept" && node.GetTag().Data.ID == 1)
+			{
+				menu = m_RefreshRootDeptMenu;
 			}
 			
 			if(menu != null)
@@ -570,6 +720,13 @@ Core.UI.AccountTree = function(container, config)
 			},
 			Core.Utility.RenderJson(data), "Core.Web Common_CH", false
 		);
+	}
+	
+	MenuCommandHandler["RefreshRootDept"] = function(cmddata)
+	{
+		var context_menu_node = m_ContextMenuNode;
+		Core.AccountData.ClearDeptData(0);
+		Core.AccountData.FireDataChangedEvent("DeptDataChanged", { DeptID: 0 });
 	}
 }
 
