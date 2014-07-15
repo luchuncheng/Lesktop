@@ -12,6 +12,10 @@ namespace Core.Web
 		static TextTemplate EmbedJsTemp = null;
 		static DateTime EmbedJsTempLWT;
 
+		static object EmbedNWJsTemp_Lock = new object();
+		static TextTemplate EmbedNWJsTemp = null;
+		static DateTime EmbedNWJsTempLWT;
+
 		public void ProcessRequest(HttpContext context)
 		{
 			lock (EmbedJsTemp_Lock)
@@ -25,23 +29,46 @@ namespace Core.Web
 				}
 			}
 
-			context.Response.ContentType = "application/x-javascript";
-			context.Response.AppendHeader("Content-Disposition", "filename=EmbedCS.js");
+			lock (EmbedNWJsTemp_Lock)
+			{
+				string tempPath = context.Server.MapPath(String.Format("~/{0}/Core/EmbedCS_NW.js", ServerImpl.Instance.ResPath));
+				System.IO.FileInfo info = new System.IO.FileInfo(tempPath);
+				if (EmbedNWJsTemp == null || info.LastWriteTime > EmbedNWJsTempLWT)
+				{
+					EmbedNWJsTempLWT = info.LastWriteTime;
+					EmbedNWJsTemp = new TextTemplate(tempPath, System.Text.Encoding.UTF8);
+				}
+			}
 
-			Int32 user_id = AccountImpl.Instance.GetUserID(context.Request.QueryString["CSR"]);
-			AccountInfo peerInfo = AccountImpl.Instance.GetUserInfo(user_id);
+			context.Response.ContentType = "application/x-javascript";
+			context.Response.AppendHeader("Content-Disposition", "filename=EmbedCS_NW.js");
+
+			Hashtable data = null;
+			string embedConfig = null;
+			var id = context.Request.QueryString["ID"] != null ? Convert.ToInt32(context.Request.QueryString["ID"]) : 0;
+			if (id > 0)
+			{
+				System.Data.DataRow row = AccountImpl.Instance.GetEmbedCode(id);
+				embedConfig = row["EmbedConfig"].ToString();
+				data = Utility.ParseJson(embedConfig) as Hashtable;
+			}
+			else
+			{
+				embedConfig = DecodeEmbedConfig(context.Request.QueryString["EmbedConfig"]);
+				data = Utility.ParseJson(embedConfig) as Hashtable;
+			}
+
+			System.Data.DataTable dt = AccountImpl.Instance.GetServiceEmbedData(data["Users"].ToString());
+			dt.Columns.Add("IsOnline", typeof(Boolean));
+			foreach (System.Data.DataRow r in dt.Rows)
+			{
+				r["IsOnline"] = SessionManagement.Instance.IsOnline(Convert.ToInt32(r["ID"]));
+			}
 
 			string embed_config = String.Format(
-				@"
-				if(window.__embed_config == undefined) window.__embed_config = {{}};
-				if(window.__embed_config.Users == undefined) window.__embed_config.Users = {{}};
-				window.__embed_config.User = {1};
-				window.__embed_config.Users[{0}] = window.__embed_config.User;
-				window.__embed_config.DefaultCss = {2};
-				",
-				Core.Utility.RenderJson(peerInfo.Name.ToUpper()),
-				Core.Utility.RenderJson(peerInfo.DetailsJson),
-				Core.Utility.RenderJson(context.Request.QueryString["DefaultCss"] == null ? true : Boolean.Parse(context.Request.QueryString["DefaultCss"]))
+				"var __embed_config = {0};\r\n__embed_config.Details={1}\r\n\r\n",
+				embedConfig,
+				Utility.RenderJson(dt.Rows)
 			);
 			context.Response.Write(embed_config);
 
@@ -51,10 +78,13 @@ namespace Core.Web
 
 			Hashtable values = new Hashtable();
 			values["VERSION"] = ServerImpl.Instance.Version;
-			values["CSURL"] = String.Format("http://{0}{1}/{2}/CustomService.aspx", host,
-				ServerImpl.Instance.AppPath == "/" ? "" : "/", ServerImpl.Instance.ResPath);
+			string serviceurl = "http://" + host + ServerImpl.Instance.AppPath;
+			if (!serviceurl.EndsWith("/")) serviceurl += "/";
+			serviceurl += ServerImpl.Instance.ResPath;
+			values["SERVICEURL"] = serviceurl;
 
-			context.Response.Write(EmbedJsTemp.Render(values));
+			if (Convert.ToBoolean(data["NewWindow"]) && !Convert.ToBoolean(data["ShowWindow"])) context.Response.Write(EmbedNWJsTemp.Render(values));
+			else context.Response.Write(EmbedJsTemp.Render(values));
 		}
 
 		private string DecodeEmbedConfig(string str)

@@ -749,6 +749,17 @@ Core.AllPlugins = {
 		"InjectModules": {
 			"MainForm": {
 				"DependentModules": [],
+				"MainMenuExtent": [
+					{
+						Command: "EmbedCodeManagement",
+						Text: "在线客服嵌入代码",
+						AdminPermission: true,
+						OnCommand: function()
+						{
+							Core.PluginsNS.EmbedCS.OnEmbedCodeManagement();
+						}
+					}
+				],
 				"UserFormToolbarExtent": [
 					{
 						Command: "ViewComment",

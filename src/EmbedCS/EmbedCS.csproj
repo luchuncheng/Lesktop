@@ -57,6 +57,12 @@
     <Compile Include="Comment\ViewCommentForm.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="EmbedCode\EmbedCode.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmbedCode\EmbedCodeItem.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="EmbedCode\EmbedCS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
