@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<link href="Themes/Default/Form.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/CommonCtrl.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/TreeView.css" rel="stylesheet" type="text/css" />
+	<link href="Themes/Default/Control.css" rel="stylesheet" type="text/css" />
+
+	<script src="Core/Common.js" type="text/javascript"></script>
+
+	<script src="Core/Extent.js" type="text/javascript"></script>
+
+	<script src="Core/Sub.js" type="text/javascript"></script>
+
+	<script src="UI/CommonCtrl.js" type="text/javascript"></script>
+
+	<script src="UI/TreeView.js" type="text/javascript"></script>
+
+	<script src="UI/Control.js" type="text/javascript"></script>
+
+	<script src="UI/AccountTree.js" type="text/javascript"></script>
+
+	<script language="javascript" type="text/javascript">
+			
+		var category_tree_ = null;
+		
+		function init()
+		{
+			Core.UI.PagePanel.Create('');
+			
+			var page_ctrl = new Core.UI.Control(
+				Core.UI.PagePanel,
+				{
+					ID: "page", Css: "page", Padding: 6, DockStyle: Core.UI.DockStyle.Fill,
+					Controls: [
+						{ 
+							ID: "bottompanel", Css: "bottompanel", Height: 26, DockStyle: Core.UI.DockStyle.Bottom,
+							Controls: [
+								{ ID: "btnok_container", Css: "ct_custom_default_button", Width: 64, DockStyle: Core.UI.DockStyle.Right }
+							]
+						},
+						{ ID: "tree_conteiner", Css: "ct_treeview", Margin: [0, 0, 6, 0], DockStyle: Core.UI.DockStyle.Fill }
+					]
+				}
+			);
+			
+			var btnok = new Core.UI.Button(page_ctrl.GetContainer("bottompanel/btnok_container"), { Text: "确定", TabIndex: 1 });
+			btnok.OnClick.Attach(
+				function()
+				{
+					var ids = [];
+					var checkedNodes = category_tree_.GetCheckedNodes();
+					for (var i in checkedNodes)
+					{
+						var c = checkedNodes[i].GetTag().Data;
+						ids.push(c.ID);
+					}
+					CurrentWindow.GetTag().IDS = ids;
+					CurrentWindow.Close()
+				}
+			);
+			
+			var categorytree_conf = {
+				BorderWidth: 1,
+				PopupContextMenu: true
+			};
+			
+			if (CurrentWindow.GetTag() == undefined || CurrentWindow.GetTag().DSConfig == undefined)
+			{
+				categorytree_conf.DSConfig = {
+					ShowUserState: true,
+					ShowTempGroup: false,
+					ShowCompany: false,
+					ShowCategoryCheckBox: true,
+					ShowUser: false,
+					ShowGroup: false,
+					ShowDept: false,
+					ShowCommFriends: false,
+					CategoryType: CurrentWindow.GetTag().Type
+				};
+			}
+			else
+			{
+				categorytree_conf.DSConfig = CurrentWindow.GetTag().DSConfig;
+			}
+			
+			category_tree_ = new Core.UI.AccountTree(page_ctrl.GetContainer("tree_conteiner"), categorytree_conf);  
+			category_tree_.RefreshTree(Core.EmptyCallback); 
+		}
+	</script>
+	
+</head>
+<body>
+</body>
+</html>

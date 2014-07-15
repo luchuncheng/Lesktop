@@ -39,6 +39,305 @@ namespace Core
 			return result.Rows.Count > 0 ? result.Rows[0] : null;
 		}
 
+		DataRowCollection ICommonStorage.GetCategories(int user_id)
+		{
+			DataTable result = new DataTable();
+
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			SqlCommand cmd = new SqlCommand();
+			cmd.Connection = conn;
+			cmd.CommandText = @"GetCategories";
+			cmd.CommandType = CommandType.StoredProcedure;
+
+			cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+
+			SqlDataAdapter ada = new SqlDataAdapter();
+			ada.SelectCommand = cmd;
+
+			ada.Fill(result);
+			ada.Dispose();
+
+			return result.Rows;
+		}
+
+		DataRowCollection ICommonStorage.GetCategoryItems(int user_id)
+		{
+			DataTable result = new DataTable();
+
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			SqlCommand cmd = new SqlCommand();
+			cmd.Connection = conn;
+			cmd.CommandText = @"GetCategoryItems";
+			cmd.CommandType = CommandType.StoredProcedure;
+
+			cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+
+			SqlDataAdapter ada = new SqlDataAdapter();
+			ada.SelectCommand = cmd;
+
+			ada.Fill(result);
+			ada.Dispose();
+
+			return result.Rows;
+		}
+
+		DataRowCollection ICommonStorage.ResetCategories(int user_id, int[] category_ids, int item_id, int type)
+		{
+			DataTable result = new DataTable();
+
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand(@"ResetCategories", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+					cmd.Parameters.Add("category_ids", SqlDbType.Image).Value = Utility.ToBytes(category_ids);
+					cmd.Parameters.Add("item_id", DbType.Int32).Value = item_id;
+					cmd.Parameters.Add("type", DbType.Int32).Value = type;
+
+					SqlDataAdapter ada = new SqlDataAdapter();
+					ada.SelectCommand = cmd;
+
+					ada.Fill(result);
+					ada.Dispose();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+				return result.Rows;
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
+		DataRowCollection ICommonStorage.GetCategoryDepts(int user_id)
+		{
+			DataTable result = new DataTable();
+
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			SqlCommand cmd = new SqlCommand(@"GetCategoryDepts", conn);
+			cmd.CommandType = CommandType.StoredProcedure;
+
+			cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+
+			SqlDataAdapter ada = new SqlDataAdapter();
+			ada.SelectCommand = cmd;
+
+			ada.Fill(result);
+			ada.Dispose();
+
+			return result.Rows;
+		}
+
+		DataRow ICommonStorage.CreateCategory(int user_id, string category_name, int parent_id)
+		{
+			DataTable result = new DataTable();
+
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand(@"CreateCategory", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+					cmd.Parameters.Add("category_name", SqlDbType.NVarChar, 256).Value = category_name;
+					cmd.Parameters.Add("parent_id", DbType.Int32).Value = parent_id;
+
+					SqlDataAdapter ada = new SqlDataAdapter();
+					ada.SelectCommand = cmd;
+
+					ada.Fill(result);
+					ada.Dispose();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+
+				return result.Rows.Count > 0 ? result.Rows[0] : null;
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
+		DataRow ICommonStorage.RenameCategory(int category_id, string category_name)
+		{
+			DataTable result = new DataTable();
+
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand(@"RenameCategory", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("category_id", DbType.Int32).Value = category_id;
+					cmd.Parameters.Add("category_name", SqlDbType.NVarChar, 256).Value = category_name;
+
+					SqlDataAdapter ada = new SqlDataAdapter();
+					ada.SelectCommand = cmd;
+
+					ada.Fill(result);
+					ada.Dispose();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+
+				return result.Rows.Count > 0 ? result.Rows[0] : null;
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
+		void ICommonStorage.AddToCategory(int user_id, int category_id, int item_id)
+		{
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand("AddToCategory", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+					cmd.Parameters.Add("category_id", DbType.Int32).Value = category_id;
+					cmd.Parameters.Add("item_id", DbType.Int32).Value = item_id;
+
+					cmd.ExecuteNonQuery();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
+		void ICommonStorage.AddItemsToCategory(int user_id, int category_id, int[] item_ids)
+		{
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand("AddItemsToCategory", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+					cmd.Parameters.Add("category_id", DbType.Int32).Value = category_id;
+					cmd.Parameters.Add("item_ids", SqlDbType.Image).Value = Utility.ToBytes(item_ids);
+
+					cmd.ExecuteNonQuery();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
+		void ICommonStorage.RemoveFromCategory(int user_id, int category_id, int item_id)
+		{
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand("RemoveFromCategory", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("user_id", DbType.Int32).Value = user_id;
+					cmd.Parameters.Add("category_id", DbType.Int32).Value = category_id;
+					cmd.Parameters.Add("item_id", DbType.Int32).Value = item_id;
+
+					cmd.ExecuteNonQuery();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
+		void ICommonStorage.DeleteCategory(int category_id)
+		{
+			SqlConnection conn = new SqlConnection(m_SQLConnectionString);
+			conn.Open();
+			try
+			{
+				SqlTransaction trans = conn.BeginTransaction();
+				try
+				{
+					SqlCommand cmd = new SqlCommand("DeleteCategory", conn, trans);
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					cmd.Parameters.Add("category_id", DbType.Int32).Value = category_id;
+
+					cmd.ExecuteNonQuery();
+				}
+				catch
+				{
+					trans.Rollback();
+					throw;
+				}
+				trans.Commit();
+			}
+			finally
+			{
+				conn.Close();
+			}
+		}
+
 		DataRowCollection ICommonStorage.GetDeptItems(int user_id, int dept_id)
 		{
 			DataTable result = new DataTable();

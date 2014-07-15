@@ -183,6 +183,42 @@ BEGIN
 END
 GO
 
+/****** Object:  Table [dbo].[Category]    Script Date: 06/17/2011 ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Category]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE [dbo].[Category](
+		[ID] INT IDENTITY(1000, 1) PRIMARY KEY,
+		[UserID] [int] NOT NULL,
+		[Name] NVARCHAR(256) NOT NULL,
+		[ParentID] INT NOT NULL,	
+		[Type] INT NOT NULL 
+	)
+	CREATE INDEX IDX_CATEGORY_USER ON [Category]([UserID]);
+	
+	SET IDENTITY_INSERT [Category] ON
+	INSERT INTO Category ([ID], [Name], [ParentID], [Type], [UserID]) 
+	VALUES (1, N'常用联系人', 0, 1, 0);
+	INSERT INTO Category ([ID], [Name], [ParentID], [Type], [UserID]) 
+	VALUES (2, N'常用群组', 0, 2, 0);
+	INSERT INTO Category ([ID], [Name], [ParentID], [Type], [UserID]) 
+	VALUES (3, N'常用部门', 0, 3, 0);
+	SET IDENTITY_INSERT [Category] OFF
+END
+GO
+
+/****** Object:  Table [dbo].[CategoryItem]    Script Date: 06/17/2011 ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CategoryItem]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE [dbo].[CategoryItem](
+		[UserID] INT NOT NULL,
+		[CategoryID] INT NOT NULL,
+		[ItemID] INT NOT NULL--用户或部门
+	)
+	CREATE INDEX IDX_CATEGORYITEM_CI ON [CategoryItem]([CategoryID], [ItemID]);
+	CREATE INDEX IDX_CATEGORYITEM_UCI ON [CategoryItem]([UserID], [CategoryID], [ItemID]);
+END
+GO
+
 /****** Object:  Table [dbo].[UserRelationShip]    Script Date: 06/17/2011 ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UserRelationship]') AND type in (N'U'))
 BEGIN
@@ -2316,6 +2352,243 @@ CREATE proc [dbo].GetCompanyInfo
 as
 begin
 	select * from Department where [ID] = 1;
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[GetCategories]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCategories]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].GetCategories
+GO
+
+CREATE proc [dbo].GetCategories(@user_id int)
+as
+begin
+	select * from (
+		select * from Category where [UserID] = 0
+		union all
+		select * from Category where [UserID] = @user_id
+	) t order by [Type] asc, [ID] asc
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[CreateCategory]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CreateCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].CreateCategory
+GO
+
+CREATE proc [dbo].CreateCategory(
+	@user_id int, 
+	@category_name nvarchar(256), 
+	@parent_id int
+)
+as
+begin
+	declare @type int;
+	select @type = [Type] from Category where [ID] = @parent_id;
+	
+	insert into Category (UserID, Name, ParentID, [Type]) values (@user_id, @category_name, @parent_id, @type);
+	declare @id int;
+	select @id = @@IDENTITY;
+	select * from Category where [ID] = @id;
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[RenameCategory]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RenameCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].RenameCategory
+GO
+
+CREATE proc [dbo].RenameCategory(
+	@category_id int, 
+	@category_name nvarchar(256)
+)
+as
+begin
+	update Category set Name=@category_name where [ID] = @category_id
+	select * from Category where [ID] = @category_id
+end
+
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[GetAllSubCategories]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetAllSubCategories]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[GetAllSubCategories]
+GO
+
+CREATE function [dbo].[GetAllSubCategories](@category_id int)
+returns @res table(
+	[ID] int
+)
+as
+begin
+	insert @res([ID])
+	select [ID] from Category where ParentID = @category_id;
+
+	declare category_id_cursor cursor local
+	for
+	select [ID] from Category where ParentID = @category_id	
+	open category_id_cursor
+	declare @sub_cid int;
+	fetch next from category_id_cursor into @sub_cid;
+	while(@@fetch_status = 0)
+	begin
+		insert into @res([ID])
+		select [ID] from dbo.GetAllSubCategories(@sub_cid);
+		fetch next from category_id_cursor into @sub_cid;
+	end
+
+	return
+end
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[DeleteCategory]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].DeleteCategory
+GO
+
+CREATE proc [dbo].DeleteCategory(
+	@category_id int
+)
+as
+begin
+	
+	declare @cids table([ID] int);
+	insert into @cids([ID])
+	select [ID] from dbo.GetAllSubCategories(@category_id) where [ID] > 3
+	
+	insert into @cids ([ID]) values (@category_id);
+	
+	delete from CategoryItem where CategoryID in (select [ID] from @cids)
+	delete from Category where [ID] in (select [ID] from @cids)
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[ResetCategories]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ResetCategories]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].ResetCategories
+GO
+
+CREATE proc [dbo].ResetCategories(
+	@user_id int,
+	@category_ids image,
+	@item_id int,
+	@type int
+)
+as
+begin	
+	select CategoryID as [ID] from CategoryItem ci, Category c 
+	where ci.CategoryID = c.[ID] and c.[Type] = @type and ci.UserID = @user_id and ItemID = @item_id
+	
+	declare @tab_categories table([ID] INT);
+	insert @tab_categories
+	select [Value] from dbo.ParseIntArray(@category_ids);
+	
+	delete from CategoryItem 
+	where UserID = @user_id and ItemID = @item_id
+		and CategoryID in (select [ID] from Category where [Type] = @type)
+	
+	insert CategoryItem (UserID, CategoryID, ItemID) 
+	select @user_id as UserID, cs.[ID], @item_id as ItemID
+	from @tab_categories cs;
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddToCategory]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddToCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].AddToCategory
+GO
+
+CREATE proc [dbo].AddToCategory(
+	@user_id int,
+	@category_id int,
+	@item_id int
+)
+as
+begin
+	if not exists (select * from CategoryItem where UserID = @user_id and CategoryID = @category_id and ItemID = @item_id)
+	begin
+		insert into CategoryItem (UserID, CategoryID, ItemID) values (@user_id, @category_id, @item_id);
+	end
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddItemsToCategory]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddItemsToCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].AddItemsToCategory
+GO
+
+CREATE proc [dbo].AddItemsToCategory(
+	@user_id int,
+	@category_id int,
+	@item_ids image
+)
+as
+begin
+	declare @tab_categories table([ID] INT);
+	
+	insert into CategoryItem (UserID, CategoryID, ItemID) 
+	select distinct @user_id as UserID, @category_id as CategoryID, [Value] as ItemID
+	from dbo.ParseIntArray(@item_ids)
+	where [Value] not in (select ItemID from CategoryItem where [CategoryID] = @category_id and [UserID] = @user_id);
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[RemoveFromCategory]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RemoveFromCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].RemoveFromCategory
+GO
+
+CREATE proc [dbo].RemoveFromCategory(
+	@user_id int,
+	@category_id int,
+	@item_id int
+)
+as
+begin
+	delete from CategoryItem where UserID = @user_id and CategoryID = @category_id and ItemID = @item_id;
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[GetCategoryDepts]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCategoryDepts]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].GetCategoryDepts
+GO
+
+CREATE proc [dbo].GetCategoryDepts(@user_id int)
+as
+begin
+	select d.* from Category c, CategoryItem ci, Department d 
+	where ci.[UserID] = @user_id and ci.CategoryID = c.[ID] and c.[Type] = 3 and ci.[ItemID] = d.[ID]
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[GetCategoryItems]    Script Date: 06/17/2011 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCategoryItems]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].GetCategoryItems
+GO
+
+CREATE proc [dbo].GetCategoryItems(@user_id int)
+as
+begin
+	select ci.*, c.[Type] as CategoryType 
+	from Category c, CategoryItem ci
+	where c.[Type] = 3 and ci.[UserID] = @user_id and ci.CategoryID = c.[ID]
+	union all
+	select ci.*, c.[Type] as CategoryType 
+	from Category c, CategoryItem ci, Users u
+	where c.[Type] < 3 and ci.[UserID] = @user_id and ci.CategoryID = c.[ID]
+		 and ci.ItemID = u.[ID] and u.IsDeleted = 0
 end
 
 GO

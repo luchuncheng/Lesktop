@@ -194,6 +194,7 @@ function init()
 		ExpandDeptRoot: true,
 		DSConfig: {
 			ShowUser: true,
+			ShowFrequentContactAndDept: false,
 			ShowCommFriends: false
 		}
 	};
