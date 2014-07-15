@@ -343,15 +343,18 @@ Core.UI.RichEditor = function(container, config_)
 	editor_document_.open();
 	editor_document_.write("<html><head></head><body style='margin:0px; padding: 0px; font-family: SimSun; font-size: small; height:100%;'></body></html>");
 	editor_document_.close();
-	
-	Core.Utility.AttachEvent(
-		editor_document_, "mousedown",
-		function()
-		{
-			if(window.CurrentWindow != undefined) window.CurrentWindow.BringToTop();
-		}
-	);
-	
+
+	if (window.ClientMode != true)
+	{
+		Core.Utility.AttachEvent(
+			editor_document_, "mousedown",
+			function()
+			{
+				if(window.CurrentWindow != undefined) window.CurrentWindow.BringToTop();
+			}
+		);
+	}
+
 	function RefreshToolbarStatus(viafmt)
 	{
 		if(viafmt == true)
