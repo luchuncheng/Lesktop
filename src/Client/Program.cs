@@ -320,7 +320,10 @@ namespace Client
 #			else
 			String localUpdateConfigFile = AppDomain.CurrentDomain.BaseDirectory + "latest.xml";
 			WebClient client = new WebClient();
-			client.DownloadFile(SettingConf.Instance.ServiceUrl + "/update/latest.xml?" + Math.Abs(DateTime.Now.ToBinary()).ToString(), localUpdateConfigFile);
+			String url = Global.ServiceUrl + Global.AppPath;
+			if (!url.EndsWith("/")) url += "/";
+			url += "update/latest.xml?" + Math.Abs(DateTime.Now.ToBinary()).ToString();
+			client.DownloadFile(url, localUpdateConfigFile);
 			XmlDocument updataConfig = new XmlDocument();
 			updataConfig.Load(localUpdateConfigFile);
 			Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
