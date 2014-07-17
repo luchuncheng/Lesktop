@@ -1014,6 +1014,8 @@ Core.UI.AccountTree = function(container, config)
 		{
 			var node = this_.HitTest(evt.clientX, evt.clientY);
 			if(node == null) return;
+
+			var current_user = Core.Session.GetUserInfo();
 			
 			var menu = null;
 			if (node.GetTag().Type == "Category" && node.GetTag().Data.ParentID == 0)
@@ -1032,17 +1034,17 @@ Core.UI.AccountTree = function(container, config)
 			{
 				menu = m_TempGroupMenu;
 			}
-			else if (node.GetTag().Type == "User" && node.GetTag().IsFCNode == false)
+			else if (current_user.SubType == 1 && node.GetTag().Type == "User" && node.GetTag().IsFCNode == false)
 			{
 				if (m_AddToCategoryMenus[1] == null) m_AddToCategoryMenus[1] = CreateAddToCategoryMenu(1);
 				menu = m_AddToCategoryMenus[1];
 			}
-			else if (node.GetTag().Type == "Group" && node.GetTag().IsFCNode == false)
+			else if (current_user.SubType == 1 && node.GetTag().Type == "Group" && node.GetTag().IsFCNode == false)
 			{
 				if (m_AddToCategoryMenus[2] == null) m_AddToCategoryMenus[2] = CreateAddToCategoryMenu(2);
 				menu = m_AddToCategoryMenus[2];
 			}
-			else if (node.GetTag().Type == "Dept" && node.GetTag().IsFCNode == false && node.GetTag().Data.ID != 1)
+			else if (current_user.SubType == 1 && node.GetTag().Type == "Dept" && node.GetTag().IsFCNode == false && node.GetTag().Data.ID != 1)
 			{
 				if (m_AddToCategoryMenus[3] == null) m_AddToCategoryMenus[3] = CreateAddToCategoryMenu(3);
 				menu = m_AddToCategoryMenus[3];
