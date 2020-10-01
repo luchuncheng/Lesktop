@@ -493,6 +493,12 @@ namespace Core
 		{
 			try
 			{
+				String host = HttpContext.Current.Request.Url.Host;
+				if(String.Compare(host, "localhost", true) == 0 || String.Compare(host, "127.0.0.1", true) == 0)
+				{
+					return;
+				}
+
 				String src_path = base_dir_ + "\\..\\Client\\bin\\Release";
 				if (System.IO.Directory.Exists(src_path))
 				{
