@@ -8,6 +8,8 @@ using System.Configuration;
 using System.IO;
 using System.Web.Security;
 using System.Reflection;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Checksums;
 
 namespace Core
 {
@@ -176,6 +178,9 @@ namespace Core
 
 					app_path_ = context.Request.ApplicationPath;
 					res_path_ = System.Web.Configuration.WebConfigurationManager.AppSettings["ResPath"];
+
+					GenerateClientPacket();
+
 					AccountImpl.Instance.Initialize(context);
 					MessageImpl.Instance.Initialize(context);
 					context.ApplicationInstance.Error += new EventHandler(HttpApplication_Error);
@@ -456,6 +461,103 @@ namespace Core
 			get
 			{
 				return app_path_;
+			}
+		}
+
+
+		string[] client_files_ = { "Client.exe", "Common.dll", "ICSharpCode.SharpZipLib.dll", "Interop.IWshRuntimeLibrary.dll", "MsHtmHstInterop.dll", "System.Net.Json.dll", "data\\", "data\\msg.wav" };
+
+		byte[] GenerateClientSettingConf()
+		{
+			String host = HttpContext.Current.Request.Url.Host;
+			if (HttpContext.Current.Request.Url.Port != 80)
+			{
+				host += ":";
+				host += HttpContext.Current.Request.Url.Port.ToString();
+			}
+
+			string setting = String.Format(
+				"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" +
+				"<Config>\r\n" +
+				"    <ServiceUrl>http://{0}</ServiceUrl>\r\n" +
+				"    <AppPath>/</AppPath>\r\n" +
+				"    <ResPath>{1}</ResPath>\r\n" +
+				"</Config>",
+				host, "CurrentVersion"
+			);
+
+			return Encoding.UTF8.GetBytes(setting);
+		}
+
+		void GenerateClientPacket()
+		{
+			try
+			{
+				String src_path = base_dir_ + "\\..\\Client\\bin\\Release";
+				if (System.IO.Directory.Exists(src_path))
+				{
+					System.IO.DirectoryInfo src_di = new System.IO.DirectoryInfo(src_path);
+					src_path = src_di.FullName;
+
+					String target_path = base_dir_ + "\\CurrentVersion\\Client.zip";
+					if (System.IO.File.Exists(target_path))
+					{
+						System.IO.File.Delete(target_path);
+					}
+
+					using (ZipOutputStream outputStream = new ZipOutputStream(System.IO.File.Create(target_path)))
+					{
+						try
+						{
+							byte[] setting_buf = GenerateClientSettingConf();
+
+							outputStream.SetLevel(6);
+							Crc32 setting_crc = new Crc32();
+							ZipEntry setting_entry = new ZipEntry("Setting.conf");
+							setting_entry.DateTime = DateTime.Now;
+							setting_crc.Reset();
+							setting_crc.Update(setting_buf);
+							outputStream.PutNextEntry(setting_entry);
+							outputStream.Write(setting_buf, 0, setting_buf.Length);
+
+							foreach (String item in client_files_)
+							{
+								bool isdir = item.EndsWith("\\");
+								outputStream.SetLevel(6);
+								if (isdir)
+								{
+									ZipEntry new_entry = new ZipEntry(item);
+									new_entry.DateTime = DateTime.Now;
+									outputStream.PutNextEntry(new_entry);
+								}
+								else
+								{
+									String item_path = src_path + "\\" + item;
+									if (System.IO.File.Exists(item_path))
+									{
+										byte[] buffer = System.IO.File.ReadAllBytes(item_path);
+										Crc32 crc = new Crc32();
+										ZipEntry new_entry = new ZipEntry(item);
+										new_entry.DateTime = DateTime.Now;
+										crc.Reset();
+										crc.Update(buffer);
+										outputStream.PutNextEntry(new_entry);
+										outputStream.Write(buffer, 0, buffer.Length);
+									}
+								}
+							}
+						}
+						finally
+						{
+							outputStream.Finish();
+							outputStream.Close();
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				WriteLog(String.Format("GenerateClientPacket Error:\r\n{0}\r\n{1}", ex.Message, ex.StackTrace));
 			}
 		}
 	}
