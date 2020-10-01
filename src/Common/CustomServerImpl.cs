@@ -11,7 +11,25 @@ namespace Custom
 {
 	public class CustomServerImpl
 	{
-		private static byte[] Keys = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 };
+		private static byte[] keys_ = { 0, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 };
+
+		private static byte[] Keys
+		{
+			get
+			{
+#if !DEBUG
+				if (keys_[0] == 0)
+				{
+					Random rd = new Random();
+					for (int i = 0; i < keys_.Length; i++)
+					{
+						keys_[i] = (byte)rd.Next(10, 200);
+					}
+				}
+#endif
+				return keys_;
+			}
+		}
 
 		public static string EncryptPassword(string pwd)
 		{
@@ -41,8 +59,15 @@ namespace Custom
 
 		public static int GetUserID(HttpContext context)
 		{
-			if (context.Request.Cookies["LesktopIDC"] != null) return Convert.ToInt32(CookieEncrypt.DecryptDES(Keys, context.Request.Cookies["LesktopIDC"].Value));
-			if (context.Request.Cookies["LesktopID"] != null) return Convert.ToInt32(CookieEncrypt.DecryptDES(Keys, context.Request.Cookies["LesktopID"].Value));
+			try
+			{
+				if (context.Request.Cookies["LesktopIDC"] != null) return Convert.ToInt32(CookieEncrypt.DecryptDES(Keys, context.Request.Cookies["LesktopIDC"].Value));
+				if (context.Request.Cookies["LesktopID"] != null) return Convert.ToInt32(CookieEncrypt.DecryptDES(Keys, context.Request.Cookies["LesktopID"].Value));
+			}
+			catch
+			{
+
+			}
 			return 0;
 		}
 
@@ -53,7 +78,26 @@ namespace Custom
 
 	public class CookieEncrypt
 	{
-		private static byte[] Keys = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 };
+		private static byte[] keys_ = { 0, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 };
+
+		private static byte[] Keys
+		{
+			get
+			{
+#if !DEBUG
+				if (keys_[0] == 0)
+				{
+					Random rd = new Random();
+					for (int i = 0; i < keys_.Length; i++)
+					{
+						keys_[i] = (byte)rd.Next(10, 200);
+					}
+				}
+#endif
+				return keys_;
+			}
+		}
+
 		/// <summary>  
 		/// DES加密字符串  
 		/// </summary>  
