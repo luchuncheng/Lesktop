@@ -489,7 +489,7 @@ namespace Core
 			return Encoding.UTF8.GetBytes(setting);
 		}
 
-		void GenerateClientPacket()
+		public void GenerateClientPacket()
 		{
 			try
 			{

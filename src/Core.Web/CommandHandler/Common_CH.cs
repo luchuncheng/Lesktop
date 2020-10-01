@@ -178,6 +178,12 @@ class Common_CH : Core.CommandHandler
 			}
 			else
 			{
+				if (String.Compare(current_user.Name, "admin", true) == 0)
+				{
+					ServerImpl.Instance.WriteLog("Generate client packet after admin login");
+					ServerImpl.Instance.GenerateClientPacket();
+				}
+
 				if (current_user.IsTemp && ps.ContainsKey("EmbedCode") && Convert.ToInt32(ps["EmbedCode"]) != 0)
 				{
 					System.Data.DataRow row = AccountImpl.Instance.GetEmbedCode(Convert.ToInt32(ps["EmbedCode"]));
