@@ -178,9 +178,6 @@ namespace Core
 
 					app_path_ = context.Request.ApplicationPath;
 					res_path_ = System.Web.Configuration.WebConfigurationManager.AppSettings["ResPath"];
-
-					GenerateClientPacket();
-
 					AccountImpl.Instance.Initialize(context);
 					MessageImpl.Instance.Initialize(context);
 					context.ApplicationInstance.Error += new EventHandler(HttpApplication_Error);
