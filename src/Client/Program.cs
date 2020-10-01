@@ -58,13 +58,6 @@ namespace Client
 			Global.ResUrl = Global.ServiceUrl + Global.AppPath;
 			if (!Global.ResUrl.EndsWith("/")) Global.ResUrl += "/";
 			Global.ResUrl += Global.ResPath;
-			
-#			if !DEBUG
-			if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Native.dll")))
-			{
-				LoadPackages(SettingConf.Instance.ServiceUrl);
-			}
-#			endif
 
 			bool isUpdate = false;
 
