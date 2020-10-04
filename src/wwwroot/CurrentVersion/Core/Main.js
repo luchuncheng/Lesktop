@@ -1116,7 +1116,14 @@ function InitGlobal()
 			"GLOBAL:OFFLINE": function(data)
 			{
 				Core.Session.ResponsesHandler.Stop();
+				if (window.Device == 2)
+				{
+					window.navigate(Core.GetUrl("Mobile/offline.aspx"));
+				}
+				else
+				{
 				Core.Utility.ShowFloatForm("{\"Type\":\"Offline\"}", "json");
+				}
 				Core.Session.WriteLog(
 					String.format("Offline : SessionID = {0}", Core.Session.GetSessionID())
 				);
