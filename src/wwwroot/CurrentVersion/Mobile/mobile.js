@@ -2,19 +2,6 @@
 var layim = null;
 var layer = null;
 
-//演示自动回复
-var autoReplay = [
-  '您好，我现在有事不在，一会再和您联系。',
-  '你没发错吧？face[微笑] ',
-  '洗澡中，请勿打扰，偷窥请购票，个体四十，团体八折，订票电话：一般人我不告诉他！face[哈哈] ',
-  '你好，我是主人的美女秘书，有什么事就跟我说吧，等他回来我会转告他的。face[心] face[心] face[心] ',
-  'face[威武] face[威武] face[威武] face[威武] ',
-  '<（@￣︶￣@）>',
-  '你要和我说话？你真的要和我说话？你确定自己想说吗？你一定非说不可吗？那你说吧，这是自动回复。',
-  'face[黑线]  你慢慢说，别急……',
-  '(*^__^*) face[嘻嘻] ，是贤心吗？'
-];
-
 function GetFriends()
 {
 	var friends = [];
@@ -211,22 +198,36 @@ function ClearHTML(text)
 	return newText;
 }
 
-function OnNewMessage(msg)
+function LayIM_OnNewMessage(msg)
 {
-	if (msg.Sender.Type == 0)
+	var sender_info = Core.AccountData.GetAccountInfo(msg.Sender.ID);
+	if (sender_info == null) sender_info = msg.Sender;
+
+	if (msg.Receiver.Type == 0)
 	{
 		layim.getMessage({
 			username: msg.Sender.Nickname,
-			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, msg.Sender.HeadIMG),
+			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
 			id: msg.Sender.ID.toString(),
 			type: "friend",
 			cid: msg.ID.toString(),
 			content: ClearHTML(msg.Content)
 		});
 	}
+	else if (msg.Receiver.Type == 1)
+	{
+		layim.getMessage({
+			username: msg.Sender.Nickname,
+			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
+			id: msg.Receiver.ID.toString(),
+			type: "group",
+			cid: msg.ID.toString(),
+			content: ClearHTML(msg.Content)
+		});
+	}
 }
 
-Core.OnNewMessage.Attach(OnNewMessage);
+Core.OnNewMessage.Attach(LayIM_OnNewMessage);
 
 function StartServiceCallback()
 {
