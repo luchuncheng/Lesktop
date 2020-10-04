@@ -1669,11 +1669,12 @@ Core.AccountData = (function ()
 		try
 		{
 			if(fire_event == undefined) fire_event = true;
-			if(accounts_.Update(account, true) && fire_event)
+			var update_ret = accounts_.Update(account, true);
+			if (update_ret && fire_event)
 			{
 				Core.Session.GetGlobal("WindowManagement").Notify("AccountInfoChanged", { Details: account });
 			}
-			return update;
+			return update_ret;
 		}
 		catch(ex)
 		{
