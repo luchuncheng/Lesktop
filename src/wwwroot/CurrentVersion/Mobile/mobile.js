@@ -3,6 +3,9 @@ var layim = null;
 var layim_config = null;
 var layer = null;
 
+var LayIMGroup_Other = "1";		// 其他联系人分组ID
+var LayIMGroup_MyFriend = "2";	// 我的好友分组
+
 function GetFriends()
 {
 	var friends = [];
@@ -11,9 +14,10 @@ function GetFriends()
 		var category = window.MobileInitParams.Categories[i];
 		if (category.Type == 1)
 		{
+			var groupid = category.ID + 10000;
 			var group = {
 				"groupname": category.Name,
-				"id": category.ID.toString(),
+				"id": groupid.toString(),
 				"online": 0,
 				"list": []
 			};
@@ -41,9 +45,44 @@ function GetFriends()
 					}
 				}
 			}
-			friends.push(group);
+			if (user_count > 0)
+			{
+				friends.push(group);
+			}
 		}
 	}
+	
+	var grou_myfriend = {
+		"groupname": "我的好友",
+		"id": LayIMGroup_MyFriend,
+		"online": 0,
+		"list": []
+	}
+
+	for (var i = 0; i < window.MobileInitParams.VisibleUsers.length; i++)
+	{
+		var user = window.MobileInitParams.VisibleUsers[i];
+		if (user.Type == 0 && user.SubType == 0)
+		{
+			// 注册用户，并添加自己为好友的
+			grou_myfriend.list.push({
+				"username": user.Nickname,
+				"id": user.ID.toString(),
+				"avatar": Core.CreateHeadImgUrl(user.ID, 150, false, user.HeadIMG),
+				"sign": ""
+			});
+		}
+	}
+
+	friends.push(grou_myfriend);
+
+	friends.push({
+		"groupname": "其他联系人",
+		"id": LayIMGroup_Other,
+		"online": 0,
+		"list": []
+	});
+
 	return friends;
 }
 
