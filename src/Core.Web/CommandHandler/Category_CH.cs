@@ -136,7 +136,7 @@ class Category_CH : Core.CommandHandler
 		return depts;
 	}
 
-	private static Hashtable GetAccountInfos(DataRowCollection items)
+	public static Hashtable GetAccountInfos(DataRowCollection items)
 	{
 		Hashtable users = new Hashtable();
 		foreach (DataRow r in items)

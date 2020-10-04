@@ -20,12 +20,12 @@ namespace Core.Web
 #if DEBUG
 				if (true)
 #else
-			if (Core.AccountImpl.Instance.Validate(user, pwd))		
+				if (Core.AccountImpl.Instance.Validate(user, pwd))		
 #endif
 				{
 					int userid = AccountImpl.Instance.GetUserID(user);
-					String sessionId = Guid.NewGuid().ToString().ToUpper();
-					ServerImpl.Instance.Login(sessionId, Context, userid, false, null, true, 2);
+					// 仅验证不启动回话，重定向到default.aspx再启动回话
+					ServerImpl.Instance.Login("", Context, userid, false, DateTime.Now.AddDays(1), false, 2);
 					current_user = AccountImpl.Instance.GetUserInfo(userid);
 				}
 			}
