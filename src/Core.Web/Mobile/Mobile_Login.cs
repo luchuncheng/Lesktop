@@ -25,7 +25,7 @@ namespace Core.Web
 				{
 					int userid = AccountImpl.Instance.GetUserID(user);
 					// 仅验证不启动回话，重定向到default.aspx再启动回话
-					ServerImpl.Instance.Login("", Context, userid, false, DateTime.Now.AddDays(1), false, 2);
+					ServerImpl.Instance.Login("", Context, userid, false, null, false, 2);
 					current_user = AccountImpl.Instance.GetUserInfo(userid);
 				}
 			}
