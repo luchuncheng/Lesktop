@@ -1118,7 +1118,7 @@ function InitGlobal()
 				Core.Session.ResponsesHandler.Stop();
 				if (window.Device == 2)
 				{
-					window.navigate(Core.GetUrl("Mobile/offline.aspx"));
+					location = Core.GetUrl("Mobile/offline.aspx");
 				}
 				else
 				{
@@ -1234,7 +1234,14 @@ function InitGlobal()
 					if(Core.Session.ResponsesHandler.IsRunning())
 					{
 						Core.Session.ResponsesHandler.Stop();
+						if (window.Device == 2)
+						{
+							location = Core.GetUrl("Mobile/offline.aspx?reason=Unauthorized");
+						}
+						else
+						{
 						Core.Utility.ShowFloatForm("{\"Type\":\"UnauthorizedException\"}", "json");
+						}
 					}
 				}
 				else if(ret.Exception.Name == "IncompatibleException")
@@ -1242,7 +1249,14 @@ function InitGlobal()
 					if(Core.Session.ResponsesHandler.IsRunning())
 					{
 						Core.Session.ResponsesHandler.Stop();
+						if (window.Device == 2)
+						{
+							location = Core.GetUrl("Mobile/offline.aspx?reason=Incompatible");
+						}
+						else
+						{
 						Core.Utility.ShowFloatForm("{\"Type\":\"IncompatibleException\"}", "json");
+						}
 					}
 				}
 			}
