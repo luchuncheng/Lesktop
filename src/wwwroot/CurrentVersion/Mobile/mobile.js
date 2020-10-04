@@ -1,5 +1,6 @@
 ﻿
 var layim = null;
+var layim_config = null;
 var layer = null;
 
 function GetFriends()
@@ -62,6 +63,15 @@ function GetGroups()
 		}
 	}
 	return groups;
+}
+
+function LayIM_GroupExists(id)
+{
+	for(var i = 0; i < layim_config.init.group.length; i++)
+	{
+		if (layim_config.init.group[i].id == id) return true;
+	}
+	return false;
 }
 
 function LayIM_Details(data)
@@ -140,14 +150,6 @@ function LayIM_SendMsg(data)
 
 function LayIM_ChatLog(data, ul)
 {
-	console.log(data);
-	layim.panel({
-		title: '与 ' + data.name + ' 的聊天记录', //标题
-		tpl: '<div style="padding: 10px;">这里是模版，{{d.data.test}}</div>', //模版
-		data: { //数据
-			test: 'Hello'
-		}
-	});
 }
 
 var Mobile_HtmlBeginTagRegex = /<([a-zA-Z0-9]+)(\s+)[^<>]+>/ig;
@@ -200,13 +202,16 @@ function ClearHTML(text)
 
 function LayIM_OnNewMessage(msg)
 {
+	// msg.Sender, msg.Receiver只包括最基本的ID，Name，需重新获取详细信息
 	var sender_info = Core.AccountData.GetAccountInfo(msg.Sender.ID);
 	if (sender_info == null) sender_info = msg.Sender;
+	var receiver_info = Core.AccountData.GetAccountInfo(msg.Receiver.ID);
+	if (receiver_info == null) receiver_info = msg.Receiver;
 
 	if (msg.Receiver.Type == 0)
 	{
 		layim.getMessage({
-			username: msg.Sender.Nickname,
+			username: sender_info.Nickname,
 			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
 			id: msg.Sender.ID.toString(),
 			type: "friend",
@@ -216,8 +221,17 @@ function LayIM_OnNewMessage(msg)
 	}
 	else if (msg.Receiver.Type == 1)
 	{
+		if (!LayIM_GroupExists(receiver_info.ID.toString()))
+		{
+			layim.addList({
+				"type": "group",
+				"groupname": receiver_info.Nickname,
+				"id": receiver_info.ID.toString(),
+				"avatar": Core.CreateGroupImgUrl(receiver_info.HeadIMG, receiver_info.IsTemp)
+			});
+		}
 		layim.getMessage({
-			username: msg.Sender.Nickname,
+			username: sender_info.Nickname,
 			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
 			id: msg.Receiver.ID.toString(),
 			type: "group",
@@ -252,7 +266,7 @@ function StartServiceCallback()
 				});
 			};
 
-			var layim_config = {
+			layim_config = {
 				//上传图片接口
 				uploadImage: {
 					url: '/upload/image', //（返回的数据格式见下文）
