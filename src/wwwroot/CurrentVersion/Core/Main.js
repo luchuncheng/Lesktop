@@ -1957,7 +1957,14 @@ function SetClientMode(cm)
 
 	if(window.CustomServiceMode != true)
 	{
-		Core.Login(!ClientMode);
+		if (!window.ClientMode && window.Device == 2)
+		{
+			// 移动端页面
+		}
+		else
+		{
+			Core.Login(!ClientMode);
+		}
 	}
 			
 	return true;
@@ -1992,6 +1999,22 @@ window.StartService = function(callback)
 	}
 	else
 	{
+		if (!window.ClientMode && window.Device == 2)
+		{
+			if (callback != undefined && callback != null)
+			{
+				SetClientMode(false, null);
+				if (window.MobileInitParams != undefined && window.MobileInitParams != null)
+				{
+					var userinfo = window.MobileInitParams["UserInfo"];
+					var sessionid = window.MobileInitParams["SessionID"];
+					Core.Session.InitService(userinfo.Name, userinfo, document.cookie, sessionid);
+				}
+				callback();
+			}
+		}
+		else
+		{
 		start_service_callback_ = callback;
 		if (loginform_ == null && (Core.Session == undefined || Core.Session.GetUserID() == 0))
 		{
@@ -2005,13 +2028,12 @@ window.StartService = function(callback)
 				start_service_callback_ = null;
 			}
 		}
+		}
 	}
 }
 
 Core.Login = function()
 {
-    if (!window.ClientMode && window.Device == 2) return;
-
 	if (loginform_ != null) return;
 	loginform_ = Core.CreateWindow(
 		{
