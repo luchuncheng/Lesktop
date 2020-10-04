@@ -174,23 +174,49 @@ function LayIM_ChatLog(data, ul)
 
 var Mobile_HtmlBeginTagRegex = /<([a-zA-Z0-9]+)(\s+)[^<>]+>/ig;
 var Mobile_HtmlEndTagRegex = /<\/([a-zA-Z0-9]+)>/ig;
+var Mobile_HtmlImgSrcRegex = /src\=\x22([^<>\x22]+)\x22/ig;
+
+function GetImageSrc(img)
+{
+	Mobile_HtmlImgSrcRegex.lastIndex = 0
+	var ret = Mobile_HtmlImgSrcRegex.exec(img);
+	if (ret == null || ret.length <= 1)
+	{
+		return "";
+	}
+	return ret[1];
+}
 
 function ClearHTML(text)
 {
-	var newText = text.toString().replace(
-		Mobile_HtmlBeginTagRegex,
-		function (html, tag)
-		{
-			return "";
-		}
-	)
-	.replace(
-		Mobile_HtmlEndTagRegex,
-		function (html, tag)
-		{
-			return "";
-		}
-	);
+	var newText = text;
+	try
+	{
+		newText = text.toString().replace(
+			Mobile_HtmlBeginTagRegex,
+			function (html, tag)
+			{
+				if (tag.toLowerCase() == "img")
+				{
+					var url = GetImageSrc(html);
+					return String.format("img[{0}]", url);
+				}
+				return "";
+			}
+		)
+		.replace(
+			Mobile_HtmlEndTagRegex,
+			function (html, tag)
+			{
+				return "";
+			}
+		);
+	}
+	catch(ex)
+	{
+		newText += " ERROR:";
+		newText += ex.message;
+	}
 	return newText;
 }
 
