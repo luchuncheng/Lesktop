@@ -1,5 +1,6 @@
 ﻿
 if (window.ClientMode == undefined) window.ClientMode = false;
+if (window.Device == undefined) window.Device = 0;
 
 var CurrentWindow = null;
 

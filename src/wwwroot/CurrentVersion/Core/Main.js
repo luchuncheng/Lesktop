@@ -1900,6 +1900,8 @@ function SetClientMode(cm)
 				Core.Utility.StopScrollTitle();
 			}
 		);
+		if (window.Device == 0)
+		{
 		Core.CreateWindow = function(config)
 		{
 			var win = new Window(config);
@@ -1913,13 +1915,14 @@ function SetClientMode(cm)
 			var menu = new Menu(config);
 			return menu;
 		}
+		}
 
 		Core.Session = new SessionConstructor();
 	}
 
 	InitGlobal();
 
-	if(window.CustomServiceMode != true)
+	if(window.CustomServiceMode != true && window.Device == 0)
 	{
 		Desktop.Create();
 
@@ -2007,6 +2010,8 @@ window.StartService = function(callback)
 
 Core.Login = function()
 {
+    if (!window.ClientMode && window.Device == 2) return;
+
 	if (loginform_ != null) return;
 	loginform_ = Core.CreateWindow(
 		{

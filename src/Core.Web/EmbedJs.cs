@@ -23,13 +23,24 @@ namespace Core.Web
 		"document.write('<script src=\"{2}/WebDesktop/Desktop.js\" type=\"text/javascript\"><'+'/script>');\r\n" +
 		"document.write('<script src=\"{2}/WebDesktop/Menu.js\" type=\"text/javascript\"><'+'/script>');\r\n" +
 		"document.write('<script src=\"{2}/WebDesktop/Window.js\" type=\"text/javascript\"><'+'/script>');\r\n";
+
+		static string MobileEmbedJsFormat =
+		"document.write('<script src=\"{2}/Core/Config.ashx\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		"document.write('<script src=\"{2}/Core/Common.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		"document.write('<script src=\"{2}/Core/Extent.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		(ServerImpl.Instance.EnbaleDynamicApp ? AppJs : "") +
+		"document.write('<script src=\"{2}/Core/Plugins.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		"document.write('<script src=\"{2}/Core/Main.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n";
 		
 		void IHttpHandler.ProcessRequest(HttpContext context)
 		{
+			string device_param = context.Request.Params["device"];
+			int device = (device_param != null ? Convert.ToInt32(device_param) : 0);
+
 			var resRoot = ServerImpl.Instance.AppPath;
 			if (!resRoot.EndsWith("/")) resRoot += "/";
 			resRoot += ServerImpl.Instance.ResPath;
-			string js = String.Format(EmbedJsFormat, ServerImpl.Instance.Version, ServerImpl.Instance.AppPath, resRoot, ServerImpl.Instance.ResPath);
+			string js = String.Format((device == 2 ? MobileEmbedJsFormat : EmbedJsFormat), ServerImpl.Instance.Version, ServerImpl.Instance.AppPath, resRoot, ServerImpl.Instance.ResPath, DateTime.Now.Ticks.ToString());
 
 			context.Response.ContentType = "application/x-javascript";
 			context.Response.Write(js);
