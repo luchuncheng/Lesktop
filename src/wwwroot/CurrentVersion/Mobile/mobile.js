@@ -172,6 +172,45 @@ function LayIM_ChatLog(data, ul)
 	});
 }
 
+var Mobile_HtmlBeginTagRegex = /<([a-zA-Z0-9]+)(\s+)[^<>]+>/ig;
+var Mobile_HtmlEndTagRegex = /<\/([a-zA-Z0-9]+)>/ig;
+
+function ClearHTML(text)
+{
+	var newText = text.toString().replace(
+		Mobile_HtmlBeginTagRegex,
+		function (html, tag)
+		{
+			return "";
+		}
+	)
+	.replace(
+		Mobile_HtmlEndTagRegex,
+		function (html, tag)
+		{
+			return "";
+		}
+	);
+	return newText;
+}
+
+function OnNewMessage(msg)
+{
+	if (msg.Sender.Type == 0)
+	{
+		layim.getMessage({
+			username: msg.Sender.Nickname,
+			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, msg.Sender.HeadIMG),
+			id: msg.Sender.ID.toString(),
+			type: "friend",
+			cid: msg.ID.toString(),
+			content: ClearHTML(msg.Content)
+		});
+	}
+}
+
+Core.OnNewMessage.Attach(OnNewMessage);
+
 function StartServiceCallback()
 {
 	var userinfo = Core.Session.GetUserInfo();
@@ -258,19 +297,6 @@ function StartServiceCallback()
 			layim.on('sendMessage', LayIM_SendMsg);
 			//监听查看更多记录
 			layim.on('chatlog', LayIM_ChatLog);
-
-			//模拟收到一条好友消息
-			setTimeout(function ()
-			{
-				layim.getMessage({
-					username: "贤心"
-				  , avatar: "http://tp1.sinaimg.cn/1571889140/180/40030060651/1"
-				  , id: "100001"
-				  , type: "friend"
-				  , cid: Math.random() * 100000 | 0 //模拟消息id，会赋值在li的data-cid上，以便完成一些消息的操作（如撤回），可不填
-				  , content: "嗨，欢迎体验LayIM。演示标记：" + new Date().getTime()
-				});
-			}, 3000);
 
 			//模拟"更多"有新动态
 			//layim.showNew('More', true);
