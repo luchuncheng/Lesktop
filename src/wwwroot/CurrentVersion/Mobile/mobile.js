@@ -113,6 +113,23 @@ function LayIM_GroupExists(id)
 	return false;
 }
 
+function LayIM_UserExists(id)
+{
+	for (var i = 0; i < layim_config.init.friend.length; i++)
+	{
+		var group = layim_config.init.friend[i];
+		for (var j = 0; j < group.list.length; j++)
+		{
+			var user = group.list[j];
+			if(user.id == id)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 function LayIM_Details(data)
 {
 	//console.log(data); //获取当前会话对象
@@ -249,6 +266,18 @@ function LayIM_OnNewMessage(msg)
 
 	if (msg.Receiver.Type == 0)
 	{
+		if (!LayIM_UserExists(sender_info.ID.toString()))
+		{
+			layim.addList({
+				type: 'friend',
+				"username": sender_info.Nickname,
+				"id": sender_info.ID.toString(),
+				"groupid": LayIMGroup_Other,
+				"avatar": Core.CreateHeadImgUrl(sender_info.ID, 150, false, sender_info.HeadIMG),
+				"sign": ""
+			});
+		}
+
 		layim.getMessage({
 			username: sender_info.Nickname,
 			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
