@@ -129,35 +129,26 @@ function LayIM_Tool(insert, send)
 
 function LayIM_SendMsg(data)
 {
-	var To = data.to;
-	//console.log(data);
+	var msgdata = {
+		Action: "NewMessage",
+		Sender: parseInt(data.mine.id, 10),
+		Receiver: parseInt(data.to.id, 10)
+	};
 
-	//演示自动回复
-	setTimeout(function ()
-	{
-		var obj = {};
-		if (To.type === 'group')
+	msgdata.Content = Core.TranslateMessage(data.mine.content, msgdata);
+
+	Core.SendCommand(
+		function (ret)
 		{
-			obj = {
-				username: '模拟群员' + (Math.random() * 100 | 0),
-				avatar: layui.cache.dir + 'images/face/' + (Math.random() * 72 | 0) + '.gif',
-				id: To.id,
-				type: 'group',
-				content: autoReplay[Math.random() * 9 | 0],
-			};
-		}
-		else
+			var message = ret;
+			msgpanel_.AddMessage(message, temp);
+		},
+		function (ex)
 		{
-			obj = {
-				username: To.name,
-				avatar: To.avatar,
-				id: To.id,
-				type: To.type,
-				content: autoReplay[Math.random() * 9 | 0]
-			};
-		}
-		layim.getMessage(obj);
-	}, 3000);
+			var errmsg = String.format("由于网络原因，消息\"{0}\"发送失败，错误信息:{1}", text, ex.Message);
+		},
+		Core.Utility.RenderJson(msgdata), "Core.Web WebIM", false
+	);
 }
 
 function LayIM_ChatLog(data, ul)
@@ -279,7 +270,7 @@ function StartServiceCallback()
 					//我的信息
 					mine: {
 						"username": userinfo.Nickname, //我的昵称
-						"id": userinfo.ID, //我的ID
+						"id": userinfo.ID.toString(), //我的ID
 						"avatar": Core.CreateHeadImgUrl(userinfo.ID, 150, false, userinfo.HeadIMG), //我的头像
 						"sign": ""
 					},
