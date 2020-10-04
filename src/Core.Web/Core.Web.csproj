@@ -116,6 +116,12 @@
     <Compile Include="Management\MessageList_Group.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Mobile\Mobile_Login.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mobile\Mobile_Default.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendFileHandler.cs" />
     <Compile Include="Signout.aspx.cs">
