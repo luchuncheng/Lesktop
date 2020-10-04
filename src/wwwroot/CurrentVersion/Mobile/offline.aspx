@@ -38,7 +38,7 @@
     <form id="form1" runat="server">
     <div class="div_top_margin">&nbsp;&nbsp;</div>
     <div>
-		<label class="layui-form-label offline_tip">您的账号在另一地点登录</label>
+		<label class="layui-form-label offline_tip"><%=Tip %></label>
     </div>
     <div class="div_login_btn">
         <button name="relogin" type="submit" class="layui-btn layui-btn-normal login_btn">重新登录</button>
