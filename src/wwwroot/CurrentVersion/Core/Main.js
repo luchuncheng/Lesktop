@@ -957,6 +957,8 @@ function InitGlobal()
 							}
 							else
 							{
+								if(window.Device != 2)
+								{
 								var peer = (msg.Receiver.Type == 0 ? msg.Sender.ID : msg.Receiver.ID);
 								if(ClientMode && window.external.UseMsgBox && !Core.Session.GetGlobal("ChatService").Exists(peer))
 								{
@@ -970,6 +972,9 @@ function InitGlobal()
 										form.GetTag().AddMessage(msg);
 									})(msg);
 								}
+								}
+
+								Core.OnNewMessage.Call(msg);
 							}
 						}
 					}
@@ -988,6 +993,8 @@ function InitGlobal()
 						}
 						else
 						{
+							if(window.Device != 2)
+							{
 							if (data.Message.Receiver.Type == 0)
 							{
 								(function(msg)
@@ -1032,7 +1039,9 @@ function InitGlobal()
 										form.GetTag().AddMessage(msg);
 									}
 								})(data.Message);
+							}								
 							}
+							Core.OnNewMessage.Call(data.Message);
 						}
 					}
 					if(ClientMode)
@@ -1414,7 +1423,10 @@ Core.CreateMainMenu = function(ownerForm)
 
 })();
 
-Core.AccountData = (function() {
+Core.OnNewMessage = new Core.Delegate();
+
+Core.AccountData = (function ()
+{
 
 	var obj = {};
 
