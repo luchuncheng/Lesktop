@@ -12,7 +12,7 @@ public partial class _Debug : System.Web.UI.Page
 		{
 			String name = Request.QueryString["user"];
 			Int32 id = Core.AccountImpl.Instance.GetUserID(name);
-			Core.ServerImpl.Instance.Login("", Context, id, false, null, false);
+			Core.ServerImpl.Instance.Login("", Context, id, false, null, false, 0);
 		}
 	}
 }

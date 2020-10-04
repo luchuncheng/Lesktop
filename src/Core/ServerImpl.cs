@@ -237,16 +237,22 @@ namespace Core
 			return Custom.CustomServerImpl.GetUserID(context);
 		}
 
-		public AccountSession Login(String sessionId, HttpContext context, int id, bool clientMode, Nullable<DateTime> expires)
+		public int GetDeviceType(HttpContext context)
 		{
-			return Login(sessionId, context, id, clientMode, expires, true);
+			return Custom.CustomServerImpl.GetDeviceType(context);
 		}
 
-		public AccountSession Login(String sessionId, HttpContext context, int id, bool clientMode, Nullable<DateTime> expires, bool startSession)
+		public AccountSession Login(String sessionId, HttpContext context, int id, bool clientMode, Nullable<DateTime> expires)
+		{
+			return Login(sessionId, context, id, clientMode, expires, true, (clientMode ? 1 : 0));
+		}
+
+		// device: 0 - web, 1 - client, 2 - mobile web
+		public AccountSession Login(String sessionId, HttpContext context, int id, bool clientMode, Nullable<DateTime> expires, bool startSession, int device)
 		{
 			FormsAuthentication.Initialize();
 			string[] roles = new string[0];
-			Custom.CustomServerImpl.AddCookie(context, sessionId, id, roles, expires, clientMode);
+			Custom.CustomServerImpl.AddCookie(context, sessionId, id, roles, expires, clientMode, device);
 			return startSession ? SessionManagement.Instance.NewSession(id, sessionId) : null;
 		}
 

@@ -36,7 +36,7 @@ namespace Custom
 			return Core.Common.MD5(pwd);
 		}
 
-		public static void AddCookie(HttpContext context, string sessionId, Int64 id, string[] roles, Nullable<DateTime> expires, bool clientMode)
+		public static void AddCookie(HttpContext context, string sessionId, Int64 id, string[] roles, Nullable<DateTime> expires, bool clientMode, int device)
 		{
 			StringBuilder roles_string = new StringBuilder();
 			foreach (string role in roles)
@@ -49,6 +49,10 @@ namespace Custom
 			id_cookie.Value = CookieEncrypt.EncryptDES(Keys, id.ToString());
 			if (!clientMode && expires != null) id_cookie.Expires = expires.Value;
 			if (context.Response.Cookies[id_cookie.Name] != null) context.Response.Cookies.Remove(id_cookie.Name);
+			context.Response.Cookies.Add(id_cookie);
+
+			HttpCookie device_cookie = new HttpCookie("DEVICE");
+			device_cookie.Value = Convert.ToString(device);
 			context.Response.Cookies.Add(id_cookie);
 		}
 
@@ -63,6 +67,19 @@ namespace Custom
 			{
 				if (context.Request.Cookies["LesktopIDC"] != null) return Convert.ToInt32(CookieEncrypt.DecryptDES(Keys, context.Request.Cookies["LesktopIDC"].Value));
 				if (context.Request.Cookies["LesktopID"] != null) return Convert.ToInt32(CookieEncrypt.DecryptDES(Keys, context.Request.Cookies["LesktopID"].Value));
+			}
+			catch
+			{
+
+			}
+			return 0;
+		}
+
+		public static int GetDeviceType(HttpContext context)
+		{
+			try
+			{
+				if (context.Request.Cookies["DEVICE"] != null) return Convert.ToInt32(context.Request.Cookies["DEVICE"].Value);
 			}
 			catch
 			{
