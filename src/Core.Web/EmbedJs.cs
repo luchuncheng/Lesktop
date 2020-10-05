@@ -26,11 +26,11 @@ namespace Core.Web
 
 		static string MobileEmbedJsFormat =
 		"document.write('<script src=\"{2}/Core/Config.ashx\" type=\"text/javascript\"><'+'/script>');\r\n" +
-		"document.write('<script src=\"{2}/Core/Common.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n" +
-		"document.write('<script src=\"{2}/Core/Extent.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		"document.write('<script src=\"{2}/Core/Common.js\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		"document.write('<script src=\"{2}/Core/Extent.js\" type=\"text/javascript\"><'+'/script>');\r\n" +
 		(ServerImpl.Instance.EnbaleDynamicApp ? AppJs : "") +
-		"document.write('<script src=\"{2}/Core/Plugins.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n" +
-		"document.write('<script src=\"{2}/Core/Main.js?t={4}\" type=\"text/javascript\"><'+'/script>');\r\n";
+		"document.write('<script src=\"{2}/Core/Plugins.js\" type=\"text/javascript\"><'+'/script>');\r\n" +
+		"document.write('<script src=\"{2}/Core/Main.js\" type=\"text/javascript\"><'+'/script>');\r\n";
 		
 		void IHttpHandler.ProcessRequest(HttpContext context)
 		{
@@ -40,7 +40,7 @@ namespace Core.Web
 			var resRoot = ServerImpl.Instance.AppPath;
 			if (!resRoot.EndsWith("/")) resRoot += "/";
 			resRoot += ServerImpl.Instance.ResPath;
-			string js = String.Format((device == 2 ? MobileEmbedJsFormat : EmbedJsFormat), ServerImpl.Instance.Version, ServerImpl.Instance.AppPath, resRoot, ServerImpl.Instance.ResPath, DateTime.Now.Ticks.ToString());
+			string js = String.Format((device == 2 ? MobileEmbedJsFormat : EmbedJsFormat), ServerImpl.Instance.Version, ServerImpl.Instance.AppPath, resRoot, ServerImpl.Instance.ResPath);
 
 			context.Response.ContentType = "application/x-javascript";
 			context.Response.Write(js);
