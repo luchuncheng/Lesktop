@@ -92,7 +92,32 @@ namespace Core.Web
 				{
 					fileName = ServerImpl.Instance.GetFullPath(context, GlobalObject.unescape(context.Request["FileName"]));
 					ServerImpl.Instance.CheckPermission(context, fileName, IOPermission.Read);
-					stream = Core.IO.File.Open(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+
+					string maxwidth_qs = context.Request.QueryString["MaxWidth"];
+					string maxheight_qs = context.Request.QueryString["MaxHeight"];
+					if (maxwidth_qs != null && maxheight_qs != null)
+					{
+						int maxwidth = Convert.ToInt32(maxwidth_qs);
+						int maxheight=Convert.ToInt32(maxheight_qs);
+						String thumb_path = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/Thumbs";
+						if (!Core.IO.Directory.Exists(thumb_path))
+						{
+							Core.IO.Directory.CreateDirectory(thumb_path);
+						}
+						thumb_path += String.Format("/{0}_{1}_{2}.jpg", Utility.MD5(fileName.ToUpper()), maxwidth, maxheight);
+						if (!Core.IO.File.Exists(thumb_path)) 
+						{
+							if (!GenThumb(fileName, thumb_path, maxwidth, maxheight, 1024 * 1024))
+							{
+								thumb_path = fileName;
+							}
+						}
+						stream = Core.IO.File.Open(thumb_path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+					}
+					else
+					{
+						stream = Core.IO.File.Open(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+					}
 				}
 				if(stream == null) throw new Exception();
 				try
@@ -214,6 +239,39 @@ namespace Core.Web
 			return targetImg;
 		}
 
+		private static bool GenThumb(String src, String thumb, int width, int height, int maxsize)
+		{
+			Bitmap zoomImg = null;
+			using (Stream stream = Core.IO.File.Open(src, FileMode.Open, FileAccess.Read, FileShare.Read))
+			{
+				Bitmap img = new Bitmap(stream);
+				if (width > 0 && height > 0 && (img.Width > width || img.Height > height || stream.Length > maxsize))
+				{
+					int newWidth, newHeight;
+					if (img.Width * height > img.Height * width)
+					{
+						newWidth = width;
+						newHeight = img.Height * width / img.Width;
+					}
+					else
+					{
+						newHeight = height;
+						newWidth = img.Width * height / img.Height;
+					}
+					zoomImg = new Bitmap(img, new Size(newWidth, newHeight));
+				}
+			}
 
+			if(zoomImg != null)
+			{
+				using (Stream stream = Core.IO.File.Open(thumb, FileMode.Create, FileAccess.Write, FileShare.None))
+				{
+					zoomImg.Save(stream, ImageFormat.Jpeg);
+				}
+				return true;
+			}
+
+			return false;
+		}
 	}
 }
