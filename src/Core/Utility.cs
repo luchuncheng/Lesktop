@@ -90,6 +90,11 @@ namespace Core
 			return buffer;
 		}
 
+		public static String GenUniqueFileName()
+		{
+			return Guid.NewGuid().ToString().Replace("-", "");
+		}
+
 		public static String Escape(String str)
 		{
 			return Microsoft.JScript.GlobalObject.escape(str).Replace("+", "%2B");

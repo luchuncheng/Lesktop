@@ -45,7 +45,7 @@ namespace Core.Web
 
 				if (file_type == "file")
 				{
-					filepath += Guid.NewGuid().ToString().Replace("-", "");
+					filepath += Utility.GenUniqueFileName();
 					if (!Core.IO.Directory.Exists(filepath))
 					{
 						Core.IO.Directory.CreateDirectory(filepath);
@@ -59,7 +59,7 @@ namespace Core.Web
 					{
 						Core.IO.Directory.CreateDirectory(filepath);
 					}
-					filepath += "/" + Guid.NewGuid().ToString().Replace("-", "") + ext;
+					filepath += "/" + Utility.GenUniqueFileName() + ext;
 				}
 
 				if (UnsupportExt.ContainsKey(ext.ToUpper()))

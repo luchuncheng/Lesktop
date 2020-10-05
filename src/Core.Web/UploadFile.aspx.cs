@@ -36,7 +36,7 @@ public partial class Lesktop_CurrentVersion_UploadFile : System.Web.UI.Page
 					throw new Exception(String.Format("不支持上传此类型(*{0})的文件！", ext));
 				}
 
-				String filename = Core.ServerImpl.Instance.GetFullPath(Context, "Temp") + "/" + Guid.NewGuid().ToString().Replace("-", "");
+				String filename = Core.ServerImpl.Instance.GetFullPath(Context, "Temp") + "/" + Utility.GenUniqueFileName();
 				Core.IO.Directory.CreateDirectory(filename);
 				filename += "/" + name;
 
@@ -68,7 +68,7 @@ public partial class Lesktop_CurrentVersion_UploadFile : System.Web.UI.Page
 		else
 		{
 			HtmlInputHidden fileid = FindControl("fileid") as HtmlInputHidden;
-			fileid.Value = Guid.NewGuid().ToString().ToUpper();
+			fileid.Value = Utility.GenUniqueFileName();
 		}
 	}
 }

@@ -35,7 +35,7 @@ namespace Core.Web
 			if (context.Request.Files.Count > 0)
 			{
 				HttpPostedFile file = context.Request.Files[0];
-				String filename = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/" + Guid.NewGuid().ToString();
+				String filename = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/" + Utility.GenUniqueFileName();
 				Core.IO.Directory.CreateDirectory(filename);
 				filename += "/" + file.FileName;
 				Exception error = null;
@@ -59,7 +59,7 @@ namespace Core.Web
 			{
 				String name = context.Request.Headers["Content-Disposition"];
 				System.IO.Stream inputStream = context.Request.InputStream;
-				String filename = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/" + Guid.NewGuid().ToString();
+				String filename = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/" + Utility.GenUniqueFileName();
 				Core.IO.Directory.CreateDirectory(filename);
 				filename += "/" + context.Request.Headers["Content-Disposition"];
 				Exception error = null;

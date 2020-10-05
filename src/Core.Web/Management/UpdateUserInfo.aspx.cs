@@ -53,7 +53,7 @@ namespace Core.Web
 					Hashtable info = data as Hashtable;
 					if (Request.Files["file_headimg"] != null && Request.Files["file_headimg"].InputStream.Length > 0)
 					{
-						String filename = String.Format("/{0}/pub/HeadIMG/{1}{2}", Info.ID, Guid.NewGuid().ToString().Replace("-", ""), Path.GetExtension(Request.Files["file_headimg"].FileName));
+						String filename = String.Format("/{0}/pub/HeadIMG/{1}{2}", Info.ID, Utility.GenUniqueFileName(), Path.GetExtension(Request.Files["file_headimg"].FileName));
 						info["HeadIMG"] = filename;
 						string dirname = Path.GetDirectoryName(filename);
 						Directory.CreateDirectory(dirname);
