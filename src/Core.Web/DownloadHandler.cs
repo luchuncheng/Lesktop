@@ -247,6 +247,26 @@ namespace Core.Web
 				Bitmap img = new Bitmap(stream);
 				if (width > 0 && height > 0 && (img.Width > width || img.Height > height || stream.Length > maxsize))
 				{
+					foreach (var prop in img.PropertyItems)
+					{
+						if (prop.Id == 0x112)
+						{
+							if (prop.Value[0] == 6)
+							{
+								img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+							}
+							else if (prop.Value[0] == 8)
+							{
+								img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+							}
+							else if (prop.Value[0] == 3)
+							{
+								img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+							}
+							break;
+						}
+					}
+
 					int newWidth, newHeight;
 					if (img.Width * height > img.Height * width)
 					{
