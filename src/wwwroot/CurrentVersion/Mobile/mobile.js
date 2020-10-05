@@ -262,7 +262,7 @@ function GetImageSrc(img)
 	return ret[1];
 }
 
-function ClearHTML(text)
+function LayIM_TranslateMsg(text)
 {
 	var newText = text;
 	try
@@ -277,6 +277,14 @@ function ClearHTML(text)
 					return String.format("img[{0}]", url);
 				}
 				return "";
+			}
+		)
+		.replace(
+			/\x5BFILE:([^\x5B\x5D]+)\x5D/ig,
+			function (filetag, filepath)
+			{
+				var path = unescape(filepath)
+				return String.format("file({0})[{1}]", Core.CreateDownloadUrl(path), Core.Path.GetFileName(path));
 			}
 		)
 		.replace(
@@ -330,7 +338,7 @@ function LayIM_OnNewMessage(msg)
 			id: msg.Sender.ID.toString(),
 			type: "friend",
 			cid: msg.ID.toString(),
-			content: ClearHTML(msg.Content)
+			content: LayIM_TranslateMsg(msg.Content)
 		});
 	}
 	else if (msg.Receiver.Type == 1)
@@ -350,7 +358,7 @@ function LayIM_OnNewMessage(msg)
 			id: msg.Receiver.ID.toString(),
 			type: "group",
 			cid: msg.ID.toString(),
-			content: ClearHTML(msg.Content)
+			content: LayIM_TranslateMsg(msg.Content)
 		});
 	}
 }
