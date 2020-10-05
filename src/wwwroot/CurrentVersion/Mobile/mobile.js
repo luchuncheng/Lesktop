@@ -209,6 +209,7 @@ function LayIM_SendMsg(data)
         Action: "NewMessage",
         Sender: parseInt(data.mine.id, 10),
         Receiver: parseInt(data.to.id, 10),
+        DelTmpFile: 0,
         Content: ""
     };
 

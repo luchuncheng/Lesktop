@@ -30,8 +30,9 @@ public class WebIM : CommandHandler
 			int sender = Convert.ToInt32(param["Sender"]);
 			String content = param["Content"] as String;
 			bool isTemp = param.ContainsKey("IsTemp") ? Convert.ToBoolean(param["IsTemp"]) : false;
+			int deltmpfile = (param.ContainsKey("DelTmpFile") ? Convert.ToInt32(param["DelTmpFile"]) : 1);
 
-			Message msg = MessageImpl.Instance.NewMessage(receiver, sender, content, param, isTemp);
+			Message msg = MessageImpl.Instance.NewMessage(receiver, sender, content, param, isTemp, (deltmpfile != 0));
 			return Utility.RenderJson(msg);
 		}
 		throw new NotImplementedException();

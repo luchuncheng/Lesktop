@@ -142,7 +142,7 @@ namespace Core
 		/// <summary>
 		/// 插入新的消息，插入消息后将查询m_Listeners中是否有符合条件的监听器，如存在，同时将消息发送出去
 		/// </summary>
-		public Message NewMessage(int receiver, int sender, String content, Hashtable data, bool isTemp)
+		public Message NewMessage(int receiver, int sender, String content, Hashtable data, bool isTemp, bool deltmpfile)
 		{
 			AccountInfo senderInfo = AccountImpl.Instance.GetUserInfo(sender);
 			AccountInfo receiverInfo = AccountImpl.Instance.GetUserInfo(receiver);
@@ -154,7 +154,7 @@ namespace Core
 				key = ++m_MaxKey;
 			}
 			if ((senderInfo.IsTemp || receiverInfo.IsTemp) || Custom.ApplicationInfo.FilterHtml) content = HtmlUtil.ReplaceHtml(content);
-			MsgAccessoryEval eval = new MsgAccessoryEval(key, receiverInfo.ID, senderInfo.ID, data);
+			MsgAccessoryEval eval = new MsgAccessoryEval(key, receiverInfo.ID, senderInfo.ID, data, deltmpfile);
 			Regex reg = new Regex("{Accessory [^\f\n\r\t\v<>]+}");
 			content = reg.Replace(content, eval.Replace);
 			lock (m_Lock)
@@ -255,6 +255,11 @@ namespace Core
 				}
 				return message;
 			}
+		}
+
+		public Message NewMessage(int receiver, int sender, String content, Hashtable data, bool isTemp)
+		{
+			return NewMessage(receiver, sender, content, data, isTemp, true);
 		}
 
 		public void WriteCache()
@@ -541,13 +546,15 @@ namespace Core
 		int m_Receiver, m_Sender;
 		string m_ReceiverMsgDir, m_SenderMsgDir, m_MsgDir;
 		Hashtable m_Data;
+		bool m_DelTmpFile;
 
-		public MsgAccessoryEval(int key, int receiver, int sender, Hashtable data)
+		public MsgAccessoryEval(int key, int receiver, int sender, Hashtable data, bool deltmpfile)
 		{
 			m_Receiver = receiver;
 			m_Sender = sender;
 
 			m_Data = data;
+			m_DelTmpFile = deltmpfile;
 
 			m_ReceiverMsgDir = string.Format("/{0}/Message/MSG{1:00000000}", receiver, key);
 			m_SenderMsgDir = string.Format("/{0}/Message/MSG{1:00000000}", sender, key);
@@ -643,7 +650,7 @@ namespace Core
 							if (data == "")
 							{
 								File.Copy(src, m_ReceiverMsgDir + "/" + fileName);
-								if (ServerImpl.Instance.IsTemp(src))
+								if (m_DelTmpFile && ServerImpl.Instance.IsTemp(src))
 								{
 									File.Delete(src);
 								}
