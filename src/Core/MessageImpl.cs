@@ -155,7 +155,7 @@ namespace Core
 			}
 			if ((senderInfo.IsTemp || receiverInfo.IsTemp) || Custom.ApplicationInfo.FilterHtml) content = HtmlUtil.ReplaceHtml(content);
 			MsgAccessoryEval eval = new MsgAccessoryEval(key, receiverInfo.ID, senderInfo.ID, data, deltmpfile);
-			Regex reg = new Regex("{Accessory [^\f\n\r\t\v<>]+}");
+			Regex reg = new Regex("{Accessory ([^\\f\\n\\r\\t\\v\\x7B\\x7D]+)}");
 			content = reg.Replace(content, eval.Replace);
 			lock (m_Lock)
 			{
@@ -561,15 +561,32 @@ namespace Core
 			m_MsgDir = AccountImpl.Instance.GetUserInfo(receiver).Type == 1 ? string.Format("/{1}/Message/MSG{0:00000000}", key, receiver) : string.Format("Message/MSG{0:00000000}", key);
 		}
 
+		private Dictionary<String, String> ParseAttrs(String str)
+		{
+			Dictionary<String, String> attrs = new Dictionary<String, String>();
+			Regex reg = new Regex("([a-zA-Z0-9]+)\\x3D\\x22([\\S]+)\\x22");
+			MatchCollection matches = reg.Matches(str);
+			foreach(Match m in matches)
+			{
+				if (m.Groups.Count >= 3)
+				{
+					attrs[m.Groups[1].Value] = m.Groups[2].Value;
+				}
+			}
+			return attrs;
+		}
+
 		public string Replace(Match match)
 		{
-			XmlDocument xml = new XmlDocument();
-			string value = match.Value;
-			xml.LoadXml(string.Format("<{0} />", value.Substring(1, value.Length - 2)));
+			if(match.Groups.Count < 2)
+			{
+				return match.Value;
+			}
 
-			string src = GlobalObject.unescape(xml.DocumentElement.GetAttribute("src"));
-			string type = xml.DocumentElement.GetAttribute("type").ToLower();
-			string data = xml.DocumentElement.GetAttribute("data");
+			Dictionary<String, String> attrs = ParseAttrs(match.Groups[1].Value);
+			string src = Utility.Unescape((attrs.ContainsKey("src") ? attrs["src"].ToString() : ""));
+			string type = (attrs.ContainsKey("type") ? attrs["type"].ToString() : "");
+			string data = (attrs.ContainsKey("data") ? attrs["data"].ToString() : "");
 
 			bool isPublic = ServerImpl.Instance.IsPublic(src);
 
@@ -682,7 +699,7 @@ namespace Core
 					else
 						fileName = _files[src] as string;
 
-					string newUrl = GlobalObject.escape(string.Format("{0}/{1}", m_MsgDir, fileName)).Replace("+", "%2B");
+					string newUrl = Utility.Escape(string.Format("{0}/{1}", m_MsgDir, fileName)); 
 					return newUrl;
 				}
 				else
