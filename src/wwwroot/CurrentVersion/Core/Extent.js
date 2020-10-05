@@ -254,6 +254,24 @@ Core.Utility.ShowFloatForm = function(text, type)
 	}
 }
 
+Core.GetFileNameFromImgTag = function(img)
+{
+	var src_reg = /src\x3D(\x22|\x27)([^\x22\x27]+)(\x22|\x27)/ig;
+	src_reg.lastIndex = 0;
+	var src_ret = src_reg.exec(img);
+	if (src_ret != 0 && src_ret.length >= 4)
+	{
+		var filename_regex = /\x2FDownload.ashx\x3FFileName\=([^\s\x28\x29\x26]+)/ig;
+		filename_regex.lastIndex = 0;
+		var fnret = filename_regex.exec(src_ret[2]);
+		if(fnret != null && fnret.length >= 2)
+		{
+			return Core.Utility.Unescape(fnret[1]);
+		}
+	}
+	return "";
+}
+
 Core.CreateDownloadUrl = function(filename)
 {
 	if (filename.substr(0, 1) != "/") filename = String.format("/{0}/{1}", Core.Session.GetUserID(), filename);

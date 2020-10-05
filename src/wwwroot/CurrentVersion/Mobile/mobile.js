@@ -182,7 +182,7 @@ function LayIM_Tool(insert, send)
 
 function LayIM_SendMsg_GetFileName(fileurl)
 {
-    var filename_regex = /FileName\=([^\s\x28\x29]+)/ig;
+    var filename_regex = /FileName\=([^\s\x28\x29\x26]+)/ig;
     filename_regex.lastIndex = 0
     var ret = filename_regex.exec(fileurl);
     if (ret == null || ret.length <= 1)
@@ -207,7 +207,8 @@ function LayIM_SendMsg(data)
         /img\x5B([^\x5B\x5D]+)\x5D/ig,
         function(imgtext, src)
         {
-            return String.format('<img src="{0}">', src);
+        	var filename = LayIM_SendMsg_GetFileName(src);
+        	return String.format('<img src="{0}">', Core.CreateDownloadUrl(filename));
         }
     );
     content = content.replace(
@@ -239,18 +240,6 @@ function LayIM_ChatLog(data, ul)
 {
 }
 
-function GetImageSrc(img)
-{
-	var imgsrc_regex = /src\=\x22([^<>\x22]+)\x22/ig;
-	imgsrc_regex.lastIndex = 0
-	var ret = imgsrc_regex.exec(img);
-	if (ret == null || ret.length <= 1)
-	{
-		return "";
-	}
-	return ret[1];
-}
-
 function LayIM_ParseMsg(text)
 {
 	var newText = text;
@@ -262,8 +251,12 @@ function LayIM_ParseMsg(text)
 			{
 				if (tag.toLowerCase() == "img")
 				{
-					var url = GetImageSrc(html);
-					return String.format("img[{0}]", url);
+					var filename = Core.GetFileNameFromImgTag(html);
+					if (filename != "")
+					{
+						var url = Core.CreateDownloadUrl(filename);
+						return String.format("a({0})[img[{0}&MaxWidth=450&MaxHeight=800]]", url);
+					}
 				}
 				return "";
 			}
@@ -380,7 +373,7 @@ function StartServiceCallback()
 			layim_config = {
 				//上传图片接口
 				uploadImage: {
-					url: Core.GetUrl("Mobile/uploadfile.ashx?type=image"), //（返回的数据格式见下文）
+					url: Core.GetUrl("Mobile/uploadfile.ashx?type=image&maxwidth=450&maxheight=800"), //（返回的数据格式见下文）
 					type: '' //默认post
 				},
 

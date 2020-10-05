@@ -31,11 +31,11 @@ namespace Core.Web
 					UnsupportExt.Add(".CONFIG", "CONFIG");
 				}
 			}
+			string file_type = context.Request.QueryString["type"].ToLower();
 			String filepath = "";
 			Exception error = null;
 			try
 			{
-				string file_type = context.Request.QueryString["type"];
 				HttpPostedFile postfile = context.Request.Files["file"];
 				String name = System.IO.Path.GetFileName(postfile.FileName);
 				string ext = System.IO.Path.GetExtension(name);
@@ -87,6 +87,15 @@ namespace Core.Web
 				string url = ServerImpl.Instance.AppPath;
 				if (!url.EndsWith("/")) url += "/";
 				url += String.Format("{0}/Download.ashx?FileName={1}", ServerImpl.Instance.ResPath, Utility.Escape(filepath));
+				if (file_type == "image")
+				{
+					string maxwidth_qs = context.Request.QueryString["maxwidth"];
+					string maxheight_qs = context.Request.QueryString["maxheight"];
+					if (maxwidth_qs != null && maxheight_qs != null)
+					{
+						url += String.Format("&MaxWidth={0}&MaxHeight={1}", maxwidth_qs, maxheight_qs);
+					}
+				}
 				Hashtable data = new Hashtable();
 				data["src"] = url;
 				context.Response.Write(Core.Utility.RenderHashJson("code", 0, "msg", "", "data", data));

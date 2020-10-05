@@ -353,35 +353,27 @@ Core.UI.MsgPanel = function(container, config)
 			}
 		);
 	
-		if (ClientMode)
-		{
-			msg.Content = msg.Content.replace(
-				/<img [^\t\n\r\f\v<>]+>/ig,
-				function(img)
-				{
-					return img.replace(
-						/src[^<>]*=[^<>]*(\x22|\x27)([^<>]+\/|)Download.ashx\x3FFileName=([^\t\n\r\f\v\x22]+)(\x22|\x27)/ig,
-						function(text, v1, v2, src)
-						{
-							var url = Core.CreateDownloadUrl(src);
-							return String.format("src=\"{0}\"", url);
-						}
-					);
-				}
-			);
-		}
 		msg.Content = msg.Content.replace(
 			/<img [^\t\n\r\f\v<>]+>/ig,
 			function(img)
 			{
-				return img.replace(
-					/src[^<>]*=[^<>]*(\x22|\x27)([^<>]+\/|)Download.aspx\x3FFileName=([^\t\n\r\f\v\x22]+)(\x22|\x27)/ig,
-					function(text, v1, v2, src)
+				var filename = Core.GetFileNameFromImgTag(img);
+				if (filename != "")
+				{
+					var url = Core.CreateDownloadUrl(filename);
+					if (ClientMode)
 					{
-						var url = Core.CreateDownloadUrl(src);
-						return String.format("src=\"{0}\"", url);
+						return String.format("<img src=\"{1}&MaxWidth=400&MaxHeight=300\" onclick=\"window.OpenFile(\'{0}\')\" style=\"cursor:pointer;\">", filename, url);
 					}
-				);
+					else
+					{
+						return String.format("<a target=\"_blank\" href=\"{0}\"><img src=\"{0}&MaxWidth=400&MaxHeight=300\"></a>", url);
+					}
+				}
+				else
+				{
+					return img;
+				}
 			}
 		);
 	
