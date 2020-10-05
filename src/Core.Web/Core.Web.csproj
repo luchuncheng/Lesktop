@@ -125,6 +125,7 @@
     <Compile Include="Mobile\Mobile_Offline.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Mobile\Mobile_UploadFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendFileHandler.cs" />
     <Compile Include="Signout.aspx.cs">

@@ -180,21 +180,62 @@ function LayIM_Tool(insert, send)
 	send();
 }
 
+function LayIM_SendMsg_GetFileName(fileurl)
+{
+    var filename_regex = /FileName\=([^\s\x28\x29]+)/ig;
+    filename_regex.lastIndex = 0
+    var ret = filename_regex.exec(fileurl);
+    if (ret == null || ret.length <= 1)
+    {
+        return "";
+    }
+    return ret[1];
+}
+
+function LayIM_SendMsg_CreateFileHtml(paths)
+{
+    var fs = [];
+    for (var i in paths)
+    {
+        var html = "<div contenteditable='false' class='message_file'>" + String.format("[FILE:{0}]", paths[i]) + "</div>";
+        fs.push(html);
+    }
+    return "<br/>" + fs.join("<br/>") + "<br/>";
+}
+
 function LayIM_SendMsg(data)
 {
-	var msgdata = {
-		Action: "NewMessage",
-		Sender: parseInt(data.mine.id, 10),
-		Receiver: parseInt(data.to.id, 10)
-	};
+    var msgdata = {
+        Action: "NewMessage",
+        Sender: parseInt(data.mine.id, 10),
+        Receiver: parseInt(data.to.id, 10),
+        Content: ""
+    };
 
-	msgdata.Content = Core.TranslateMessage(data.mine.content, msgdata);
+    var content = data.mine.content;
+    content = content.replace(
+        /img\x5B([^\x5B\x5D]+)\x5D/ig,
+        function(imgtext, src)
+        {
+            return String.format('<img src="{0}">', src);
+        }
+    );
+    content = content.replace(
+        /file\x28([^\x28\x29]+)\x29\x5B([^\x5B\x5D]+)\x5D/ig,
+        function (filetext, fileurl, ope)
+        {
+            var path = LayIM_SendMsg_GetFileName(fileurl);
+            return LayIM_SendMsg_CreateFileHtml([path]);
+        }
+    );
+    content = Core.TranslateMessage(content, msgdata);
+
+    msgdata.Content = content;
 
 	Core.SendCommand(
 		function (ret)
 		{
 			var message = ret;
-			msgpanel_.AddMessage(message, temp);
 		},
 		function (ex)
 		{
@@ -208,14 +249,11 @@ function LayIM_ChatLog(data, ul)
 {
 }
 
-var Mobile_HtmlBeginTagRegex = /<([a-zA-Z0-9]+)(\s+)[^<>]+>/ig;
-var Mobile_HtmlEndTagRegex = /<\/([a-zA-Z0-9]+)>/ig;
-var Mobile_HtmlImgSrcRegex = /src\=\x22([^<>\x22]+)\x22/ig;
-
 function GetImageSrc(img)
 {
-	Mobile_HtmlImgSrcRegex.lastIndex = 0
-	var ret = Mobile_HtmlImgSrcRegex.exec(img);
+	var imgsrc_regex = /src\=\x22([^<>\x22]+)\x22/ig;
+	imgsrc_regex.lastIndex = 0
+	var ret = imgsrc_regex.exec(img);
 	if (ret == null || ret.length <= 1)
 	{
 		return "";
@@ -229,7 +267,7 @@ function ClearHTML(text)
 	try
 	{
 		newText = text.toString().replace(
-			Mobile_HtmlBeginTagRegex,
+			/<([a-zA-Z0-9]+)([\s]+)[^<>]*>/ig,
 			function (html, tag)
 			{
 				if (tag.toLowerCase() == "img")
@@ -241,7 +279,14 @@ function ClearHTML(text)
 			}
 		)
 		.replace(
-			Mobile_HtmlEndTagRegex,
+			/<([a-zA-Z0-9]+)[\x2F]{0,1}>/ig,
+			function (html, tag)
+			{
+				return "";
+			}
+		)
+		.replace(
+			/<\/([a-zA-Z0-9]+)>/ig,
 			function (html, tag)
 			{
 				return "";
@@ -337,13 +382,13 @@ function StartServiceCallback()
 			layim_config = {
 				//上传图片接口
 				uploadImage: {
-					url: '/upload/image', //（返回的数据格式见下文）
+					url: Core.GetUrl("Mobile/uploadfile.ashx?type=image"), //（返回的数据格式见下文）
 					type: '' //默认post
 				},
 
 				//上传文件接口
 				uploadFile: {
-					url: '/upload/file', //（返回的数据格式见下文）
+				    url: Core.GetUrl("Mobile/uploadfile.ashx?type=file"), //（返回的数据格式见下文）
 					type: '' //默认post
 				},
 
