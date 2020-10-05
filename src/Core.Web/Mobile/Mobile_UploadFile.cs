@@ -86,7 +86,7 @@ namespace Core.Web
 			{
 				string url = ServerImpl.Instance.AppPath;
 				if (!url.EndsWith("/")) url += "/";
-				url += String.Format("{0}/Download.ashx?FileName={1}", ServerImpl.Instance.ResPath, Microsoft.JScript.GlobalObject.escape(filepath));
+				url += String.Format("{0}/Download.ashx?FileName={1}", ServerImpl.Instance.ResPath, Utility.Escape(filepath));
 				Hashtable data = new Hashtable();
 				data["src"] = url;
 				context.Response.Write(Core.Utility.RenderHashJson("code", 0, "msg", "", "data", data));

@@ -89,5 +89,15 @@ namespace Core
 			}
 			return buffer;
 		}
+
+		public static String Escape(String str)
+		{
+			return Microsoft.JScript.GlobalObject.escape(str).Replace("+", "%2B");
+		}
+
+		public static String Unescape(String str)
+		{
+			return Microsoft.JScript.GlobalObject.unescape(str);
+		}
 	}
 }
