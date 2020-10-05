@@ -133,7 +133,7 @@ Core.UI.ChatPanel = function(parent, config)
 		{
 			temp = msgpanel_.CreateMessage(data.Content);
 		}
-		editor_.SetText(Core.GetBrowser() == "IE" ? "" : "&nbsp;");
+		editor_.SetText("");
 
 		Core.SendCommand(
 			function(data)
