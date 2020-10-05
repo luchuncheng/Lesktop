@@ -343,12 +343,16 @@ Core.TranslateMessage = function(msg, data)
 		/<img [^\t\n\r\f\v<>]+>/ig,
 		function(img)
 		{
-			return img.replace(/src[^<>]*=[^<>]*(\x22|\x27)([^<>]+\/|)download.ashx\x3FFileName=([^\t\n\r\f\v\x22]+)(\x22|\x27)/ig,
-			function(text, v1, v2, src)
-			{
-				url = String.format(Core.GetUrl("Download.ashx") + "?FileName={{Accessory type=\"image\" src=\"{0}\"}", src);
-				return String.format("src=\"{0}\"", url);
-			});
+		    var filename = Core.GetFileNameFromImgTag(img);
+		    if (filename != "")
+		    {
+		        var url = String.format("{0}?FileName={{Accessory type=\"image\" src=\"{1}\"}", Core.GetUrl("Download.ashx"), Core.Utility.Escape(filename));
+		        return String.format("<img src=\"{0}\">", url);
+		    }
+		    else
+		    {
+		        return img;
+		    }
 		}
 	);
 
