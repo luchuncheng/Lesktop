@@ -1934,7 +1934,7 @@ function SetClientMode(cm)
 				Core.Utility.StopScrollTitle();
 			}
 		);
-		if (window.Device == 0)
+		if (window.Device == 0 || window.Device == 1)
 		{
 		Core.CreateWindow = function(config)
 		{
@@ -1956,7 +1956,7 @@ function SetClientMode(cm)
 
 	InitGlobal();
 
-	if(window.CustomServiceMode != true && window.Device == 0)
+	if (window.CustomServiceMode != true && (window.Device == 0 || window.Device == 1))
 	{
 		Desktop.Create();
 
