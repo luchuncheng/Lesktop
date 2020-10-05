@@ -664,6 +664,13 @@ namespace Core
 									}
 								}
 							}
+						}
+						catch
+						{
+						}
+
+						try
+						{
 							if (data == "")
 							{
 								File.Copy(src, m_ReceiverMsgDir + "/" + fileName);
