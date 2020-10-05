@@ -254,8 +254,13 @@ function LayIM_ParseMsg(text)
 					var filename = Core.GetFileNameFromImgTag(html);
 					if (filename != "")
 					{
-						var url = Core.CreateDownloadUrl(filename);
-						return String.format("a({0})[img[{0}&MaxWidth=450&MaxHeight=800]]", url);
+					    var url = Core.CreateDownloadUrl(filename);
+					    return String.format("a({0})[img[{0}&MaxWidth=450&MaxHeight=800]]", url);
+					}
+					else
+					{
+					    var src = Core.GetSrcFromImgTag(html);
+					    return String.format("img[{0}]", src);
 					}
 				}
 				return "";

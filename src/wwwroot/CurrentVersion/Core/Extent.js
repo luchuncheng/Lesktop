@@ -254,6 +254,18 @@ Core.Utility.ShowFloatForm = function(text, type)
 	}
 }
 
+Core.GetSrcFromImgTag = function (img)
+{
+    var src_reg = /src\x3D(\x22|\x27)([^\x22\x27]+)(\x22|\x27)/ig;
+    src_reg.lastIndex = 0;
+    var src_ret = src_reg.exec(img);
+    if (src_ret != 0 && src_ret.length >= 4)
+    {
+        return src_ret[2];
+    }
+    return "";
+}
+
 Core.GetFileNameFromImgTag = function(img)
 {
 	var src_reg = /src\x3D(\x22|\x27)([^\x22\x27]+)(\x22|\x27)/ig;
