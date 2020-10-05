@@ -225,7 +225,7 @@ function LayIM_SendMsg(data)
         /file\x28([^\x28\x29]+)\x29\x5B([^\x5B\x5D]+)\x5D/ig,
         function (filetext, fileurl, ope)
         {
-            var path = LayIM_SendMsg_GetFileName(fileurl);
+            var path = unescape(LayIM_SendMsg_GetFileName(fileurl));
             return LayIM_SendMsg_CreateFileHtml([path]);
         }
     );

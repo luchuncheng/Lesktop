@@ -35,16 +35,32 @@ namespace Core.Web
 			Exception error = null;
 			try
 			{
+				string file_type = context.Request.QueryString["type"];
 				HttpPostedFile postfile = context.Request.Files["file"];
 				String name = System.IO.Path.GetFileName(postfile.FileName);
 				string ext = System.IO.Path.GetExtension(name);
 				System.IO.Stream inputStream = postfile.InputStream;
-				filepath = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/" + Guid.NewGuid().ToString();
-				if (!Core.IO.Directory.Exists(filepath))
+
+				filepath = Core.ServerImpl.Instance.GetFullPath(context, "Temp") + "/Mobile/";
+
+				if (file_type == "file")
 				{
-					Core.IO.Directory.CreateDirectory(filepath);
+					filepath += Guid.NewGuid().ToString().Replace("-", "");
+					if (!Core.IO.Directory.Exists(filepath))
+					{
+						Core.IO.Directory.CreateDirectory(filepath);
+					}
+					filepath += "/" + name;
 				}
-				filepath += "/" + Guid.NewGuid().ToString().Replace("-", "") + ext;
+				else
+				{
+					filepath += "Images";
+					if (!Core.IO.Directory.Exists(filepath))
+					{
+						Core.IO.Directory.CreateDirectory(filepath);
+					}
+					filepath += "/" + Guid.NewGuid().ToString().Replace("-", "") + ext;
+				}
 
 				if (UnsupportExt.ContainsKey(ext.ToUpper()))
 				{
@@ -70,7 +86,7 @@ namespace Core.Web
 			{
 				string url = ServerImpl.Instance.AppPath;
 				if (!url.EndsWith("/")) url += "/";
-				url += String.Format("{0}/Download.ashx?FileName={1}", ServerImpl.Instance.ResPath, filepath);
+				url += String.Format("{0}/Download.ashx?FileName={1}", ServerImpl.Instance.ResPath, Microsoft.JScript.GlobalObject.escape(filepath));
 				Hashtable data = new Hashtable();
 				data["src"] = url;
 				context.Response.Write(Core.Utility.RenderHashJson("code", 0, "msg", "", "data", data));
