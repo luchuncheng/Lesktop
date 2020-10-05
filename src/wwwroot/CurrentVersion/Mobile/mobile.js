@@ -192,17 +192,6 @@ function LayIM_SendMsg_GetFileName(fileurl)
     return ret[1];
 }
 
-function LayIM_SendMsg_CreateFileHtml(paths)
-{
-    var fs = [];
-    for (var i in paths)
-    {
-        var html = "<div contenteditable='false' class='message_file'>" + String.format("[FILE:{0}]", paths[i]) + "</div>";
-        fs.push(html);
-    }
-    return "<br/>" + fs.join("<br/>") + "<br/>";
-}
-
 function LayIM_SendMsg(data)
 {
     var msgdata = {
@@ -226,7 +215,7 @@ function LayIM_SendMsg(data)
         function (filetext, fileurl, ope)
         {
             var path = unescape(LayIM_SendMsg_GetFileName(fileurl));
-            return LayIM_SendMsg_CreateFileHtml([path]);
+            return Core.CreateFileHtml([path]);
         }
     );
     content = Core.TranslateMessage(content, msgdata);
@@ -262,7 +251,7 @@ function GetImageSrc(img)
 	return ret[1];
 }
 
-function LayIM_TranslateMsg(text)
+function LayIM_ParseMsg(text)
 {
 	var newText = text;
 	try
@@ -338,7 +327,7 @@ function LayIM_OnNewMessage(msg)
 			id: msg.Sender.ID.toString(),
 			type: "friend",
 			cid: msg.ID.toString(),
-			content: LayIM_TranslateMsg(msg.Content)
+			content: LayIM_ParseMsg(msg.Content)
 		});
 	}
 	else if (msg.Receiver.Type == 1)
@@ -358,7 +347,7 @@ function LayIM_OnNewMessage(msg)
 			id: msg.Receiver.ID.toString(),
 			type: "group",
 			cid: msg.ID.toString(),
-			content: LayIM_TranslateMsg(msg.Content)
+			content: LayIM_ParseMsg(msg.Content)
 		});
 	}
 }

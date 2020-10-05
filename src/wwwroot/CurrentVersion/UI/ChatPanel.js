@@ -26,17 +26,6 @@ function SaveDefaultFormat()
 	if (ClientMode) window.external.LocalSetting.SetValue("DefaultFormat", Core.Utility.RenderJson(DefaultFormat));
 }
 
-function CreateFileHtml(paths)
-{
-	var fs = [];
-	for (var i in paths)
-	{
-		var html = "<div contenteditable='false' class='message_file'>" + String.format("[FILE:{0}]", paths[i]) + "</div>";
-		fs.push(html);
-	}
-	return "<br/>" + fs.join("<br/>") + "<br/>";
-}
-
 function IsEmpty(str)
 {
 	for (var i = 0; i < str.length;)
@@ -180,7 +169,7 @@ Core.UI.ChatPanel = function(parent, config)
 	{
 		if (index >= files.length)
 		{
-			var html = CreateFileHtml(dsts);
+			var html = Core.CreateFileHtml(dsts);
 			SendInstantMessage(html);
 			return;
 		}
@@ -451,7 +440,7 @@ Core.UI.ChatPanel = function(parent, config)
 			img_dom.className = "dl_image_file";
 			btncancel.style.display = 'none';
 
-			var html = CreateFileHtml([path]);
+			var html = Core.CreateFileHtml([path]);
 			SendInstantMessage(html);
 		}
 
@@ -667,7 +656,7 @@ Core.UI.ChatPanel = function(parent, config)
 								function(path)
 								{
 									if (path == "") return;
-									var html = CreateFileHtml([path]);
+									var html = Core.CreateFileHtml([path]);
 									SendInstantMessage(html);
 								}
 							);

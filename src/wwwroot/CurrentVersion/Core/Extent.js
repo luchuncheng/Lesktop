@@ -257,7 +257,23 @@ Core.Utility.ShowFloatForm = function(text, type)
 Core.CreateDownloadUrl = function(filename)
 {
 	if (filename.substr(0, 1) != "/") filename = String.format("/{0}/{1}", Core.Session.GetUserID(), filename);
-	return String.format("{0}?FileName={1}", Core.GetUrl("Download.ashx"), escape(filename).replace(/\x2B/ig, "%2B"));
+	return String.format("{0}?FileName={1}", Core.GetUrl("Download.ashx"), Core.Utility.Escape(filename));
+}
+
+Core.CreateFileTag = function(path)
+{
+	return String.format("[FILE:{0}]", Core.Utility.Escape(path));
+}
+
+Core.CreateFileHtml = function (paths)
+{
+	var fs = [];
+	for (var i in paths)
+	{
+		var html = "<div contenteditable='false' class='message_file'>" + Core.CreateFileTag(paths[i]) + "</div>";
+		fs.push(html);
+	}
+	return "<br/>" + fs.join("<br/>") + "<br/>";
 }
 
 Core.CreateHeadImgUrl = function(id, size, gred, headimg)
@@ -304,7 +320,7 @@ Core.GetMultiUsersInfo = function(callback, byName, ids)
 }
 
 Core.TranslateMessage = function(msg, data)
-{	
+{
 	msg = msg.replace(
 		/<img [^\t\n\r\f\v<>]+>/ig,
 		function(img)
@@ -322,34 +338,19 @@ Core.TranslateMessage = function(msg, data)
 		/<img [^<>]+>/ig,
 		function(img)
 		{
+			// 替换PC客户端本地图片，图片文件内容以base64字符串方式和文字消息一起发送
 			var s = img.replace(
 				/src[^<>]*=[^<>]*\x22([^<>]+\/|)file\x3A\/\/\/([^\t\n\r\f\v\x22]+)\x22/ig,
 				function(text, v1, src)
 				{
-
 					var data_id = Core.GenerateUniqueId();
 					var base64 = window.external.ToBase64String(src);
 					data[data_id] = base64;
-					var index = src.lastIndexOf("\\");
-					if (index < 0) index = -1;
-					url = String.format(Core.GetUrl("Download.ashx") + "?FileName={{Accessory type=\"image\" src=\"{0}\" data=\"{1}\"}", src.substr(index + 1, src.length - index - 1), data_id);
+					var filename = Core.Utility.Escape(Core.Utility.Unescape(Core.Path.GetFileName(src)));
+					url = String.format(Core.GetUrl("Download.ashx") + "?FileName={{Accessory type=\"image\" src=\"{0}\" data=\"{1}\"}", filename, data_id);
 					return String.format("src=\"{0}\"", url);
 				}
-			);
-			s = s.replace(
-				/src[^<>]*=[^<>]*\x22(http\x3A\/\/local\.eim\.cc(|\/)\?File=([^\t\n\r\f\v\x22]+))\x22/ig,
-				function(text, v1, v2, v3)
-				{
-					var data_id = Core.GenerateUniqueId();
-					var base64 = window.external.ToBase64String(v3);
-					data[data_id] = base64;
-					var index = v3.lastIndexOf("\\");
-					if (index < 0) index = -1;
-					url = String.format(Core.GetUrl("Download.ashx") + "?FileName={{Accessory type=\"image\" src=\"{0}\" data=\"{1}\"}", v3.substr(index + 1, v3.length - index - 1), data_id);
-					return String.format("src=\"{0}\"", url);
-				}
-			);
-			
+			);			
 			return s;
 		}
 	);
@@ -374,23 +375,10 @@ Core.TranslateMessage = function(msg, data)
 	);
 
 	msg = msg.replace(
-		/\x5BFILE\x3A[^\n\f\r\t\v\x5B\x5D]+\x5D/g,
-		function(file)
-		{
-			return String.format("[FILE:{{Accessory type=\"file\" src=\"{0}\"}]", escape(file.substr(6, file.length - 7)));
-		}
-	);
-
-	msg = msg.replace(
-		/\x5BLOCAL\x3Afile\x3A\/\/\/([^\n\f\r\t\v]+)\x5D/g,
+		/\x5BFILE\x3A([^\n\f\r\t\v\x5B\x5D]+)\x5D/g,
 		function(file, path)
 		{
-			var data_id = Core.GenerateUniqueId();
-			var base64 = window.external.ToBase64String(path);
-			data[data_id] = base64;
-			var index = path.lastIndexOf("\\");
-			if (index < 0) index = -1;
-			return String.format("[FILE:{{Accessory type=\"file\" src=\"{0}\" data=\"{1}\"}]", path.substr(index + 1, path.length - (index + 1)), data_id);
+			return String.format("[FILE:{{Accessory type=\"file\" src=\"{0}\"}]", path);
 		}
 	);
 

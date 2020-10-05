@@ -341,7 +341,7 @@ Core.UI.MsgPanel = function(container, config)
 			/\x5BFILE\x3A([^\t\n\r\f\v\x5B\x5D]+)\x5D/ig,
 			function(val, file)
 			{
-				return String.format(FileHtmlFormat, Core.Path.GetFileName(unescape(file)), file);
+				return String.format(FileHtmlFormat, Core.Path.GetFileName(Core.Utility.Unescape(file)), file);
 			}
 		);
 	
@@ -349,7 +349,7 @@ Core.UI.MsgPanel = function(container, config)
 			/\x5BRFILE\x3A([^\t\n\r\f\v\x5B\x5D]+)\x5D/ig,
 			function(val, file)
 			{
-				return String.format(R_FileHtmlFormat, Core.Path.GetFileName(unescape(file)), file);
+				return String.format(R_FileHtmlFormat, Core.Path.GetFileName(Core.Utility.Unescape(file)), file);
 			}
 		);
 	
@@ -841,7 +841,7 @@ Core.UI.MsgPanel = function(container, config)
 			window.setTimeout(
 				function()
 				{
-					var url = Core.GetUrl("Download.ashx") + "?FileName=" + escape(filePath).replace(/\x2B/ig, "%2B");
+					var url = Core.GetUrl("Download.ashx") + "?FileName=" + Core.Utility.Escape(filePath);
 					window.external.Save(document.cookie, url, Core.Path.GetFileName(filePath), new DownloadHandler(Core.Path.GetFileName(filePath)));
 				}, 100
 			);
@@ -854,7 +854,7 @@ Core.UI.MsgPanel = function(container, config)
 			window.setTimeout(
 				function()
 				{
-					var url = Core.GetUrl("Download.ashx") + "?FileName=" + escape(filePath).replace(/\x2B/ig, "%2B");
+					var url = Core.GetUrl("Download.ashx") + "?FileName=" + Core.Utility.Escape(filePath);
 					window.external.Open(document.cookie, url, Core.Path.GetFileName(filePath), new DownloadHandler(Core.Path.GetFileName(filePath)));
 				}, 100
 			);
