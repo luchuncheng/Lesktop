@@ -1001,6 +1001,17 @@ Core.Utility.ParseInt = function(str)
 	var val = parseInt(str);
 	return (val == undefined || val == null || isNaN(val) ? 0 : val);
 }
+
+Core.Utility.Escape = function (str)
+{
+	return escape(str).replace(/\x2B/ig, "%2B");
+}
+
+Core.Utility.Unescape = function (str)
+{
+	return unescape(str);
+}
+
 Core.Path = function()
 {
 }
