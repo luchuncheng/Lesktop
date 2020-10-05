@@ -399,12 +399,13 @@ function StartServiceCallback()
 				},
 
 				//扩展聊天面板工具栏
+				/*
 				tool: [{
 					alias: 'code',
 					title: '代码',
 					iconUnicode: '&#xe64e;'
 				}],
-
+				*/
 				//扩展更多列表
 				moreList: [{
 					alias: 'find',
