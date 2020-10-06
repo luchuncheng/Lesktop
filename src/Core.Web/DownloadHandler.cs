@@ -152,8 +152,8 @@ namespace Core.Web
 						int c = stream.Read(buffer, 0, buffer.Length);
 						if (c == 0) break;
 						context.Response.OutputStream.Write(buffer, 0, c);
-						context.Response.Flush();
 					}
+					context.Response.OutputStream.Flush();
 				}
 				finally
 				{
