@@ -783,7 +783,10 @@ begin
 	insert into UserRelationship (RenewTime,HostID,GuestID,Relationship)
 	select getdate() as RenewTime,@id as GuestID,@creator as HostID,3 as Relationship
 
-	insert into Dept_User (DeptID,UserID) values (@deptId, @id);
+	if(@deptId > 0)
+	begin
+		insert into Dept_User (DeptID,UserID) values (@deptId, @id);
+	end
 	
 	select @id;
 end
