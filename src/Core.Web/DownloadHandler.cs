@@ -137,7 +137,7 @@ namespace Core.Web
 						context.Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}", UTF8_FileName(Path.GetFileNameWithoutExtension(fileName)), Path.GetExtension(fileName)));
 					}
 
-					if(ext == ".MOV" || ext == ".mp4")
+					if (ext == ".MOV" || ext == ".MP4" || ext == ".MP3")
 					{
 						// 简单支持移动端播放视频，实际不支持分片传送
 						context.Response.AppendHeader("Accept-Ranges", "bytes");
