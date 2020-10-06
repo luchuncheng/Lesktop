@@ -271,7 +271,19 @@ function LayIM_ParseMsg(text)
 			function (filetag, filepath)
 			{
 				var path = unescape(filepath)
-				return String.format("file({0})[{1}]", Core.CreateDownloadUrl(path), Core.Path.GetFileName(path));
+				var ext = Core.Path.GetFileExtension(path).toLowerCase();
+				if (ext == ".mp4" || ext == ".mov")
+				{
+					return String.format("video[{0}]", Core.CreateDownloadUrl(path), Core.Path.GetFileName(path));
+				}
+				else if (ext == "mp3")
+				{
+					return String.format("audio[{0}]", Core.CreateDownloadUrl(path), Core.Path.GetFileName(path));
+				}
+				else
+				{
+					return String.format("file({0})[{1}]", Core.CreateDownloadUrl(path), Core.Path.GetFileName(path));
+				}
 			}
 		)
 		.replace(
