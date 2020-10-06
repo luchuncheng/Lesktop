@@ -49,7 +49,7 @@
     <form id="form1" runat="server">
     <div class="div_top_margin">&nbsp;&nbsp;</div>
     <div class="div_login_user">
-        <input type="text" name="user" autocomplete="off" class="layui-input login_user" value="lucc"/>
+        <input type="text" name="user" autocomplete="off" class="layui-input login_user"/>
     </div>
     <div class="div_login_pwb">
         <input type="password" name="pwd" autocomplete="off" class="layui-input login_pwb" />
