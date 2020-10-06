@@ -19,7 +19,7 @@ namespace Core.Web
 			if(current_user != null)
 			{
 				String sessionId = Guid.NewGuid().ToString().ToUpper();
-				ServerImpl.Instance.Login(sessionId, Context, current_user.ID, false, null, true, 2);
+				ServerImpl.Instance.Login(sessionId, Context, current_user.ID, false, DateTime.Now.AddDays(7), true, 2);
 
 				DataRowCollection categories = ServerImpl.Instance.CommonStorageImpl.GetCategories(current_user.ID);
 
