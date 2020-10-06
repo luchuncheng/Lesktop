@@ -13,20 +13,43 @@ namespace Core.Web
 		{
 			AccountInfo current_user = null;
 
-			string user = Request.Params["user"];
-			if (user != null && user != "")
+			if (Request.Params["login"] != null)
 			{
-				string pwd = Request.Params["pwd"];
-#if DEBUG
-				if (true)
-#else
-				if (Core.AccountImpl.Instance.Validate(user, pwd))		
-#endif
+				string user = Request.Params["user"];
+				if (user != null && user != "")
 				{
-					int userid = AccountImpl.Instance.GetUserID(user);
-					// 仅验证不启动回话，重定向到default.aspx再启动回话
-					ServerImpl.Instance.Login("", Context, userid, false, null, false, 2);
-					current_user = AccountImpl.Instance.GetUserInfo(userid);
+					string pwd = Request.Params["pwd"];
+#if DEBUG
+					if (true)
+#else
+					if (Core.AccountImpl.Instance.Validate(user, pwd))		
+#endif
+					{
+						int userid = AccountImpl.Instance.GetUserID(user);
+						// 仅验证不启动回话，重定向到default.aspx再启动回话
+						ServerImpl.Instance.Login("", Context, userid, false, null, false, 2);
+						current_user = AccountImpl.Instance.GetUserInfo(userid);
+					}
+				}
+			}
+			else if (Request.Params["visitor"] != null)
+			{
+#if DEBUG
+				string ip = "117.136.10.171";
+#else
+				string ip = Context.Request.ServerVariables["REMOTE_ADDR"];
+#endif
+				int id = AccountImpl.Instance.CreateTempUser(ip);
+				if (id != 0)
+				{
+					ServerImpl.Instance.Login("", Context, id, false, DateTime.Now.AddDays(7), false, 2);
+					current_user = AccountImpl.Instance.GetUserInfo(id);
+					int lucc_id = AccountImpl.Instance.GetUserID("lucc");
+					if (lucc_id > 0)
+					{
+						AccountImpl.Instance.AddFriend(id, lucc_id);
+						SessionManagement.Instance.Send(lucc_id, "GLOBAL:ADD_COMM_FRIEND", Utility.RenderHashJson("CommFriend", current_user.DetailsJson));
+					}
 				}
 			}
 			else

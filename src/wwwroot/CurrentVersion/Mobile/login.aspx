@@ -55,7 +55,10 @@
         <input type="password" name="pwd" autocomplete="off" class="layui-input login_pwb" />
     </div>
     <div class="div_login_btn">
-        <button type="submit" class="layui-btn layui-btn-normal login_btn" onclick="">登&nbsp;&nbsp;录</button>
+        <button type="submit" class="layui-btn layui-btn-normal login_btn" name="login">登&nbsp;&nbsp;录</button>
+    </div>
+    <div class="div_login_btn">
+        <button type="submit" class="layui-btn layui-btn-normal login_btn" name="visitor">访&nbsp;&nbsp;客</button>
     </div>
     </form>
 </body>
