@@ -65,7 +65,7 @@ function GetFriends()
 	for (var i = 0; i < window.MobileInitParams.VisibleUsers.length; i++)
 	{
 		var user = window.MobileInitParams.VisibleUsers[i];
-		if (user.Type == 0 && user.SubType == 0)
+		if (user.Type == 0)
 		{
 			// 注册用户，并添加自己为好友的
 			grou_myfriend.list.push({
