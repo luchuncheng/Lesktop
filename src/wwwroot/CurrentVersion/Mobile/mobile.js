@@ -149,26 +149,11 @@ function LayIM_More(obj)
 {
 	switch (obj.alias)
 	{
-	case 'find':
-		{
-			layer.msg('自定义发现动作');
-
-			//模拟标记“发现新动态”为已读
-			layim.showNew('More', false);
-			layim.showNew('find', false);
+	case 'logout':
+	    {
+	        location = Core.GetUrl("Mobile/logout.aspx");
 			break;
 		}
-	case 'share':
-		{
-			layim.panel({
-				title: '邀请好友', //标题
-				tpl: '<div style="padding: 10px;">自定义模版，{{d.data.test}}</div>', //模版
-				data: { //数据
-					test: '么么哒'
-				}
-			});
-		}
-		break;
 	}
 }
 
@@ -433,8 +418,8 @@ function StartServiceCallback()
 				*/
 				//扩展更多列表
 				moreList: [{
-					alias: 'find',
-					title: '发现',
+				    alias: 'logout',
+					title: '退出登录',
 					iconUnicode: '&#xe628;', //图标字体的unicode，可不填
 					iconClass: '' //图标字体的class类名
 				}],

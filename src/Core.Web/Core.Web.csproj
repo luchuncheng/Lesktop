@@ -122,6 +122,9 @@
     <Compile Include="Mobile\Mobile_Default.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Mobile\Mobile_Logout.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Mobile\Mobile_Offline.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
