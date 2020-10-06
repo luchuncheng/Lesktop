@@ -61,11 +61,13 @@ function GetFriends()
 		"online": 0,
 		"list": []
 	}
+	
+	var current_user = Core.Session.GetUserInfo();
 
 	for (var i = 0; i < window.MobileInitParams.VisibleUsers.length; i++)
 	{
 		var user = window.MobileInitParams.VisibleUsers[i];
-		if (user.Type == 0)
+		if (user.Type == 0 && ((current_user.SubType == 1 && user.SubType == 0) || current_user.SubType == 0))
 		{
 			// 注册用户，并添加自己为好友的
 			grou_myfriend.list.push({
