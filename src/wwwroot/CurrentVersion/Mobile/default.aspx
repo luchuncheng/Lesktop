@@ -21,7 +21,7 @@
 	<script language="javascript" type="text/javascript">
 		window.onload = function ()
 		{
-			StartService(StartServiceCallback);
+		    LayIM_Init();
 		}
 	</script>
 </head>

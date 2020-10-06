@@ -62,7 +62,7 @@ function GetFriends()
 		"list": []
 	}
 	
-	var current_user = Core.Session.GetUserInfo();
+	var current_user = window.MobileInitParams.UserInfo;
 
 	for (var i = 0; i < window.MobileInitParams.VisibleUsers.length; i++)
 	{
@@ -368,8 +368,12 @@ Core.OnNewMessage.Attach(LayIM_OnNewMessage);
 
 function StartServiceCallback()
 {
-    var userinfo = Core.Session.GetUserInfo();
-    
+}
+
+function LayIM_Init()
+{
+	var userinfo = window.MobileInitParams.UserInfo;
+
     for (var i = 0; i < LayIM_Faces.length; i++)
     {
         LayIM_FaceToFile[LayIM_Faces[i]] = i.toString() + ".gif";
@@ -458,6 +462,9 @@ function StartServiceCallback()
 			layim.on('sendMessage', LayIM_SendMsg);
 			//监听查看更多记录
 			layim.on('chatlog', LayIM_ChatLog);
+
+
+			StartService(StartServiceCallback);
 
 			//模拟"更多"有新动态
 			//layim.showNew('More', true);
