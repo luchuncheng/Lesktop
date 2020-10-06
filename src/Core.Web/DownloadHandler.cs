@@ -40,6 +40,9 @@ namespace Core.Web
 			ContentType[".JPG"] = "image";
 			ContentType[".ICO"] = "image";
 			ContentType[".CUR"] = "image";
+			ContentType[".MOV"] = "video/quicktime";
+			ContentType[".MP4"] = "video/mp4";
+			ContentType[".MP3"] = "audio/mpeg";
 		}
 
 		public DownloadHandler()
