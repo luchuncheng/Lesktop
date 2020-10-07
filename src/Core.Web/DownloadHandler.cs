@@ -204,7 +204,7 @@ namespace Core.Web
 			using (Stream stream = File.Open(headImg, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				Bitmap img = new Bitmap(stream);
-				if (width > 0 && height > 0 && (img.Width > width || img.Height > height || stream.Length > 20 * 1024))
+				if (width > 0 && height > 0 && (img.Width > width || img.Height > height || stream.Length > 100 * 1024))
 				{
 					if (Path.GetExtension(targetImg).ToLower() != ".png") targetImg += ".png";
 
