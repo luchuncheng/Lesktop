@@ -9,6 +9,7 @@ var LayIMGroup_MyFriend = "2";	// 我的好友分组
 var LayIM_Faces = ["微笑", "嘻嘻", "哈哈", "可爱", "可怜", "挖鼻", "吃惊", "害羞", "挤眼", "闭嘴", "鄙视", "爱你", "泪", "偷笑", "亲亲", "生病", "太开心", "白眼", "右哼哼", "左哼哼", "嘘", "衰", "委屈", "吐", "哈欠", "抱抱", "怒", "疑问", "馋嘴", "拜拜", "思考", "汗", "困", "睡", "钱", "失望", "酷", "色", "哼", "鼓掌", "晕", "悲伤", "抓狂", "黑线", "阴险", "怒骂", "互粉", "心", "伤心", "猪头", "熊猫", "兔子", "ok", "耶", "good", "NO", "赞", "来", "弱", "草泥马", "神马", "囧", "浮云", "给力", "围观", "威武", "奥特曼", "礼物", "钟", "话筒", "蜡烛", "蛋糕"];
 var LayIM_FaceToFile = {};
 
+// 获取分组和联系人
 function GetFriends()
 {
 	var friends = [];
@@ -74,7 +75,8 @@ function GetFriends()
 		var user = window.MobileInitParams.VisibleUsers[i];
 		if (user.Type == 0 && ((current_user.SubType == 1 && user.SubType == 0) || current_user.SubType == 0))
 		{
-			// 注册用户，并添加自己为好友的
+			// 内部人员(SubType=1)显示注册用户并添加自己为好友的，不包括内部人员
+			// 注册用户(SubType=0)显示添加自己为好友的其他注册用户和内部用户
 			grou_myfriend.list.push({
 				"username": user.Nickname,
 				"id": user.ID.toString(),
@@ -96,6 +98,7 @@ function GetFriends()
 	return friends;
 }
 
+// 获取群聊
 function GetGroups()
 {
 	// 获取所有群组和多人会话
@@ -336,8 +339,10 @@ function LayIM_OnNewMessage(msg)
 
 	if (msg.Receiver.Type == 0)
 	{
+		// 私聊消息
 		if (!LayIM_UserExists(sender_info.ID.toString()))
 		{
+			// 分组列表中不包括消息发送者，将发送者加入到其他联系人分组
 			layim.addList({
 				type: 'friend',
 				"username": sender_info.Nickname,
@@ -347,7 +352,7 @@ function LayIM_OnNewMessage(msg)
 				"sign": ""
 			});
 		}
-
+		// 显示到LayIM消息面板
 		layim.getMessage({
 			username: sender_info.Nickname,
 			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
@@ -359,8 +364,10 @@ function LayIM_OnNewMessage(msg)
 	}
 	else if (msg.Receiver.Type == 1)
 	{
+		// 群消息
 		if (!LayIM_GroupExists(receiver_info.ID.toString()))
 		{
+			// 群聊列表中不包括该群，加入到群聊中
 			layim.addList({
 				"type": "group",
 				"groupname": receiver_info.Nickname,
@@ -368,6 +375,7 @@ function LayIM_OnNewMessage(msg)
 				"avatar": Core.CreateGroupImgUrl(receiver_info.HeadIMG, receiver_info.IsTemp)
 			});
 		}
+		// 显示到LayIM消息面板
 		layim.getMessage({
 			username: sender_info.Nickname,
 			avatar: Core.CreateHeadImgUrl(msg.Sender.ID, 150, false, sender_info.HeadIMG),
