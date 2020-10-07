@@ -17,6 +17,7 @@ function GetFriends()
 		var category = window.MobileInitParams.Categories[i];
 		if (category.Type == 1)
 		{
+			// Type=1为常用联系人类别，将所有常用联系人类别（不分层次）显示为LayIM的分组
 			var groupid = category.ID + 10000;
 			var group = {
 				"groupname": category.Name,
@@ -28,9 +29,11 @@ function GetFriends()
 			var online_count = 0;
 			for (var j = 0; j < window.MobileInitParams.CategorieItems.length; j++)
 			{
+				// 从CategorieItems中获取该分组所有联系人ID
 				var item = window.MobileInitParams.CategorieItems[j];
 				if (item.CategoryID == category.ID)
 				{
+					// 通过联系人ID从CategorieUsers中获取联系人详细信息
 					var friend_info = window.MobileInitParams.CategorieUsers[item.ItemID.toString()];
 					if(friend_info != undefined)
 					{
@@ -64,6 +67,8 @@ function GetFriends()
 	
 	var current_user = window.MobileInitParams.UserInfo;
 
+
+	// 获取所有好友并显示到好友分组
 	for (var i = 0; i < window.MobileInitParams.VisibleUsers.length; i++)
 	{
 		var user = window.MobileInitParams.VisibleUsers[i];
@@ -93,6 +98,7 @@ function GetFriends()
 
 function GetGroups()
 {
+	// 获取所有群组和多人会话
 	var groups = [];
 	for (var i = 0; i < window.MobileInitParams.VisibleUsers.length; i++)
 	{
@@ -193,6 +199,7 @@ function LayIM_SendMsg(data)
     };
 
     var content = data.mine.content;
+	// 转换图片消息
     content = content.replace(
         /img\x5B([^\x5B\x5D]+)\x5D/ig,
         function(imgtext, src)
@@ -201,6 +208,7 @@ function LayIM_SendMsg(data)
         	return String.format('<img src="{0}">', Core.CreateDownloadUrl(filename));
         }
     );
+	// 转换文件消息
     content = content.replace(
         /file\x28([^\x28\x29]+)\x29\x5B([^\x5B\x5D]+)\x5D/ig,
         function (filetext, fileurl, ope)
@@ -209,8 +217,9 @@ function LayIM_SendMsg(data)
             return Core.CreateFileHtml([path]);
         }
     );
+	// 将消息中的图片(<img ...>),文件([FILE:...])转换成服务端可以处理的附件
     content = Core.TranslateMessage(content, msgdata);
-
+	// 转换表情
     content = content.replace(
         /face\[([^\s\[\]]+?)\]/g,
         function (face, face_type)
@@ -247,6 +256,7 @@ function LayIM_ParseMsg(text)
 	var newText = text;
 	try
 	{
+		// 处理掉HTML开始TAG
 		newText = text.toString().replace(
 			/<([a-zA-Z0-9]+)([\s]+)[^<>]*>/ig,
 			function (html, tag)
@@ -256,11 +266,13 @@ function LayIM_ParseMsg(text)
 					var filename = Core.GetFileNameFromImgTag(html);
 					if (filename != "")
 					{
+						// Lesktop服务器上的文件，重新加上分辨率限制参数，改为下载缩略图，链接到原图
 					    var url = Core.CreateDownloadUrl(filename);
 					    return String.format("a({0})[img[{0}&MaxWidth=450&MaxHeight=800]]", url);
 					}
 					else
 					{
+						// 外源图片，改成超链接，防止下载图片浪费流量
 					    var src = Core.GetSrcFromImgTag(html);
 					    return String.format("a({0})[{1}]", src, "&nbsp;图片&nbsp;");
 					}
@@ -272,6 +284,7 @@ function LayIM_ParseMsg(text)
 			/\x5BFILE:([^\x5B\x5D]+)\x5D/ig,
 			function (filetag, filepath)
 			{
+				// 提取文件消息，改为视频，音频或文件
 				var path = unescape(filepath)
 				var ext = Core.Path.GetFileExtension(path).toLowerCase();
 				if (ext == ".mp4" || ext == ".mov")
@@ -292,6 +305,7 @@ function LayIM_ParseMsg(text)
 			/<([a-zA-Z0-9]+)[\x2F]{0,1}>/ig,
 			function (html, tag)
 			{
+				// 清理<br/>等
 				return "";
 			}
 		)
@@ -299,6 +313,7 @@ function LayIM_ParseMsg(text)
 			/<\/([a-zA-Z0-9]+)>/ig,
 			function (html, tag)
 			{
+				// 清理HTML结束TAG
 				return "";
 			}
 		);
@@ -364,6 +379,7 @@ function LayIM_OnNewMessage(msg)
 	}
 }
 
+// 监听新消息
 Core.OnNewMessage.Attach(LayIM_OnNewMessage);
 
 function StartServiceCallback()
