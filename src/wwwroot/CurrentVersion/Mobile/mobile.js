@@ -262,7 +262,7 @@ function LayIM_ParseMsg(text)
 					else
 					{
 					    var src = Core.GetSrcFromImgTag(html);
-					    return String.format("img[{0}]", src);
+					    return String.format("a({0})[{1}]", src, "&nbsp;图片&nbsp;");
 					}
 				}
 				return "";
