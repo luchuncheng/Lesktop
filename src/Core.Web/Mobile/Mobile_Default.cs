@@ -18,7 +18,7 @@ namespace Core.Web
 			AccountInfo current_user = ServerImpl.Instance.GetCurrentUser(Context);
 			if(current_user != null)
 			{
-				String sessionId = Guid.NewGuid().ToString().ToUpper();
+				String sessionId = Utility.GenSessionID();
 				ServerImpl.Instance.Login(sessionId, Context, current_user.ID, false, DateTime.Now.AddDays(7), true, 2);
 
 				DataRowCollection categories = ServerImpl.Instance.CommonStorageImpl.GetCategories(current_user.ID);

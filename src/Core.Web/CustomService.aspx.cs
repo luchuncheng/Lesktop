@@ -16,7 +16,7 @@ namespace Core.Web
 		{
 			try
 			{
-				String sessionId = Guid.NewGuid().ToString().ToUpper();
+				String sessionId = Utility.GenSessionID();
 				AccountInfo cu = ServerImpl.Instance.GetCurrentUser(Context);
 
 				if (cu == null || !cu.IsTemp)

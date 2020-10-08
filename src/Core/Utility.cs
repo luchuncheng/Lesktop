@@ -90,6 +90,11 @@ namespace Core
 			return buffer;
 		}
 
+		public static String GenSessionID()
+		{
+			return Guid.NewGuid().ToString().Replace("-", "").ToUpper();
+		}
+
 		public static String GenUniqueFileName()
 		{
 			return Guid.NewGuid().ToString().Replace("-", "");

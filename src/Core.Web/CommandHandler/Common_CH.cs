@@ -113,7 +113,7 @@ class Common_CH : Core.CommandHandler
 		}
 		else if (action == "Login")
 		{
-			String sessionId = Guid.NewGuid().ToString().ToUpper();
+			String sessionId = Utility.GenSessionID();
 			AccountInfo current_user = null;
 			if (!ps.ContainsKey("User"))
 			{
