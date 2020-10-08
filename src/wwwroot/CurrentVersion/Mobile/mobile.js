@@ -276,7 +276,7 @@ function LayIM_ParseMsg(text)
 					else
 					{
 						var src = Core.GetSrcFromImgTag(html);
-						if (src.indexOf(":") < 0 && src.length > 0 && src.substr(0, 1) == "/")
+						if ((src.length > 0 && src.substr(0, 1) == "/") || Core.IsOwnResource(src))
 						{
 							return String.format("img[{0}]", src);
 						}

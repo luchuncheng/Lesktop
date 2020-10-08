@@ -290,6 +290,20 @@ Core.CreateDownloadUrl = function(filename)
 	return String.format("{0}?FileName={1}", Core.GetUrl("Download.ashx"), Core.Utility.Escape(filename));
 }
 
+Core.IsOwnResource = function(url)
+{
+	var url_lc = url.toLowerCase();
+	var host_regex = /([^\x3A]+)\x3A\x2F\x2F([^\x2F]+)\x2F/ig;
+	host_regex.lastIndex = 0;
+	var ret = host_regex.exec(url_lc);
+	if(ret != null && ret.length >= 3)
+	{
+		var host = window.location.host.toLowerCase();
+		if (ret.index == 0 && ret[2] == host) return true;
+	}
+	return false;
+}
+
 Core.CreateFileTag = function(path)
 {
 	return String.format("[FILE:{0}]", Core.Utility.Escape(path));
