@@ -162,7 +162,7 @@ function LayIM_More(obj)
 	{
 	case 'logout':
 	    {
-	        location = Core.GetUrl("Mobile/logout.aspx");
+	    	location = Core.GetUrl(String.format("Mobile/logout.aspx?SessionID={0}", Core.Session.GetSessionID()));
 			break;
 		}
 	}

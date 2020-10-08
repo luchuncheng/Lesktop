@@ -22,6 +22,14 @@ namespace Core.Web
 
 		}
 
+		public int ReceiverID
+		{
+			get
+			{
+				return Convert.ToInt32(Data["Receiver"]);
+			}
+		}
+
 		public String SenderName
 		{
 			get

@@ -11,7 +11,22 @@ namespace Core.Web
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			ServerImpl.Instance.Logout(Context);
+			AccountInfo cu = ServerImpl.Instance.GetCurrentUser(Context);
+			if (cu != null)
+			{
+				ServerImpl.Instance.Logout(Context);
+				String sessionId = Request.QueryString["SessionID"];
+				if (sessionId != null)
+				{
+					SessionManagement.Instance.RemoveSession(cu.ID, sessionId);
+					string data = Utility.RenderHashJson(
+						"User", cu.ID,
+						"State", SessionManagement.Instance.IsOnline(cu.ID) ? "Online" : "Offline",
+						"Details", cu.DetailsJson
+					);
+					SessionManagement.Instance.Send("UserStateChanged", data);
+				}
+			}
 			Response.Redirect("login.aspx");
 		}
 	}
