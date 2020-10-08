@@ -275,9 +275,16 @@ function LayIM_ParseMsg(text)
 					}
 					else
 					{
-						// 外源图片，改成超链接，防止下载图片浪费流量
-					    var src = Core.GetSrcFromImgTag(html);
-					    return String.format("a({0})[{1}]", src, "&nbsp;图片&nbsp;");
+						var src = Core.GetSrcFromImgTag(html);
+						if (src.indexOf(":") < 0 && src.length > 0 && src.substr(0, 1) == "/")
+						{
+							return String.format("img[{0}]", src);
+						}
+						else
+						{
+							// 外源图片，改成超链接，防止下载图片浪费流量
+							return String.format("a({0})[{1}]", src, "&nbsp;图片&nbsp;");
+						}
 					}
 				}
 				return "";
