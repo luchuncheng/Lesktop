@@ -4,7 +4,7 @@
 		<td class="checkbox"><input type="checkbox" name="<%= MsgID %>" /></td>
 		<td class="nickname"><%= SenderNickname %></td>
 		<td class="nickname"><%= ReceiverNickname%></td>
-		<td class="summary" onclick="return SwitchMessageVisible('msg_<%= MsgID %>','<%= Core.Utility.TransferCharJavascript(Content)%>','<%= Core.Utility.TransferCharJavascript(ReceiverName)%>')"><span><%= Summary%></span></td>
+		<td class="summary" onclick="return SwitchMessageVisible('msg_<%= MsgID %>','<%= Core.Utility.TransferCharJavascript(Content)%>','<%= Core.Utility.TransferCharJavascript(ReceiverName)%>', <%= ReceiverID%>)"><span><%= Summary%></span></td>
 		<td class="createdTime"><%= CreatedTime %></td>
 	</tr>
 	<tr style="display:none;">

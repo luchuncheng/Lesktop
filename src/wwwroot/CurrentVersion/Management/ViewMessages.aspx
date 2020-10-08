@@ -139,7 +139,7 @@
 			return confirm(String.format("您确定要打开\"{0}\"?", href));
 		}
 
-		function CreateMsgHtml(content, receiver)
+		function CreateMsgHtml(content, receiver, receiverid)
 		{
 			content = content.replace(/<img [^\t\n\r\f\v<>]+>/ig,
 				function(img)
@@ -148,7 +148,7 @@
 						/src[^<>]*=[^<>]*(\x22|\x27)([^<>]+\/|)Download.ashx\x3FFileName=([^\t\n\r\f\v\x22]+)(\x22|\x27)/ig,
 						function(text, v1, v2, file)
 						{
-							var url = Core.CreateDownloadUrl(file.substr(0, 1) == "/" ? file : "/" + receiver + "/" + file);
+						    var url = Core.CreateDownloadUrl(file.substr(0, 1) == "/" ? file : "/" + receiverid.toString() + "/" + file);
 							return String.format("src=\"{0}\"", url);
 						}
 					);
@@ -236,7 +236,7 @@
 			}
 		}
 
-		function SwitchMessageVisible(tab_id, content, receiver)
+		function SwitchMessageVisible(tab_id, content, receiver, receiverid)
 		{
 			var tab = document.getElementById(tab_id);
 			if (tab.rows[0].cells[3].firstChild.style.display == 'none')
@@ -250,7 +250,7 @@
 				tab.rows[1].style.display = "";
 				if (tab.rows[1].cells[1].firstChild.innerHTML == "")
 				{
-					tab.rows[1].cells[1].firstChild.innerHTML = CreateMsgHtml(content, receiver);
+				    tab.rows[1].cells[1].firstChild.innerHTML = CreateMsgHtml(content, receiver, receiverid);
 				}
 			}
 		}
